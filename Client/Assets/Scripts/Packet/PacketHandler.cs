@@ -155,13 +155,71 @@ class PacketHandler
     {
         S_ItemList itemListPacket = (S_ItemList)packet;
 
-		UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-		UI_Inventory invenUI = gameSceneUI.InvenUI;
+		//UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+		//UI_Inventory invenUI = gameSceneUI.InvenUI;
 
-		foreach(var item in itemListPacket.Items)
+		Managers.Inven.Clear();
+
+		// 메모리에 아이템 정보 적용
+		foreach(ItemInfo itemInfo in itemListPacket.Items)
         {
-			Debug.Log($"{item.TemplateId} : {item.Count}");
+			Item item = Item.MakeItem(itemInfo);
+			Managers.Inven.Add(item);
         }
+
+		if(Managers.Object.MyPlayer != null)
+			Managers.Object.MyPlayer.RefreshAdditionalStat();
+    }
+
+
+    public static void S_AddItemHandler(PacketSession session, IMessage packet)
+    {
+		S_AddItem addItemPacket = (S_AddItem)packet;
+
+
+
+        Managers.Inven.Clear();
+
+        // 메모리에 아이템 정보 적용
+        foreach (ItemInfo itemInfo in addItemPacket.Items)
+        {
+            Item item = Item.MakeItem(itemInfo);
+            Managers.Inven.Add(item);
+        }
+
+		Debug.Log("아이템을 획득");
+
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        gameSceneUI.InvenUI.RefreshUI();
+        gameSceneUI.StatUI.RefreshUI();
+
+        if (Managers.Object.MyPlayer != null)
+            Managers.Object.MyPlayer.RefreshAdditionalStat();
+    }
+
+    public static void S_EquipItemHandler(PacketSession session, IMessage packet)
+    {
+		S_EquipItem equipItemPacket = (S_EquipItem)packet;
+
+		// 메모리에 아이템 정보 적용
+		Item item = Managers.Inven.Get(equipItemPacket.ItemDbId);
+		if (item == null)
+			return;
+
+		item.Equipped = equipItemPacket.Equipped;
+		Debug.Log("아이템 착용 변경");
+
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        gameSceneUI.InvenUI.RefreshUI();
+        gameSceneUI.StatUI.RefreshUI();
+
+        if (Managers.Object.MyPlayer != null)
+            Managers.Object.MyPlayer.RefreshAdditionalStat();
+    }
+
+    public static void S_ChangeStatHandler(PacketSession session, IMessage packet)
+    {
+		S_ChangeStat changeStatPacket = (S_ChangeStat)packet;
     }
 }
 

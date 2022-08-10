@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.Protocol;
 using Server.Data;
+using Server.DB;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
@@ -9,18 +10,25 @@ namespace Server.Game
 {
 	public class Monster : GameObject
 	{
+		public int TemplateId { get; private set; }
+
 		public Monster()
 		{
 			ObjectType = GameObjectType.Monster;
-
-			// TEMP
-			Stat.Level = 1;
-			Stat.Hp = 100;
-			Stat.MaxHp = 100;
-			Stat.Speed = 5.0f;
-
-			State = CreatureState.Idle;
 		}
+
+		public void Init(int templateId)
+        {
+			TemplateId = templateId;
+
+			MonsterData monsterData = null;
+			DataManager.MonsterDict.TryGetValue(TemplateId, out monsterData);
+
+			Stat.MergeFrom(monsterData.stat);
+			Stat.Hp = monsterData.stat.MaxHp;
+
+            State = CreatureState.Idle;
+        }
 
 		// FSM (Finite State Machine)
 		public override void Update()
@@ -162,7 +170,7 @@ namespace Server.Game
 				DataManager.SkillDict.TryGetValue(1, out skillData);
 
 				// 데미지 판정
-				_target.OnDamaged(this, skillData.damage + Stat.Attack);
+				_target.OnDamaged(this, skillData.damage + TotalAttack);
 
 				// 스킬 사용 Broadcast
 				S_Skill skill = new S_Skill() { Info = new SkillInfo() };
@@ -185,5 +193,46 @@ namespace Server.Game
 		{
 
 		}
-	}
+
+        public override void OnDead(GameObject attacker)
+        {
+            base.OnDead(attacker);
+
+			// TODO : 아이템 생성
+			GameObject owner = attacker.GetOwner();
+
+			if(owner.ObjectType == GameObjectType.Player)
+            {
+				RewardData rewardData = GetRandomReward();
+
+				if(rewardData != null)
+                {
+					Player player = (Player)owner;	
+					DbTransaction.RewardPlayer(player, rewardData, Room);
+                }
+            }
+
+        }
+
+		RewardData GetRandomReward()
+        {
+			MonsterData monsterData = null;
+			DataManager.MonsterDict.TryGetValue(TemplateId, out monsterData);
+
+			int ran = new Random().Next(0, 101);
+
+			int sum = 0;
+			foreach(RewardData rewardData in monsterData.rewards)
+            {
+				sum += rewardData.probability;
+
+				if(ran <= sum)
+                {
+					return rewardData;
+                }
+            }
+
+			return null;
+        }
+    }
 }

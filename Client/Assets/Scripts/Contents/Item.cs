@@ -1,5 +1,6 @@
 ﻿using Data;
 using Google.Protobuf.Protocol;
+using System;
 
 public class Item
 {
@@ -21,6 +22,18 @@ public class Item
     {
         get { return info.Count; }
         set { info.Count = value; }
+    }
+
+    public int Slot
+    {
+        get { return info.Slot; }
+        set { info.Slot = value; }
+    }
+
+    public bool Equipped
+    {
+        get { return info.Equipped; }
+        set { info.Equipped = value; }
     }
 
     public ItemType ItemType { get; private set; }
@@ -57,6 +70,8 @@ public class Item
         {
             item.ItemDbId = itemInfo.ItemDbId;
             item.Count = itemInfo.Count;
+            item.Slot = itemInfo.Slot;
+            item.Equipped = itemInfo.Equipped;
         }
 
         return item;
