@@ -9,26 +9,21 @@ namespace Server.Game
 	{
 		public GameObject Owner { get; set; }
 
-
 		public override void Update()
 		{
 			if (Data == null || Data.projectile == null || Owner == null || Room == null)
 				return;
 
-			int tick = (int)(100 / Data.projectile.speed);
+			int tick = (int)(1000 / Data.projectile.speed);
 			Room.PushAfter(tick, Update);
 
 			Vector2Int destPos = GetFrontCellPos();
-			if (Room.Map.CanGo(destPos))
+			if (Room.Map.ApplyMove(this, destPos, collision: false))
 			{
-				CellPos = destPos;
-
 				S_Move movePacket = new S_Move();
 				movePacket.ObjectId = Id;
 				movePacket.PosInfo = PosInfo;
-				Room.Broadcast(movePacket);
-
-				Console.WriteLine("Move Arrow");
+				Room.Broadcast(CellPos, movePacket);
 			}
 			else
 			{
@@ -43,9 +38,9 @@ namespace Server.Game
 			}
 		}
 
-        public override GameObject GetOwner()
-        {
-            return Owner;
-        }
-    }
+		public override GameObject GetOwner()
+		{
+			return Owner;
+		}
+	}
 }

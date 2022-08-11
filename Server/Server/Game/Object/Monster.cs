@@ -18,19 +18,18 @@ namespace Server.Game
 		}
 
 		public void Init(int templateId)
-        {
+		{
 			TemplateId = templateId;
 
 			MonsterData monsterData = null;
 			DataManager.MonsterDict.TryGetValue(TemplateId, out monsterData);
-
 			Stat.MergeFrom(monsterData.stat);
 			Stat.Hp = monsterData.stat.MaxHp;
-
-            State = CreatureState.Idle;
-        }
+			State = CreatureState.Idle;
+		}
 
 		// FSM (Finite State Machine)
+		IJob _job;
 		public override void Update()
 		{
 			switch (State)
@@ -48,6 +47,10 @@ namespace Server.Game
 					UpdateDead();
 					break;
 			}
+
+			// 5프레임 (0.2초마다 한번씩 Update)
+			if (Room != null)
+				_job = Room.PushAfter(200, Update);
 		}
 
 		Player _target;
@@ -61,11 +64,7 @@ namespace Server.Game
 				return;
 			_nextSearchTick = Environment.TickCount64 + 1000;
 
-			Player target = Room.FindPlayer(p =>
-			{
-				Vector2Int dir = p.CellPos - CellPos;
-				return dir.cellDistFromZero <= _searchCellDist;
-			});
+			Player target = Room.FindClosestPlayer(CellPos, _searchCellDist);
 
 			if (target == null)
 				return;
@@ -101,7 +100,7 @@ namespace Server.Game
 				return;
 			}
 
-			List<Vector2Int> path = Room.Map.FindPath(CellPos, _target.CellPos, checkObjects: false);
+			List<Vector2Int> path = Room.Map.FindPath(CellPos, _target.CellPos, checkObjects: true);
 			if (path.Count < 2 || path.Count > _chaseCellDist)
 			{
 				_target = null;
@@ -130,7 +129,7 @@ namespace Server.Game
 			S_Move movePacket = new S_Move();
 			movePacket.ObjectId = Id;
 			movePacket.PosInfo = PosInfo;
-			Room.Broadcast(movePacket);
+			Room.Broadcast(CellPos, movePacket);
 		}
 
 		long _coolTick = 0;
@@ -139,7 +138,7 @@ namespace Server.Game
 			if (_coolTick == 0)
 			{
 				// 유효한 타겟인지
-				if (_target == null || _target.Room != Room || _target.Hp == 0)
+				if (_target == null || _target.Room != Room)
 				{
 					_target = null;
 					State = CreatureState.Moving;
@@ -176,7 +175,7 @@ namespace Server.Game
 				S_Skill skill = new S_Skill() { Info = new SkillInfo() };
 				skill.ObjectId = Id;
 				skill.Info.SkillId = skillData.id;
-				Room.Broadcast(skill);
+				Room.Broadcast(CellPos, skill);
 
 				// 스킬 쿨타임 적용
 				int coolTick = (int)(1000 * skillData.cooldown);
@@ -194,45 +193,47 @@ namespace Server.Game
 
 		}
 
-        public override void OnDead(GameObject attacker)
-        {
-            base.OnDead(attacker);
+		public override void OnDead(GameObject attacker)
+		{
+			if (_job != null)
+			{
+				_job.Cancel = true;
+				_job = null;
+			}
 
-			// TODO : 아이템 생성
+			base.OnDead(attacker);
+
 			GameObject owner = attacker.GetOwner();
-
-			if(owner.ObjectType == GameObjectType.Player)
-            {
+			if (owner.ObjectType == GameObjectType.Player)
+			{
 				RewardData rewardData = GetRandomReward();
-
-				if(rewardData != null)
-                {
-					Player player = (Player)owner;	
+				if (rewardData != null)
+				{
+					Player player = (Player)owner;
 					DbTransaction.RewardPlayer(player, rewardData, Room);
-                }
-            }
-
-        }
+				}
+			}
+		}
 
 		RewardData GetRandomReward()
-        {
+		{
 			MonsterData monsterData = null;
 			DataManager.MonsterDict.TryGetValue(TemplateId, out monsterData);
 
-			int ran = new Random().Next(0, 101);
+			int rand = new Random().Next(0, 101);
 
 			int sum = 0;
-			foreach(RewardData rewardData in monsterData.rewards)
-            {
+			foreach (RewardData rewardData in monsterData.rewards)
+			{
 				sum += rewardData.probability;
 
-				if(ran <= sum)
-                {
+				if (rand <= sum)
+				{
 					return rewardData;
-                }
-            }
+				}
+			}
 
 			return null;
-        }
-    }
+		}
+	}
 }

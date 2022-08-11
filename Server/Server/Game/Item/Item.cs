@@ -7,163 +7,164 @@ using System.Text;
 
 namespace Server.Game
 {
-    public class Item
-    {
-        public ItemInfo info { get; } = new ItemInfo();
+	public class Item
+	{
+		public ItemInfo Info { get; } = new ItemInfo();
 
-        public int ItemDbId
-        {
-            get { return info.ItemDbId; }
-            set { info.ItemDbId = value; }
-        }
+		public int ItemDbId
+		{
+			get { return Info.ItemDbId; }
+			set { Info.ItemDbId = value; }
+		}
 
-        public int TemplateId
-        {
-            get { return info.TemplateId; }
-            set { info.TemplateId = value; }
-        }
+		public int TemplateId
+		{
+			get { return Info.TemplateId; }
+			set { Info.TemplateId = value; }
+		}
 
-        public int Count
-        {
-            get { return info.Count; }
-            set { info.Count = value; }
-        }
+		public int Count
+		{
+			get { return Info.Count; }
+			set { Info.Count = value; }
+		}
 
-        public int Slot
-        {
-            get { return info.Slot; }
-            set { info.Slot = value; }
-        }
+		public int Slot
+		{
+			get { return Info.Slot; }
+			set { Info.Slot = value; }
+		}
 
-        public bool Equipped
-        {
-            get { return info.Equipped; }
-            set { info.Equipped = value; }
-        }
+		public bool Equipped
+		{
+			get { return Info.Equipped; }
+			set { Info.Equipped = value; }
+		}
 
-        public ItemType ItemType { get; private set; }
-        public bool Stackable { get; protected set; }
+		public ItemType ItemType { get; private set; }
+		public bool Stackable { get; protected set; }
 
-        public Item(ItemType itemType)
-        {
-            ItemType = itemType;
-        }
+		public Item(ItemType itemType)
+		{
+			ItemType = itemType;
+		}
 
-        public static Item MakeItem(ItemDb itemDb)
-        {
-            Item item = null;
+		public static Item MakeItem(ItemDb itemDb)
+		{
+			Item item = null;
 
-            ItemData itemData = null;
-            DataManager.ItemDict.TryGetValue(itemDb.TemplateId, out itemData);
-            if (itemDb == null)
-                return null;
+			ItemData itemData = null;
+			DataManager.ItemDict.TryGetValue(itemDb.TemplateId, out itemData);
 
-            switch(itemData.itemType)
-            {
-                case ItemType.Weapon:
-                    item = new Weapon(itemDb.TemplateId);
-                    break;
-                case ItemType.Armor:
-                    item = new Armor(itemDb.TemplateId);
-                    break;
-                case ItemType.Consumable:
-                    item = new Consumable(itemDb.TemplateId);
-                    break;
-            }
+			if (itemData == null)
+				return null;
 
-            if(item != null)
-            {
-                item.ItemDbId = itemDb.ItemDbId;
-                item.Count = itemDb.Count;
-                item.Slot = itemDb.Slot;
-                item.Equipped = itemDb.Equipped;
-            }
+			switch (itemData.itemType)
+			{
+				case ItemType.Weapon:
+					item = new Weapon(itemDb.TemplateId);
+					break;
+				case ItemType.Armor:
+					item = new Armor(itemDb.TemplateId);
+					break;
+				case ItemType.Consumable:
+					item = new Consumable(itemDb.TemplateId);
+					break;
+			}
 
-            return item;
-        }
-    }
+			if (item != null)
+			{
+				item.ItemDbId = itemDb.ItemDbId;
+				item.Count = itemDb.Count;
+				item.Slot = itemDb.Slot;
+				item.Equipped = itemDb.Equipped;
+			}
 
-    public class Weapon : Item
-    {
-        public WeaponType WeaponType { get; private set; }
-        public int Damage { get; private set; }
+			return item;
+		}
+	}
 
-        public Weapon(int templateId) : base(ItemType.Weapon)
-        {
-            Init(templateId);
-        }
+	public class Weapon : Item
+	{
+		public WeaponType WeaponType { get; private set; }
+		public int Damage { get; private set; }
 
-        void Init(int templateId)
-        {
-            ItemData itemData = null;
-            DataManager.ItemDict.TryGetValue(templateId, out itemData);
-            if (itemData.itemType != ItemType.Weapon)
-                return;
+		public Weapon(int templateId) : base(ItemType.Weapon)
+		{
+			Init(templateId);
+		}
 
-            WeaponData data = (WeaponData)itemData;
-            {
-                TemplateId = data.id;
-                Count = 1;
-                WeaponType = data.weaponType;
-                Damage = data.damage;
-                Stackable = false;
-            }
-        }
-    }
+		void Init(int templateId)
+		{
+			ItemData itemData = null;
+			DataManager.ItemDict.TryGetValue(templateId, out itemData);
+			if (itemData.itemType != ItemType.Weapon)
+				return;
 
-    public class Armor : Item
-    {
-        public ArmorType ArmorType { get; private set; }
-        public int Defence { get; private set; }
+			WeaponData data = (WeaponData)itemData;
+			{
+				TemplateId = data.id;
+				Count = 1;
+				WeaponType = data.weaponType;
+				Damage = data.damage;
+				Stackable = false;
+			}
+		}
+	}
 
-        public Armor(int templateId) : base(ItemType.Armor)
-        {
-            Init(templateId);
-        }
+	public class Armor : Item
+	{
+		public ArmorType ArmorType { get; private set; }
+		public int Defence { get; private set; }
 
-        void Init(int templateId)
-        {
-            ItemData itemData = null;
-            DataManager.ItemDict.TryGetValue(templateId, out itemData);
-            if (itemData.itemType != ItemType.Armor)
-                return;
+		public Armor(int templateId) : base(ItemType.Armor)
+		{
+			Init(templateId);
+		}
 
-            ArmorData data = (ArmorData)itemData;
-            {
-                TemplateId = data.id;
-                Count = 1;
-                ArmorType = data.armorType;
-                Defence = data.defence;
-                Stackable = false;
-            }
-        }
-    }
+		void Init(int templateId)
+		{
+			ItemData itemData = null;
+			DataManager.ItemDict.TryGetValue(templateId, out itemData);
+			if (itemData.itemType != ItemType.Armor)
+				return;
 
-    public class Consumable : Item
-    {
-        public ConsumableType ConsumableType { get; private set; }
-        public int MaxCount { get; set; }
+			ArmorData data = (ArmorData)itemData;
+			{
+				TemplateId = data.id;
+				Count = 1;
+				ArmorType = data.armorType;
+				Defence = data.defence;
+				Stackable = false;
+			}
+		}
+	}
 
-        public Consumable(int templateId) : base(ItemType.Consumable)
-        {
-            Init(templateId);
-        }
+	public class Consumable : Item
+	{
+		public ConsumableType ConsumableType { get; private set; }
+		public int MaxCount { get; set; }
 
-        void Init(int templateId)
-        {
-            ItemData itemData = null;
-            DataManager.ItemDict.TryGetValue(templateId, out itemData);
-            if (itemData.itemType != ItemType.Consumable)
-                return;
+		public Consumable(int templateId) : base(ItemType.Consumable)
+		{
+			Init(templateId);
+		}
 
-            ConsumableData data = (ConsumableData)itemData;
-            {
-                TemplateId = data.id;
-                Count = 1;
-                MaxCount = data.maxCount;
-                ConsumableType = data.consumableType;
-                Stackable = (data.maxCount > 1);
-            }
-        }
-    }
+		void Init(int templateId)
+		{
+			ItemData itemData = null;
+			DataManager.ItemDict.TryGetValue(templateId, out itemData);
+			if (itemData.itemType != ItemType.Consumable)
+				return;
+
+			ConsumableData data = (ConsumableData)itemData;
+			{
+				TemplateId = data.id;
+				Count = 1;
+				MaxCount = data.maxCount;
+				ConsumableType = data.consumableType;
+				Stackable = (data.maxCount > 1);
+			}
+		}
+	}
 }

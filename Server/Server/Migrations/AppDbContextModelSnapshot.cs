@@ -15,7 +15,7 @@ namespace Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.28")
+                .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -112,7 +112,7 @@ namespace Server.Migrations
             modelBuilder.Entity("Server.DB.ItemDb", b =>
                 {
                     b.HasOne("Server.DB.PlayerDb", "Owner")
-                        .WithMany("items")
+                        .WithMany("Items")
                         .HasForeignKey("OwnerDbId");
                 });
 

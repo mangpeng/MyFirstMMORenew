@@ -101,126 +101,128 @@ class PacketHandler
 		}
 	}
 
-    public static void S_ConnectedHandler(PacketSession session, IMessage packet)
-    {
-		Debug.Log("S_ConnctedHandler");
-
+	public static void S_ConnectedHandler(PacketSession session, IMessage packet)
+	{
+		Debug.Log("S_ConnectedHandler");
 		C_Login loginPacket = new C_Login();
-		loginPacket.UniqueId = SystemInfo.deviceUniqueIdentifier;
+
+		string path = Application.dataPath;
+		loginPacket.UniqueId = path.GetHashCode().ToString();
 		Managers.Network.Send(loginPacket);
-    }
+	}
 
 	// 로그인 OK + 캐릭터 목록
-    public static void S_LoginHandler(PacketSession session, IMessage packet)
-    {
-        S_Login loginPacket = packet as S_Login;
-		Debug.Log($"LoginOk{loginPacket.LoginOk}");
+	public static void S_LoginHandler(PacketSession session, IMessage packet)
+	{
+		S_Login loginPacket = (S_Login)packet;
+		Debug.Log($"LoginOk({loginPacket.LoginOk})");
 
 		// TODO : 로비 UI에서 캐릭터 보여주고, 선택할 수 있도록
-		if(loginPacket.Players == null || loginPacket.Players.Count == 0)
-        {
+		if (loginPacket.Players == null || loginPacket.Players.Count == 0)
+		{
 			C_CreatePlayer createPacket = new C_CreatePlayer();
 			createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
 			Managers.Network.Send(createPacket);
-        }
-        else
-        {
-			// 무조건 첫번째 캐릭터로 로그인
+		}
+		else
+		{
+			// 무조건 첫번째 로그인
 			LobbyPlayerInfo info = loginPacket.Players[0];
 			C_EnterGame enterGamePacket = new C_EnterGame();
 			enterGamePacket.Name = info.Name;
 			Managers.Network.Send(enterGamePacket);
-        }
-    }
+		}
+	}
 
-    public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)
-    {
-        S_CreatePlayer createOkPacket = (S_CreatePlayer)packet;
+	public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)
+	{
+		S_CreatePlayer createOkPacket = (S_CreatePlayer)packet;
 
-		if(createOkPacket.Player == null)
-        {
-            C_CreatePlayer createPacket = new C_CreatePlayer();
-            createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
-            Managers.Network.Send(createPacket);
-        }
+		if (createOkPacket.Player == null)
+		{
+			C_CreatePlayer createPacket = new C_CreatePlayer();
+			createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
+			Managers.Network.Send(createPacket);
+		}
 		else
-        {
-            C_EnterGame enterGamePacket = new C_EnterGame();
-            enterGamePacket.Name = createOkPacket.Player.Name;
-            Managers.Network.Send(enterGamePacket);
-        }
-    }
+		{
+			C_EnterGame enterGamePacket = new C_EnterGame();
+			enterGamePacket.Name = createOkPacket.Player.Name;
+			Managers.Network.Send(enterGamePacket);
+		}
+	}
 
-    public static void S_ItemListHandler(PacketSession session, IMessage packet)
-    {
-        S_ItemList itemListPacket = (S_ItemList)packet;
-
-		//UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-		//UI_Inventory invenUI = gameSceneUI.InvenUI;
+	public static void S_ItemListHandler(PacketSession session, IMessage packet)
+	{
+		S_ItemList itemList = (S_ItemList)packet;
 
 		Managers.Inven.Clear();
 
 		// 메모리에 아이템 정보 적용
-		foreach(ItemInfo itemInfo in itemListPacket.Items)
-        {
+		foreach (ItemInfo itemInfo in itemList.Items)
+		{
 			Item item = Item.MakeItem(itemInfo);
 			Managers.Inven.Add(item);
-        }
+		}
 
-		if(Managers.Object.MyPlayer != null)
+		if (Managers.Object.MyPlayer != null)
 			Managers.Object.MyPlayer.RefreshAdditionalStat();
-    }
+	}
 
-
-    public static void S_AddItemHandler(PacketSession session, IMessage packet)
-    {
-		S_AddItem addItemPacket = (S_AddItem)packet;
-
-
-
-        Managers.Inven.Clear();
-
-        // 메모리에 아이템 정보 적용
-        foreach (ItemInfo itemInfo in addItemPacket.Items)
-        {
-            Item item = Item.MakeItem(itemInfo);
-            Managers.Inven.Add(item);
-        }
-
-		Debug.Log("아이템을 획득");
-
-        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-        gameSceneUI.InvenUI.RefreshUI();
-        gameSceneUI.StatUI.RefreshUI();
-
-        if (Managers.Object.MyPlayer != null)
-            Managers.Object.MyPlayer.RefreshAdditionalStat();
-    }
-
-    public static void S_EquipItemHandler(PacketSession session, IMessage packet)
-    {
-		S_EquipItem equipItemPacket = (S_EquipItem)packet;
+	public static void S_AddItemHandler(PacketSession session, IMessage packet)
+	{
+		S_AddItem itemList = (S_AddItem)packet;
 
 		// 메모리에 아이템 정보 적용
-		Item item = Managers.Inven.Get(equipItemPacket.ItemDbId);
+		foreach (ItemInfo itemInfo in itemList.Items)
+		{
+			Item item = Item.MakeItem(itemInfo);
+			Managers.Inven.Add(item);
+		}
+
+		Debug.Log("아이템을 획득했습니다!");
+
+		UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+		gameSceneUI.InvenUI.RefreshUI();
+		gameSceneUI.StatUI.RefreshUI();
+
+		if (Managers.Object.MyPlayer != null)
+			Managers.Object.MyPlayer.RefreshAdditionalStat();
+	}
+
+	public static void S_EquipItemHandler(PacketSession session, IMessage packet)
+	{
+		S_EquipItem equipItemOk = (S_EquipItem)packet;
+
+		// 메모리에 아이템 정보 적용
+		Item item = Managers.Inven.Get(equipItemOk.ItemDbId);
 		if (item == null)
 			return;
 
-		item.Equipped = equipItemPacket.Equipped;
-		Debug.Log("아이템 착용 변경");
+		item.Equipped = equipItemOk.Equipped;
+		Debug.Log("아이템 착용 변경!");
 
-        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-        gameSceneUI.InvenUI.RefreshUI();
-        gameSceneUI.StatUI.RefreshUI();
+		UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+		gameSceneUI.InvenUI.RefreshUI();
+		gameSceneUI.StatUI.RefreshUI();
 
-        if (Managers.Object.MyPlayer != null)
-            Managers.Object.MyPlayer.RefreshAdditionalStat();
-    }
+		if (Managers.Object.MyPlayer != null)
+			Managers.Object.MyPlayer.RefreshAdditionalStat();
+	}
 
-    public static void S_ChangeStatHandler(PacketSession session, IMessage packet)
-    {
-		S_ChangeStat changeStatPacket = (S_ChangeStat)packet;
-    }
+	public static void S_ChangeStatHandler(PacketSession session, IMessage packet)
+	{
+		S_ChangeStat itemList = (S_ChangeStat)packet;
+
+		// TODO
+	}
+
+	public static void S_PingHandler(PacketSession session, IMessage packet)
+	{
+		C_Pong pongPacket = new C_Pong();
+		Debug.Log("[Server] PingCheck");
+		Managers.Network.Send(pongPacket);
+	}
 }
 
 

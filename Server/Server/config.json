@@ -1,4 +1,0 @@
-{
-  "dataPath": "../../../../../Client/Assets/Resources/Data",
-  "connectionString": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=GameDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
-}

@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf.Protocol;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Server.Game
@@ -20,8 +21,8 @@ namespace Server.Game
 		public PositionInfo PosInfo { get; private set; } = new PositionInfo();
 		public StatInfo Stat { get; private set; } = new StatInfo();
 
-		public virtual int TotalAttack { get { return Stat.Attack; }}
-		public virtual int TotalDefence { get { return 0; }}
+		public virtual int TotalAttack { get { return Stat.Attack; } }
+		public virtual int TotalDefence { get { return 0; } }
 
 		public float Speed
 		{
@@ -123,7 +124,7 @@ namespace Server.Game
 			S_ChangeHp changePacket = new S_ChangeHp();
 			changePacket.ObjectId = Id;
 			changePacket.Hp = Stat.Hp;
-			Room.Broadcast(changePacket);
+			Room.Broadcast(CellPos, changePacket);
 
 			if (Stat.Hp <= 0)
 			{
@@ -139,7 +140,7 @@ namespace Server.Game
 			S_Die diePacket = new S_Die();
 			diePacket.ObjectId = Id;
 			diePacket.AttackerId = attacker.Id;
-			Room.Broadcast(diePacket);
+			Room.Broadcast(CellPos, diePacket);
 
 			GameRoom room = Room;
 			room.LeaveGame(Id);
@@ -147,15 +148,13 @@ namespace Server.Game
 			Stat.Hp = Stat.MaxHp;
 			PosInfo.State = CreatureState.Idle;
 			PosInfo.MoveDir = MoveDir.Down;
-			PosInfo.PosX = 0;
-			PosInfo.PosY = 0;
 
-			room.EnterGame(this);
+			room.EnterGame(this, randomPos: true);
 		}
 
 		public virtual GameObject GetOwner()
-        {
+		{
 			return this;
-        }
+		}
 	}
 }

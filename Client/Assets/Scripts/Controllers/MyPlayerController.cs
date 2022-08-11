@@ -9,13 +9,13 @@ public class MyPlayerController : PlayerController
 	bool _moveKeyPressed = false;
 
 	public int WeaponDamage { get; private set; }
-	public int ArmorDefence{ get; private set; }
+	public int ArmorDefence { get; private set; }
 
 	protected override void Init()
 	{
 		base.Init();
-        Managers.Object.MyPlayer.RefreshAdditionalStat();
-    }
+		RefreshAdditionalStat();
+	}
 
 	protected override void UpdateController()
 	{
@@ -68,26 +68,26 @@ public class MyPlayerController : PlayerController
 	}
 
 	void GetUIKeyInput()
-    {
-		if(Input.GetKeyDown(KeyCode.I))
-        {
-            UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-            UI_Inventory invenUI = gameSceneUI.InvenUI;
+	{
+		if (Input.GetKeyDown(KeyCode.I))
+		{
+			UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+			UI_Inventory invenUI = gameSceneUI.InvenUI;
 
-			if(invenUI.gameObject.activeSelf)
-            {
+			if (invenUI.gameObject.activeSelf)
+			{
 				invenUI.gameObject.SetActive(false);
-            }
-            else
-            {
+			}
+			else
+			{
 				invenUI.gameObject.SetActive(true);
 				invenUI.RefreshUI();
 			}
-        }
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-            UI_Stat statUI = gameSceneUI.StatUI;
+		}
+		else if (Input.GetKeyDown(KeyCode.C))
+		{
+			UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+			UI_Stat statUI = gameSceneUI.StatUI;
 
 			if (statUI.gameObject.activeSelf)
 			{
@@ -99,7 +99,7 @@ public class MyPlayerController : PlayerController
 				statUI.RefreshUI();
 			}
 		}
-    }
+	}
 
 	// 키보드 입력
 	void GetDirInput()
@@ -177,25 +177,25 @@ public class MyPlayerController : PlayerController
 		}
 	}
 
-    public void RefreshAdditionalStat()
-    {
-        WeaponDamage = 0;
-        ArmorDefence = 0;
+	public void RefreshAdditionalStat()
+	{
+		WeaponDamage = 0;
+		ArmorDefence = 0;
 
-        foreach (Item item in Managers.Inven.Items.Values)
-        {
-            if (item.Equipped == false)
-                continue;
+		foreach (Item item in Managers.Inven.Items.Values)
+		{
+			if (item.Equipped == false)
+				continue;
 
-            switch (item.ItemType)
-            {
-                case ItemType.Weapon:
-                    WeaponDamage += ((Weapon)item).Damage;
-                    break;
-                case ItemType.Armor:
-                    ArmorDefence += ((Armor)item).Defence;
-                    break;
-            }
-        }
-    }
+			switch (item.ItemType)
+			{
+				case ItemType.Weapon:
+					WeaponDamage += ((Weapon)item).Damage;
+					break;
+				case ItemType.Armor:
+					ArmorDefence += ((Armor)item).Defence;
+					break;
+			}
+		}
+	}
 }
