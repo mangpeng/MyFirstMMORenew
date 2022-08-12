@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public struct Pos
 {
@@ -40,6 +41,16 @@ public class MapManager
 
 	bool[,] _collision;
 
+	public int DivideCount { get; private set; }
+	public int SlicedCellSize { get; private set; }
+	
+	Tilemap[,] slicedBaseTile;
+	Tilemap[,] slicedEnvTile;
+
+	Tilemap curActiveBaseTile;
+	Tilemap curActiveEvnTile;
+
+
 	public bool CanGo(Vector3Int cellPos)
 	{
 		if (cellPos.x < MinX || cellPos.x > MaxX)
@@ -48,48 +59,193 @@ public class MapManager
 			return false;
 
 		int x = cellPos.x - MinX;
-		int y = MaxY - cellPos.y;
+		int y = MaxY - cellPos.y;	
 		return !_collision[y, x];
 	}
 
-	public void LoadMap(int mapId)
-	{
-		DestroyMap();
+	//public void LoadMap(int mapId)
+	//{
+	//	DestroyMap();
 
-		string mapName = "Map_" + mapId.ToString("000");
-		GameObject go = Managers.Resource.Instantiate($"Map/{mapName}");
-		go.name = "Map";
+	//	string mapName = "Map_" + mapId.ToString("000");
+	//	GameObject go = Managers.Resource.Instantiate($"Map/{mapName}");
+	//	go.name = "Map";
 
-		GameObject collision = Util.FindChild(go, "Tilemap_Collision", true);
-		if (collision != null)
-			collision.SetActive(false);
+	//	GameObject collision = Util.FindChild(go, "Tilemap_Collision", true);
+	//	if (collision != null)
+	//		collision.SetActive(false);
 
-		CurrentGrid = go.GetComponent<Grid>();
+	//	CurrentGrid = go.GetComponent<Grid>();
 
-		// Collision 관련 파일
-		TextAsset txt = Managers.Resource.Load<TextAsset>($"Map/{mapName}");
-		StringReader reader = new StringReader(txt.text);
+	//	// Collision 관련 파일
+	//	TextAsset txt = Managers.Resource.Load<TextAsset>($"Map/{mapName}");
+	//	StringReader reader = new StringReader(txt.text);
 
-		MinX = int.Parse(reader.ReadLine());
-		MaxX = int.Parse(reader.ReadLine());
-		MinY = int.Parse(reader.ReadLine());
-		MaxY = int.Parse(reader.ReadLine());
+	//	MinX = int.Parse(reader.ReadLine());
+	//	MaxX = int.Parse(reader.ReadLine());
+	//	MinY = int.Parse(reader.ReadLine());
+	//	MaxY = int.Parse(reader.ReadLine());
 
-		int xCount = MaxX - MinX + 1;
-		int yCount = MaxY - MinY + 1;
-		_collision = new bool[yCount, xCount];
+	//	int xCount = MaxX - MinX + 1;
+	//	int yCount = MaxY - MinY + 1;
+	//	_collision = new bool[yCount, xCount];
 
-		for (int y = 0; y < yCount; y++)
+	//	for (int y = 0; y < yCount; y++)
+	//	{
+	//		string line = reader.ReadLine();
+	//		for (int x = 0; x < xCount; x++)
+	//		{
+	//			_collision[y, x] = (line[x] == '1' ? true : false);
+	//		}
+	//	}
+	//}
+
+    public void LoadMap(int mapId, int divideCount = 2)
+    {
+		DivideCount = divideCount;
+
+        DestroyMap();
+
+        string mapName = "Map_" + mapId.ToString("000");
+        GameObject root = Managers.Resource.Instantiate($"Map/{mapName}");
+        root.name = "Map";
+
+        GameObject collision = Util.FindChild(root, "Tilemap_Collision", true);
+        if (collision != null)
+            collision.SetActive(false);
+
+        CurrentGrid = root.GetComponent<Grid>();
+
+		// 타일맵 렌더링 요소를 분할 한다.
+		// Divide Base TileMap
 		{
-			string line = reader.ReadLine();
-			for (int x = 0; x < xCount; x++)
-			{
-				_collision[y, x] = (line[x] == '1' ? true : false);
-			}
-		}
-	}
 
-	public void DestroyMap()
+			Tilemap originTile = root.transform.GetChild(0).GetComponent<Tilemap>();
+			Vector3Int originMin = originTile.cellBounds.min;
+			Vector3Int originMax = originTile.cellBounds.max;
+
+            SlicedCellSize = (int)((originMax.y - originMin.y) / (float)divideCount);
+
+            string groupName = originTile.name;
+            GameObject group = new GameObject(groupName);
+			group.transform.parent = root.transform;
+			group.transform.SetSiblingIndex(0);
+
+			slicedBaseTile = new Tilemap[divideCount, divideCount];
+            for (int dy = 0; dy < divideCount; dy++)
+            {
+                for (int dx = 0; dx < divideCount; dx++)
+                {
+                    Tilemap slice = Tilemap.Instantiate(originTile);
+                    slice.ClearAllTiles();
+
+                    for (int y = 0; y < SlicedCellSize; y++)
+                    {
+                        for (int x = 0; x < SlicedCellSize; x++)
+                        {
+                            int cellYPos = originMin.y + dy * SlicedCellSize + y;
+                            int cellXPos = originMin.x + dx * SlicedCellSize + x;
+
+                            TileBase tile = originTile.GetTile(new Vector3Int(cellXPos, cellYPos, 0));
+                            slice.SetTile(new Vector3Int(cellXPos, cellYPos, 0), tile);
+                        }
+                    }
+
+                    slice.RefreshAllTiles();
+                    slice.ResizeBounds();
+                    int cellMinYPos = originMin.y + dy * SlicedCellSize + 0;
+                    int cellMinXPos = originMin.x + dx * SlicedCellSize + 0;
+                    int cellMaxYPos = originMin.y + dy * SlicedCellSize + SlicedCellSize;
+                    int cellMaxXPos = originMin.x + dx * SlicedCellSize + SlicedCellSize;
+                    slice.gameObject.name = $"{dx},{dy} ({cellMinXPos},{cellMinYPos})~,({cellMaxXPos},{cellMaxYPos}))";
+                    slice.transform.parent = group.transform;
+					slice.gameObject.SetActive(false);
+					slicedBaseTile[dy, dx] = slice;
+				}
+            }
+			
+			Managers.Resource.DestroyImmediate(originTile.gameObject);
+        }
+
+		// Divide Env TileMap
+		{
+
+			Tilemap originTile = root.transform.GetChild(1).GetComponent<Tilemap>();
+
+			foreach(Transform tr in root.transform)
+			{
+				Debug.Log(tr.name);
+            }
+
+            Vector3Int originMin = originTile.cellBounds.min;
+            Vector3Int originMax = originTile.cellBounds.max;
+
+
+            string groupName = originTile.name;
+            GameObject group = new GameObject(groupName);
+            group.transform.parent = root.transform;
+            group.transform.SetSiblingIndex(1);
+
+            slicedEnvTile = new Tilemap[divideCount, divideCount];
+            for (int dy = 0; dy < divideCount; dy++)
+            {
+                for (int dx = 0; dx < divideCount; dx++)
+                {
+                    Tilemap slice = Tilemap.Instantiate(originTile);
+                    slice.ClearAllTiles();
+
+                    for (int y = 0; y < SlicedCellSize; y++)
+                    {
+                        for (int x = 0; x < SlicedCellSize; x++)
+                        {
+                            int cellYPos = originMin.y + dy * SlicedCellSize + y;
+                            int cellXPos = originMin.x + dx * SlicedCellSize + x;
+
+                            TileBase tile = originTile.GetTile(new Vector3Int(cellXPos, cellYPos, 0));
+                            slice.SetTile(new Vector3Int(cellXPos, cellYPos, 0), tile);
+                        }
+                    }
+
+                    slice.RefreshAllTiles();
+                    slice.ResizeBounds();
+                    int cellMinYPos = originMin.y + dy * SlicedCellSize + 0;
+                    int cellMinXPos = originMin.x + dx * SlicedCellSize + 0;
+                    int cellMaxYPos = originMin.y + dy * SlicedCellSize + SlicedCellSize;
+                    int cellMaxXPos = originMin.x + dx * SlicedCellSize + SlicedCellSize;
+                    slice.gameObject.name = $"{dx},{dy} ({cellMinXPos},{cellMinYPos})~,({cellMaxXPos},{cellMaxYPos}))";
+                    slice.transform.parent = group.transform;
+                    slice.gameObject.SetActive(false);
+					slicedEnvTile[dy, dx] = slice;
+                }
+            }
+
+            Managers.Resource.Destroy(originTile.gameObject);
+        }
+
+        // Collision 관련 파일
+        TextAsset txt = Managers.Resource.Load<TextAsset>($"Map/{mapName}");
+        StringReader reader = new StringReader(txt.text);
+
+        MinX = int.Parse(reader.ReadLine());
+        MaxX = int.Parse(reader.ReadLine());
+        MinY = int.Parse(reader.ReadLine());
+        MaxY = int.Parse(reader.ReadLine());
+
+        int xCount = MaxX - MinX + 1;
+        int yCount = MaxY - MinY + 1;
+        _collision = new bool[yCount, xCount];
+
+        for (int y = 0; y < yCount; y++)
+        {
+            string line = reader.ReadLine();
+            for (int x = 0; x < xCount; x++)
+            {
+                _collision[y, x] = (line[x] == '1' ? true : false);
+            }
+        }
+    }
+
+    public void DestroyMap()
 	{
 		GameObject map = GameObject.Find("Map");
 		if (map != null)
@@ -99,7 +255,38 @@ public class MapManager
 		}
 	}
 
+	public Vector2Int GetCurTileMap(Vector3Int cell)
+    {
+		// -30 0 30 60
+		// 0~30 0~30 0~30
+		// -20 => 0
+		// 10 = >1
+		int curDivisionX = (cell.x + SlicedCellSize) / SlicedCellSize - 1;
+		int curDivisionY = (cell.y + SlicedCellSize) / SlicedCellSize - 1;
+
+		return new Vector2Int(curDivisionX, curDivisionY);
+    }
+
+    public Vector2Int GetCurTileMap(Pos pos)
+    {
+        return GetCurTileMap(Pos2Cell(pos));
+    }
+
+    public void ToggleDivision(Vector2Int tileIndex)
+	{
+		if (curActiveBaseTile != null) curActiveBaseTile.gameObject.SetActive(false);
+		if (curActiveEvnTile!= null) curActiveEvnTile.gameObject.SetActive(false);
+
+		curActiveBaseTile = slicedBaseTile[tileIndex.y, tileIndex.x];
+		curActiveEvnTile = slicedEnvTile[tileIndex.y, tileIndex.x];
+
+		curActiveBaseTile.gameObject.SetActive(true);
+		curActiveEvnTile.gameObject.SetActive(true);
+	}
+
+
 	#region A* PathFinding
+	// 서버에서 길찾기를 하기 때문에 클라에서 사용하진 않는다.
 
 	// U D L R
 	int[] _deltaY = new int[] { 1, -1, 0, 0 };

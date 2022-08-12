@@ -1,0 +1,74 @@
+	Documentation.
+
+	Pixel Life Studio.
+
+	Thank you for purchasing our product, in this Asset you will find a good solution 
+	to create and elaborate your 2D worlds for your project.
+	All the animations and setups are already pre configured and saved as Predabs ready to
+	be used.
+	We offer a robust tool and high quality content for make your dream project come to reality.
+
+	Feel free to contact us if you need any assistance with this asset, or to report a bug.
+
+	All files are ready to go and saved in their respective folders for you'r convinicence.
+	All Textures and Sprites saved in "Sprites Texture Folder" (for each separate Biome).
+
+	Every Biome have a Master Tile Palette already configured with all you need for each Biome.
+	Check out the Tile Palette Window.
+
+	Files are separated by BIOME for a better understanding and user friendly experience.
+
+		Example:
+			All Snow trees and Snow rocks are located in the Prefab Folder of the 'SNOW BIOME KIT'.
+			All Grass Tree animations and controls are located in Animations Folder of the 'GRASS BIOME KIT'.
+
+
+	All Houses Prefabs have 2D Colliders.
+	All Fences Prefabs have 2D Colliders.
+	All Bridges Prefabs have 2D Colliders.
+	All Trees and Bushes Prefabs have 2D Colliders.
+	All Rocks Prefabs have 2D Colliders.
+	All Crystals Prefabs have 2D Colliders.
+
+	All Custom 'Cliffs Prefabs' DON'T have 2D Colliders.
+	All 'Cliffs Rule Tiles' DON'T have 2D Colliders.
+	All 'Water Rule Tiles' DON'T have 2D Colliders.
+	(you should decide what method for collision detection suits best for your project)
+
+
+Files format .PNG transparency
+
+
+Feel free to modify any sprite or animation to give your personal touch.
+
+This kit includes.
+
+NO CODE INCLUDED/NEEDED ON THIS ASSET.
+
+
+Grass Biome.
+
+	24 Unique Trees Models (with animations)	
+	24 Unique Bushes Models (with animations)
+	32 Unique Rocks Models (not animated)
+	40 Unique Crystals (with animations)
+	36 Unique Houses (Modular system interchangeable  parts)
+	22 Custom Cliffs (with elevation ramps)
+	24 Unique Murshrooms and Flowers (Collectables)
+	16 Unique Plants (with diferent stages of growth)
+	88 Unique Furnitures (for decoration of internal spaces)
+	100 Unique Decoration items(for dedecoration of external spaces)
+
+Snow Biome.
+
+	36 Unique Trees Models (with animations)
+	24 Unique Bushes Models (with animations)
+	32 Unique Rocks Models (not animated)
+	40 Unique Crystals (with animations)
+	36 Unique Houses (Modular system interchangeable  parts)
+	22 Custom Cliffs (with elevation ramps)
+	24 Unique Murshrooms and Flowers (Collectables)
+	16 Unique Plants (with diferent stages of growth)
+	88 Unique Furnitures (for decoration of internal spaces)
+	100 Unique Decoration items(for dedecoration of external spaces)
+

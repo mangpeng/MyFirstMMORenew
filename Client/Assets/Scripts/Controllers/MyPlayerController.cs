@@ -15,6 +15,8 @@ public class MyPlayerController : PlayerController
 	{
 		base.Init();
 		RefreshAdditionalStat();
+
+		LoadPartialMap();
 	}
 
 	protected override void UpdateController()
@@ -198,4 +200,12 @@ public class MyPlayerController : PlayerController
 			}
 		}
 	}
+
+	private void LoadPartialMap()
+    {
+		Debug.Log($"CurPlayer Pos :: {CellPos.x},{CellPos.y}");
+        Vector2Int tileIndex = Managers.Map.GetCurTileMap(CellPos);
+		Debug.Log($"CurTile Index :: {tileIndex.x},{tileIndex.y}");
+		Managers.Map.ToggleDivision(tileIndex);
+    }
 }
