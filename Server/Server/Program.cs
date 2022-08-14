@@ -97,7 +97,7 @@ namespace Server
 			t.Start();
 		}
 
-		public static string Name { get; } = "연";
+		public static string Name { get; } = "유리";
 		public static int Port { get; } = 7777;
 		public static string IpAddress { get; set; }
 
@@ -107,9 +107,9 @@ namespace Server
 			DataManager.LoadData();
 		
 			GameLogic.Instance.Push(() => { 
-				GameLogic.Instance.Add(1);
-				GameLogic.Instance.Add(2);
-				GameLogic.Instance.Add(3);
+				GameLogic.Instance.Add(1, RoomType.Normal);
+				GameLogic.Instance.Add(2, RoomType.Normal);
+				GameLogic.Instance.Add(3, RoomType.Boss);
 			});
 
 			// DNS (Domain Name System)

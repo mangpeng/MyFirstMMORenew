@@ -14,7 +14,8 @@ namespace Server.Game
         OBSTACLE,
         PORTAL_PREV,
         PORTAL_NEXT,
-        RESPAWN
+        RESPAWN,
+		BOSS
     }
 
     public struct Pos
@@ -110,6 +111,7 @@ namespace Server.Game
 		public List<Vector2Int> RespawnList { get; private set; } = new List<Vector2Int>();
 		public List<Vector2Int> PrevPortalList { get; private set; } = new List<Vector2Int>();
 		public List<Vector2Int> NextPortalList { get; private set; } = new List<Vector2Int>();
+		public List<Vector2Int> BossArea { get; private set; } = new List<Vector2Int>();
 
 		public bool CanGo(Vector2Int cellPos, bool checkObjects = true)
 		{
@@ -311,6 +313,10 @@ namespace Server.Game
 					// portal_next
 					if (line[x] == ((int)MAP.PORTAL_NEXT).ToString()[0])
 						NextPortalList.Add(Pos2Cell(new Pos(y, x)));
+
+                    // boss area
+                    if (line[x] == ((int)MAP.BOSS).ToString()[0])
+                        BossArea.Add(Pos2Cell(new Pos(y, x)));
                 }
 			}
         }

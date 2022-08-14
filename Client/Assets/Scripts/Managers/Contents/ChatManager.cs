@@ -42,12 +42,12 @@ public class ChatManager
 
         if (Managers.Object.MyPlayer.Id == packet.ObjectId)
         {
-            _chatScroll.AddChat($"[{playerId}]{msg}");
+            _chatScroll.AddChat($"[{playerId}] {msg}");
 
         }
         else
         {
-            _chatScroll.AddChat($"<color=yellow>[{playerId}]{msg}</color>");
+            _chatScroll.AddChat($"<color=yellow>[{playerId}] {msg}</color>");
         }
 
         PlayerController p = Managers.Object.FindById(packet.ObjectId).GetComponent<PlayerController>();

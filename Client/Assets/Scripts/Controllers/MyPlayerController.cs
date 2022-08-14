@@ -81,9 +81,10 @@ public class MyPlayerController : PlayerController
 
 	void GetUIKeyInput()
 	{
+        if (Managers.Chat.IsChat)
+            return;
 
-
-		if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I))
 		{
 			UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
 			UI_Inventory invenUI = gameSceneUI.InvenUI;
@@ -113,6 +114,20 @@ public class MyPlayerController : PlayerController
 				statUI.RefreshUI();
 			}
 		}
+		else if( Input.GetKeyDown(KeyCode.F))
+        {
+            UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+            UI_FriendList friendUI = gameSceneUI.FriendUI;
+
+            if (friendUI.gameObject.activeSelf)
+            {
+                friendUI.gameObject.SetActive(false);
+            }
+            else
+            {
+                friendUI.gameObject.SetActive(true);
+            }
+        }
 	}
 
 	// 키보드 입력

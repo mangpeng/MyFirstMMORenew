@@ -33,6 +33,7 @@ public class MapEditor
 			Tilemap tmPortalPrev = Util.FindChild<Tilemap>(go, "Tilemap_Portal_Prev", true);
 			Tilemap tmPortalNext = Util.FindChild<Tilemap>(go, "Tilemap_Portal_Next", true);
 			Tilemap tmGen = Util.FindChild<Tilemap>(go, "Tilemap_Gen", true);
+			Tilemap tmGenBoss = Util.FindChild<Tilemap>(go, "Tilemap_Gen_Boss", true);
 
 			tmBase.CompressBounds();
 			tmCollision.size = tmBase.size;
@@ -67,7 +68,14 @@ public class MapEditor
                         if (tile != null)
 							data = ((int)Define.MAP.RESPAWN).ToString();
 
-						writer.Write(data);
+						if(tmGenBoss != null)
+                        {
+							tile = tmGenBoss.GetTile(new Vector3Int(x, y, 0));
+							if (tile != null)
+								data = ((int)Define.MAP.BOSS).ToString();
+                        }
+
+                        writer.Write(data);
 					}
 					writer.WriteLine();
 				}

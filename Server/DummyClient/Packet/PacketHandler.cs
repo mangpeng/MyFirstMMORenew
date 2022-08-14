@@ -124,6 +124,12 @@ class PacketHandler
 	{
 		C_Pong pongPacket = new C_Pong();
 	}
+
+    public static void S_ChatHandler(PacketSession session, IMessage packet)
+    {
+        S_Chat chatPacket = new S_Chat();
+    }
+
 }
 
 

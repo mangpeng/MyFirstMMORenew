@@ -13,7 +13,6 @@ public class UI_Stat : UI_Base
 		Slot_Armor,
 		Slot_Boots,
 		Slot_Weapon,
-		Slot_Shield
 	}
 
 	enum Texts
@@ -22,7 +21,7 @@ public class UI_Stat : UI_Base
 		AttackValueText,
 		DefenceValueText
 	}
-
+	
 	bool _init = false;
 	public override void Init()
 	{
@@ -43,7 +42,6 @@ public class UI_Stat : UI_Base
 		Get<Image>((int)Images.Slot_Armor).enabled = false;
 		Get<Image>((int)Images.Slot_Boots).enabled = false;
 		Get<Image>((int)Images.Slot_Weapon).enabled = false;
-		Get<Image>((int)Images.Slot_Shield).enabled = false;
 
 		// 채워준다
 		foreach (Item item in Managers.Inven.Items.Values)

@@ -5,24 +5,27 @@ using UnityEngine;
 
 public class UI_Inventory : UI_Base
 {
+	const int ITEM_MAX_COUNT = 64;
+
+	public GameObject grid;
 	public List<UI_Inventory_Item> Items { get; } = new List<UI_Inventory_Item>();
+
 
 	public override void Init()
 	{
 		Items.Clear();
 
-		GameObject grid = transform.Find("ItemGrid").gameObject;
 		foreach (Transform child in grid.transform)
 			Destroy(child.gameObject);
 
-		for (int i = 0; i < 20; i++)
-		{
-			GameObject go = Managers.Resource.Instantiate("UI/Scene/UI_Inventory_Item", grid.transform);
-			UI_Inventory_Item item = go.GetOrAddComponent<UI_Inventory_Item>();
-			Items.Add(item);
-		}
+        for (int i = 0; i < ITEM_MAX_COUNT; i++)
+        {
+            GameObject go = Managers.Resource.Instantiate("UI/Scene/UI_Inventory_Item", grid.transform);
+            UI_Inventory_Item item = go.GetOrAddComponent<UI_Inventory_Item>();
+            Items.Add(item);
+        }
 
-		RefreshUI();
+        RefreshUI();
 	}
 
 	public void RefreshUI()
@@ -35,10 +38,14 @@ public class UI_Inventory : UI_Base
 
 		foreach (Item item in items)
 		{
-			if (item.Slot < 0 || item.Slot >= 20)
-				continue;
+            if (item.Slot < 0 || item.Slot >= ITEM_MAX_COUNT)
+                continue;
 
-			Items[item.Slot].SetItem(item);
+            if (item.Slot < 0 || item.Slot >= ITEM_MAX_COUNT)
+                continue;
+
+
+            Items[item.Slot].SetItem(item);
 		}
 	}
 }

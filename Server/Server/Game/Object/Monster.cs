@@ -17,7 +17,7 @@ namespace Server.Game
 			ObjectType = GameObjectType.Monster;
 		}
 
-		public void Init(int templateId)
+		public virtual void Init(int templateId)
 		{
 			TemplateId = templateId;
 

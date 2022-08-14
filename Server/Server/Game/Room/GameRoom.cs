@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Server.Data;
+using Server.Game.Object;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,12 @@ using System.Text;
 
 namespace Server.Game
 {
+	public enum RoomType
+    {
+		Normal,
+		Boss
+    }
+
 	public partial class GameRoom : JobSerializer
 	{
 		public const int VisionCells = 7;
@@ -16,6 +23,7 @@ namespace Server.Game
 
 		Dictionary<int, Player> _players = new Dictionary<int, Player>();
 		Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>();
+		Dictionary<int, Boss> _bosses = new Dictionary<int, Boss>();
 		Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
 
 		public Zone[,] Zones { get; private set; }
@@ -43,7 +51,7 @@ namespace Server.Game
 			return Zones[indexY, indexX];
 		}
 
-		public void Init(int mapId, int zoneCells)
+		public void Init(int mapId, int zoneCells, RoomType type)
 		{
 			Map.LoadMap(mapId);
 
@@ -63,14 +71,25 @@ namespace Server.Game
 				}
 			}
 
-			// TEMP
-			for (int i = 0; i < Map.RespawnList.Count() /2; i++)
-			{
-				Monster monster = ObjectManager.Instance.Add<Monster>();
-				monster.Init(1);
-				EnterGame(monster, randomPos: true);
-			}
-		}
+			if(type == RoomType.Normal)
+            {
+                // TEMP
+                for (int i = 0; i < Map.RespawnList.Count() / 2; i++)
+                {
+                    Monster monster = ObjectManager.Instance.Add<Monster>();
+                    monster.Init(1);
+                    EnterGame(monster, randomPos: true);
+                }
+            }
+
+            if (type == RoomType.Boss)
+            {
+				Boss boss = ObjectManager.Instance.Add<Boss>();
+				boss.Init(1);
+				boss.CellPos = new Vector2Int(5, 5);
+				EnterGame(boss, false);
+            }
+        }
 
 		// 누군가 주기적으로 호출해줘야 한다
 		public void Update()
@@ -143,7 +162,18 @@ namespace Server.Game
 
 				monster.Update();
 			}
-			else if (type == GameObjectType.Projectile)
+            else if (type == GameObjectType.Boss)
+            {
+                Boss boss = gameObject as Boss;
+                _bosses.Add(gameObject.Id, boss);
+				boss.Room = this;
+
+                GetZone(boss.CellPos).Monsters.Add(boss);
+                Map.ApplyMove(boss, new Vector2Int(boss.CellPos.x, boss.CellPos.y));
+
+				boss.Update();
+            }
+            else if (type == GameObjectType.Projectile)
 			{
 				Projectile projectile = gameObject as Projectile;
 				_projectiles.Add(gameObject.Id, projectile);
@@ -253,7 +283,9 @@ namespace Server.Game
 			return null;
 		}
 
-		public int BroadCastVision(Vector2Int pos, IMessage packet)
+
+
+        public int BroadCastVision(Vector2Int pos, IMessage packet)
 		{
 			List<Zone> zones = GetAdjacentZones(pos);
 

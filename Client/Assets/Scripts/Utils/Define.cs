@@ -32,6 +32,7 @@ public class Define
         OBSTACLE,
         PORTAL_PREV,
         PORTAL_NEXT,
-        RESPAWN
+        RESPAWN,
+        BOSS
     }
 }
