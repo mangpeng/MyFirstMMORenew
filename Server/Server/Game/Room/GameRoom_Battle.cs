@@ -34,7 +34,18 @@ namespace Server.Game
                 if (nextRoom != null)
                 {
 					LeaveGame(player.Id);
-					player.CellPos = new Vector2Int(-6, 22);
+
+
+					switch(nextRoom.RoomId)
+                    {
+						case 1:
+							player.CellPos = new Vector2Int(-6, 22);
+							break;
+						case 2:
+							player.CellPos = new Vector2Int(18, 21);
+							break;
+                    }
+					
                     nextRoom.EnterGame(player, randomPos: false);
                     Console.WriteLine("이전 방으로 이동");
 					return;
@@ -52,7 +63,18 @@ namespace Server.Game
                 if (nextRoom != null)
                 {
 					LeaveGame(player.Id);
-					player.CellPos = new Vector2Int(-11, -6);
+
+                    switch (nextRoom.RoomId)
+                    {
+                        case 2:
+							player.CellPos = new Vector2Int(-11, -6);
+							break;
+                        case 3:
+							player.CellPos = new Vector2Int(5, -3);
+							break;
+                    }
+
+              
 					nextRoom.EnterGame(player, randomPos: false);
 					Console.WriteLine("다음 방으로 이동");
 					return;

@@ -16,7 +16,8 @@ public class UI_SelectServerPopup_Item : UI_Base
 
 	enum Texts
 	{ 
-		NameText
+		NameText,
+		CrowdText,
 	}
 
 	public override void Init()
@@ -33,6 +34,7 @@ public class UI_SelectServerPopup_Item : UI_Base
 			return;
 
 		GetText((int)Texts.NameText).text = Info.Name;
+		GetText((int)Texts.CrowdText).text = Info.BusyScore.ToString();
 	}
 
 	void OnClickButton(PointerEventData evt)

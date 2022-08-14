@@ -84,8 +84,11 @@ public class MapManager
         GameObject collision = Util.FindChild(root, "Tilemap_Collision", true);
         if (collision != null) collision.SetActive(false);
 
-        GameObject portal = Util.FindChild(root, "Tilemap_Portal", true);
-        if (portal != null) portal.SetActive(false);
+        GameObject portal_Prev = Util.FindChild(root, "Tilemap_Portal_Prev", true);
+        if (portal_Prev != null) portal_Prev.SetActive(false);
+
+        GameObject portal_Nextr = Util.FindChild(root, "Tilemap_Portal_Next", true);
+        if (portal_Nextr != null) portal_Nextr.SetActive(false);
 
         GameObject gen = Util.FindChild(root, "Tilemap_Gen", true);
         if (gen != null) gen.SetActive(false);
@@ -94,107 +97,107 @@ public class MapManager
 
         CurrentGrid = root.GetComponent<Grid>();
 
-		// 타일맵 렌더링 요소를 분할 한다.
-		// Divide Base TileMap
-		{
+		//// 타일맵 렌더링 요소를 분할 한다.
+		//// Divide Base TileMap
+		//{
 
-			Tilemap originTile = root.transform.GetChild(0).GetComponent<Tilemap>();
-			originTile.CompressBounds();
-			BaseTileMin = originTile.cellBounds.min;
-			BaseTileMax = originTile.cellBounds.max;
+		//	Tilemap originTile = root.transform.GetChild(0).GetComponent<Tilemap>();
+		//	originTile.CompressBounds();
+		//	BaseTileMin = originTile.cellBounds.min;
+		//	BaseTileMax = originTile.cellBounds.max;
 
-            SlicedCellWidthSize = (int)((BaseTileMax.x - BaseTileMin.x) / (float)divideCount);
-            SlicedCellHeightSize = (int)((BaseTileMax.y - BaseTileMin.y) / (float)divideCount);
+  //          SlicedCellWidthSize = (int)((BaseTileMax.x - BaseTileMin.x) / (float)divideCount);
+  //          SlicedCellHeightSize = (int)((BaseTileMax.y - BaseTileMin.y) / (float)divideCount);
 
-            string groupName = originTile.name;
-            GameObject group = new GameObject(groupName);
-			group.transform.parent = root.transform;
-			group.transform.SetSiblingIndex(0);
+  //          string groupName = originTile.name;
+  //          GameObject group = new GameObject(groupName);
+		//	group.transform.parent = root.transform;
+		//	group.transform.SetSiblingIndex(0);
 
-			slicedBaseTile = new Tilemap[divideCount, divideCount];
-            for (int dy = 0; dy < divideCount; dy++)
-            {
-                for (int dx = 0; dx < divideCount; dx++)
-                {
-                    Tilemap slice = Tilemap.Instantiate(originTile);
-                    slice.ClearAllTiles();
+		//	slicedBaseTile = new Tilemap[divideCount, divideCount];
+  //          for (int dy = 0; dy < divideCount; dy++)
+  //          {
+  //              for (int dx = 0; dx < divideCount; dx++)
+  //              {
+  //                  Tilemap slice = Tilemap.Instantiate(originTile);
+  //                  slice.ClearAllTiles();
 
-                    for (int y = 0; y < SlicedCellHeightSize; y++)
-                    {
-                        for (int x = 0; x < SlicedCellWidthSize; x++)
-                        {
-							// -22 ~ -5
-							// -5 ~ -10
+  //                  for (int y = 0; y < SlicedCellHeightSize; y++)
+  //                  {
+  //                      for (int x = 0; x < SlicedCellWidthSize; x++)
+  //                      {
+		//					// -22 ~ -5
+		//					// -5 ~ -10
 							
 							
-                            int cellYPos = BaseTileMin.y + dy * SlicedCellHeightSize + y;
-                            int cellXPos = BaseTileMin.x + dx * SlicedCellWidthSize + x;
+  //                          int cellYPos = BaseTileMin.y + dy * SlicedCellHeightSize + y;
+  //                          int cellXPos = BaseTileMin.x + dx * SlicedCellWidthSize + x;
 
-                            TileBase tile = originTile.GetTile(new Vector3Int(cellXPos, cellYPos, 0));
-                            slice.SetTile(new Vector3Int(cellXPos, cellYPos, 0), tile);
-                        }
-                    }
+  //                          TileBase tile = originTile.GetTile(new Vector3Int(cellXPos, cellYPos, 0));
+  //                          slice.SetTile(new Vector3Int(cellXPos, cellYPos, 0), tile);
+  //                      }
+  //                  }
 
-                    slice.RefreshAllTiles();
-                    slice.ResizeBounds();
-                    int cellMinYPos = BaseTileMin.y + dy * SlicedCellHeightSize + 0;
-                    int cellMinXPos = BaseTileMin.x + dx * SlicedCellWidthSize + 0;
-                    int cellMaxYPos = BaseTileMin.y + dy * SlicedCellHeightSize + SlicedCellHeightSize;
-                    int cellMaxXPos = BaseTileMin.x + dx * SlicedCellWidthSize + SlicedCellWidthSize;
-                    slice.gameObject.name = $"{dx},{dy} ({cellMinXPos},{cellMinYPos})~,({cellMaxXPos},{cellMaxYPos}))";
-                    slice.transform.parent = group.transform;
-					slice.gameObject.SetActive(false);
-					slicedBaseTile[dy, dx] = slice;
-				}
-            }
+  //                  slice.RefreshAllTiles();
+  //                  slice.ResizeBounds();
+  //                  int cellMinYPos = BaseTileMin.y + dy * SlicedCellHeightSize + 0;
+  //                  int cellMinXPos = BaseTileMin.x + dx * SlicedCellWidthSize + 0;
+  //                  int cellMaxYPos = BaseTileMin.y + dy * SlicedCellHeightSize + SlicedCellHeightSize;
+  //                  int cellMaxXPos = BaseTileMin.x + dx * SlicedCellWidthSize + SlicedCellWidthSize;
+  //                  slice.gameObject.name = $"{dx},{dy} ({cellMinXPos},{cellMinYPos})~,({cellMaxXPos},{cellMaxYPos}))";
+  //                  slice.transform.parent = group.transform;
+		//			slice.gameObject.SetActive(false);
+		//			slicedBaseTile[dy, dx] = slice;
+		//		}
+  //          }
 			
-			Managers.Resource.DestroyImmediate(originTile.gameObject);
-        }
+		//	Managers.Resource.DestroyImmediate(originTile.gameObject);
+  //      }
 
-        // Divide Env TileMap
-        {
-            Tilemap originTile = root.transform.GetChild(1).GetComponent<Tilemap>();
+  //      // Divide Env TileMap
+  //      {
+  //          Tilemap originTile = root.transform.GetChild(1).GetComponent<Tilemap>();
 
-            string groupName = originTile.name;
-            GameObject group = new GameObject(groupName);
-            group.transform.parent = root.transform;
-            group.transform.SetSiblingIndex(1);
+  //          string groupName = originTile.name;
+  //          GameObject group = new GameObject(groupName);
+  //          group.transform.parent = root.transform;
+  //          group.transform.SetSiblingIndex(1);
 
-            slicedEnvTile = new Tilemap[divideCount, divideCount];
-            for (int dy = 0; dy < divideCount; dy++)
-            {
-                for (int dx = 0; dx < divideCount; dx++)
-                {
-                    Tilemap slice = Tilemap.Instantiate(originTile);
-                    slice.ClearAllTiles();
+  //          slicedEnvTile = new Tilemap[divideCount, divideCount];
+  //          for (int dy = 0; dy < divideCount; dy++)
+  //          {
+  //              for (int dx = 0; dx < divideCount; dx++)
+  //              {
+  //                  Tilemap slice = Tilemap.Instantiate(originTile);
+  //                  slice.ClearAllTiles();
 
-                    for (int y = 0; y < SlicedCellHeightSize; y++)
-                    {
-                        for (int x = 0; x < SlicedCellWidthSize; x++)
-                        {
-                            int cellYPos = BaseTileMin.y + dy * SlicedCellHeightSize + y;
-                            int cellXPos = BaseTileMin.x + dx * SlicedCellWidthSize + x;
+  //                  for (int y = 0; y < SlicedCellHeightSize; y++)
+  //                  {
+  //                      for (int x = 0; x < SlicedCellWidthSize; x++)
+  //                      {
+  //                          int cellYPos = BaseTileMin.y + dy * SlicedCellHeightSize + y;
+  //                          int cellXPos = BaseTileMin.x + dx * SlicedCellWidthSize + x;
 
-                            TileBase tile = originTile.GetTile(new Vector3Int(cellXPos, cellYPos, 0));
-                            slice.SetTile(new Vector3Int(cellXPos, cellYPos, 0), tile);
-                        }
-                    }
+  //                          TileBase tile = originTile.GetTile(new Vector3Int(cellXPos, cellYPos, 0));
+  //                          slice.SetTile(new Vector3Int(cellXPos, cellYPos, 0), tile);
+  //                      }
+  //                  }
 
-                    slice.RefreshAllTiles();
-                    slice.ResizeBounds();
-                    int cellMinYPos = BaseTileMin.y + dy * SlicedCellHeightSize + 0;
-                    int cellMinXPos = BaseTileMin.x + dx * SlicedCellWidthSize + 0;
-                    int cellMaxYPos = BaseTileMin.y + dy * SlicedCellHeightSize + SlicedCellHeightSize;
-                    int cellMaxXPos = BaseTileMin.x + dx * SlicedCellWidthSize + SlicedCellWidthSize;
-                    slice.gameObject.name = $"{dx},{dy} ({cellMinXPos},{cellMinYPos})~,({cellMaxXPos},{cellMaxYPos}))";
-                    slice.transform.parent = group.transform;
-                    slice.gameObject.SetActive(false);
-                    slicedEnvTile[dy, dx] = slice;
-                }
-            }
+  //                  slice.RefreshAllTiles();
+  //                  slice.ResizeBounds();
+  //                  int cellMinYPos = BaseTileMin.y + dy * SlicedCellHeightSize + 0;
+  //                  int cellMinXPos = BaseTileMin.x + dx * SlicedCellWidthSize + 0;
+  //                  int cellMaxYPos = BaseTileMin.y + dy * SlicedCellHeightSize + SlicedCellHeightSize;
+  //                  int cellMaxXPos = BaseTileMin.x + dx * SlicedCellWidthSize + SlicedCellWidthSize;
+  //                  slice.gameObject.name = $"{dx},{dy} ({cellMinXPos},{cellMinYPos})~,({cellMaxXPos},{cellMaxYPos}))";
+  //                  slice.transform.parent = group.transform;
+  //                  slice.gameObject.SetActive(false);
+  //                  slicedEnvTile[dy, dx] = slice;
+  //              }
+  //          }
 
-            Managers.Resource.Destroy(originTile.gameObject);
-        }
+  //          Managers.Resource.Destroy(originTile.gameObject);
+  //      }
 
         // Collision 관련 파일
         TextAsset txt = Managers.Resource.Load<TextAsset>($"Map/{mapName}");
@@ -244,35 +247,35 @@ public class MapManager
 
     public void ToggleDivision(Vector3Int pos, int range = 10)
 	{
-		HashSet<Tilemap> baseTileset = new HashSet<Tilemap>();
-		HashSet<Tilemap> EnvTileset = new HashSet<Tilemap>();
+		//HashSet<Tilemap> baseTileset = new HashSet<Tilemap>();
+		//HashSet<Tilemap> EnvTileset = new HashSet<Tilemap>();
 
-		for(int dy = pos.y - range; dy <= pos.y + range; dy++)
-        {
-			for(int dx = pos.x - range; dx <= pos.x + range; dx++)
-            {
-				Vector2Int tileIdx = GetCollapsedTilesIndex(new Vector3Int(dx, dy, 0));
-				if(tileIdx.x >= 0 && tileIdx.x < slicedEnvTile.GetLength(1) &&
-					tileIdx.y >= 0 && tileIdx.y < slicedEnvTile.GetLength(0))
-                {
-					baseTileset.Add(slicedBaseTile[tileIdx.y, tileIdx.x]);
-					EnvTileset.Add(slicedEnvTile[tileIdx.y, tileIdx.x]);
-				}
-            }
-        }
+		//for(int dy = pos.y - range; dy <= pos.y + range; dy++)
+  //      {
+		//	for(int dx = pos.x - range; dx <= pos.x + range; dx++)
+  //          {
+		//		Vector2Int tileIdx = GetCollapsedTilesIndex(new Vector3Int(dx, dy, 0));
+		//		if(tileIdx.x >= 0 && tileIdx.x < slicedEnvTile.GetLength(1) &&
+		//			tileIdx.y >= 0 && tileIdx.y < slicedEnvTile.GetLength(0))
+  //              {
+		//			baseTileset.Add(slicedBaseTile[tileIdx.y, tileIdx.x]);
+		//			EnvTileset.Add(slicedEnvTile[tileIdx.y, tileIdx.x]);
+		//		}
+  //          }
+  //      }
 
-		List<Tilemap> prevBaseTiles = activeBaseTileList.Except(baseTileset).ToList();
-		List<Tilemap> prevEnvTiles = activeEnvTileList.Except(EnvTileset).ToList();
-		List<Tilemap> newBaseTiles = baseTileset.Except(activeBaseTileList).ToList();
-		List<Tilemap> newEnvTiles = EnvTileset.Except(activeEnvTileList).ToList();
+		//List<Tilemap> prevBaseTiles = activeBaseTileList.Except(baseTileset).ToList();
+		//List<Tilemap> prevEnvTiles = activeEnvTileList.Except(EnvTileset).ToList();
+		//List<Tilemap> newBaseTiles = baseTileset.Except(activeBaseTileList).ToList();
+		//List<Tilemap> newEnvTiles = EnvTileset.Except(activeEnvTileList).ToList();
 
-        foreach (Tilemap tm in prevBaseTiles) tm.gameObject.SetActive(false);
-        foreach (Tilemap tm in prevEnvTiles) tm.gameObject.SetActive(false);
-        foreach (Tilemap tm in newBaseTiles) tm.gameObject.SetActive(true);
-        foreach (Tilemap tm in newEnvTiles) tm.gameObject.SetActive(true);
+  //      foreach (Tilemap tm in prevBaseTiles) tm.gameObject.SetActive(false);
+  //      foreach (Tilemap tm in prevEnvTiles) tm.gameObject.SetActive(false);
+  //      foreach (Tilemap tm in newBaseTiles) tm.gameObject.SetActive(true);
+  //      foreach (Tilemap tm in newEnvTiles) tm.gameObject.SetActive(true);
 
-		activeBaseTileList = baseTileset.ToList();
-		activeEnvTileList = EnvTileset.ToList();
+		//activeBaseTileList = baseTileset.ToList();
+		//activeEnvTileList = EnvTileset.ToList();
 	}
 
 
