@@ -129,7 +129,7 @@ namespace Server.Game
 			S_Move movePacket = new S_Move();
 			movePacket.ObjectId = Id;
 			movePacket.PosInfo = PosInfo;
-			Room.Broadcast(CellPos, movePacket);
+			Room.BroadCastVision(CellPos, movePacket);
 		}
 
 		long _coolTick = 0;
@@ -175,7 +175,7 @@ namespace Server.Game
 				S_Skill skill = new S_Skill() { Info = new SkillInfo() };
 				skill.ObjectId = Id;
 				skill.Info.SkillId = skillData.id;
-				Room.Broadcast(CellPos, skill);
+				Room.BroadCastVision(CellPos, skill);
 
 				// 스킬 쿨타임 적용
 				int coolTick = (int)(1000 * skillData.cooldown);

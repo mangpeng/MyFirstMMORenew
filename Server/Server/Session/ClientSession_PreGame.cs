@@ -35,6 +35,7 @@ namespace Server
 					.Include(a => a.Players)
 					.Where(a => a.AccountName == loginPacket.UniqueId).FirstOrDefault();
 
+				// 계정이 있으면 해당 계정의 캐릭터 정보 db에서 read 해서 클라에게 알린다.
 				if (findAccount != null)
 				{
 					// AccountDbId 메모리에 기억
@@ -65,11 +66,14 @@ namespace Server
 						loginOk.Players.Add(lobbyPlayer);
 					}
 
+					// 최초 입장시 1번 맵(GameRoom)으로 클라에게 전달
+					loginOk.MapId = 1;
+
 					Send(loginOk);
 					// 로비로 이동
 					ServerState = PlayerServerState.ServerStateLobby;
 				}
-				else
+				else // 계정이 없으면 새롭게 계정을 만들어서 클라에게 알린다. => 클라는 S_Login 패킷을 확인하여 생성된 캐릭터 없기 때문에 캐릭터 생성 요청을 보내야 한다.
 				{
 					AccountDb newAccount = new AccountDb() { AccountName = loginPacket.UniqueId };
 					db.Accounts.Add(newAccount);

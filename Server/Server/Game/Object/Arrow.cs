@@ -23,7 +23,7 @@ namespace Server.Game
 				S_Move movePacket = new S_Move();
 				movePacket.ObjectId = Id;
 				movePacket.PosInfo = PosInfo;
-				Room.Broadcast(CellPos, movePacket);
+				Room.BroadCastVision(CellPos, movePacket);
 			}
 			else
 			{

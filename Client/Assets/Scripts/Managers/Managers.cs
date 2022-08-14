@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,13 +9,17 @@ public class Managers : MonoBehaviour
     public static Managers Instance { get { Init(); return s_instance; } } // 유일한 매니저를 갖고온다
 
     #region Contents
+    GameInfoManager _info = new GameInfoManager();
     InventoryManager _inven = new InventoryManager();
+    ChatManager _chat = new ChatManager();
     MapManager _map = new MapManager();
     ObjectManager _obj = new ObjectManager();
     NetworkManager _network = new NetworkManager();
     WebManager _web = new WebManager();
 
+    public static GameInfoManager Info { get { return Instance._info; } }
     public static InventoryManager Inven { get { return Instance._inven; } }
+    public static ChatManager Chat { get { return Instance._chat; } }
     public static MapManager Map { get { return Instance._map; } }
     public static ObjectManager Object { get { return Instance._obj; } }
     public static NetworkManager Network { get { return Instance._network; } }
@@ -35,7 +40,9 @@ public class Managers : MonoBehaviour
     public static SceneManagerEx Scene { get { return Instance._scene; } }
     public static SoundManager Sound { get { return Instance._sound; } }
     public static UIManager UI { get { return Instance._ui; } }
-	#endregion
+    #endregion
+
+    private Coroutine _cDelay;
 
 	void Start()
     {
@@ -73,5 +80,16 @@ public class Managers : MonoBehaviour
         Scene.Clear();
         UI.Clear();
         Pool.Clear();
+    }
+
+    public void DoAfter(Action action, float after)
+    {
+        _cDelay = StartCoroutine(CDelay(action, after));
+    }
+
+    IEnumerator CDelay(Action action, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        action?.Invoke();
     }
 }

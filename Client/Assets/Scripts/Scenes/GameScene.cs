@@ -10,9 +10,9 @@ public class GameScene : BaseScene
     {
         base.Init();
 
-        SceneType = Define.Scene.Game;
+        SceneType = (Define.Scene)((int)Define.Scene.Lobby + Managers.Map.Id);
 
-        Managers.Map.LoadMap(1);
+        Managers.Map.LoadMap(Managers.Map.Id);
 
         Screen.SetResolution(640, 480, false);
 

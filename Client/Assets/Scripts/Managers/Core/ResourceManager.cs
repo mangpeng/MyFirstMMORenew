@@ -53,6 +53,21 @@ public class ResourceManager
         Object.Destroy(go);
     }
 
+    public void DestroyAfter(GameObject go, float after)
+    {
+        if (go == null)
+            return;
+
+        Poolable poolable = go.GetComponent<Poolable>();
+        if (poolable != null)
+        {
+            Managers.Pool.Push(poolable);
+            return;
+        }
+
+        Object.Destroy(go, after);
+    }
+
     public void DestroyImmediate(GameObject go)
     {
         if (go == null)

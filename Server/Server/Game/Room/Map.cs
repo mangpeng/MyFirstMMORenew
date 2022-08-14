@@ -3,11 +3,21 @@ using ServerCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Server.Game
 {
-	public struct Pos
+    public enum MAP
+    {
+        EMPTY = 0,
+        OBSTACLE,
+        PORTAL_PREV,
+        PORTAL_NEXT,
+        RESPAWN
+    }
+
+    public struct Pos
 	{
 		public Pos(int y, int x) { Y = y; X = x; }
 		public int Y;
@@ -93,13 +103,19 @@ namespace Server.Game
 		public int SizeY { get { return MaxY - MinY + 1; } }
 
 		bool[,] _collision;
+		bool[,] _prevDoor;
+		bool[,] _nextDoor;
+
 		GameObject[,] _objects;
+		public List<Vector2Int> RespawnList { get; private set; } = new List<Vector2Int>();
+		public List<Vector2Int> PrevPortalList { get; private set; } = new List<Vector2Int>();
+		public List<Vector2Int> NextPortalList { get; private set; } = new List<Vector2Int>();
 
 		public bool CanGo(Vector2Int cellPos, bool checkObjects = true)
 		{
-			if (cellPos.x < MinX || cellPos.x > MaxX)
+			if (cellPos.x < MinX || cellPos.x > MaxX - 1)
 				return false;
-			if (cellPos.y < MinY || cellPos.y > MaxY)
+			if (cellPos.y < MinY || cellPos.y > MaxY - 1)
 				return false;
 
 			int x = cellPos.x - MinX;
@@ -107,7 +123,33 @@ namespace Server.Game
 			return !_collision[y, x] && (!checkObjects || _objects[y, x] == null);
 		}
 
-		public GameObject Find(Vector2Int cellPos)
+        public bool IsPrevProtal(Vector2Int cellPos)
+        {
+            if (cellPos.x < MinX || cellPos.x > MaxX - 1)
+                return false;
+            if (cellPos.y < MinY || cellPos.y > MaxY - 1)
+                return false;
+
+            int x = cellPos.x - MinX;
+            int y = MaxY - cellPos.y;
+
+			return _prevDoor[y, x];
+        }
+
+        public bool IsNextProtal(Vector2Int cellPos)
+        {
+            if (cellPos.x < MinX || cellPos.x > MaxX - 1)
+                return false;
+            if (cellPos.y < MinY || cellPos.y > MaxY - 1)
+                return false;
+
+            int x = cellPos.x - MinX;
+            int y = MaxY - cellPos.y;
+
+            return _nextDoor[y, x];
+        }
+
+        public GameObject Find(Vector2Int cellPos)
 		{
 			if (cellPos.x < MinX || cellPos.x > MaxX)
 				return null;
@@ -226,21 +268,66 @@ namespace Server.Game
 			MaxX = int.Parse(reader.ReadLine());
 			MinY = int.Parse(reader.ReadLine());
 			MaxY = int.Parse(reader.ReadLine());
-
+			
 			int xCount = MaxX - MinX + 1;
 			int yCount = MaxY - MinY + 1;
 			_collision = new bool[yCount, xCount];
+			_prevDoor = new bool[yCount, xCount];
+			_nextDoor = new bool[yCount, xCount];
 			_objects = new GameObject[yCount, xCount];
+
 
 			for (int y = 0; y < yCount; y++)
 			{
 				string line = reader.ReadLine();
 				for (int x = 0; x < xCount; x++)
 				{
-					_collision[y, x] = (line[x] == '1' ? true : false);
-				}
+                    // obstacle
+                    if (line[x] == ((int)MAP.OBSTACLE).ToString()[0])
+						_collision[y, x] = true;
+					else
+						_collision[y, x] = false;
+
+                    // prevDoor
+                    if (line[x] == ((int)MAP.PORTAL_PREV).ToString()[0])
+                        _prevDoor[y, x] = true;
+                    else
+						_prevDoor[y, x] = false;
+
+                    // nextDoor
+                    if (line[x] == ((int)MAP.PORTAL_NEXT).ToString()[0])
+                        _nextDoor[y, x] = true;
+                    else
+						_nextDoor[y, x] = false;
+
+                    // respawn
+                    if (line[x] == ((int)MAP.RESPAWN).ToString()[0])
+                        RespawnList.Add(Pos2Cell(new Pos(y, x)));
+
+                    // portal_prev
+                    if (line[x] == ((int)MAP.PORTAL_PREV).ToString()[0])
+						PrevPortalList.Add(Pos2Cell(new Pos(y, x)));
+
+					// portal_next
+					if (line[x] == ((int)MAP.PORTAL_NEXT).ToString()[0])
+						NextPortalList.Add(Pos2Cell(new Pos(y, x)));
+                }
 			}
-		}
+        }
+
+		public Vector2Int? GetAvailiableGenSpot()
+        {
+			var rnd = new Random();
+			var shuffled = RespawnList.OrderBy(p =>rnd.Next());
+
+			foreach(var pos in shuffled)
+            {
+				if (CanGo(pos))
+					return pos;
+            }
+            
+			return null;
+        }
 
 		#region A* PathFinding
 

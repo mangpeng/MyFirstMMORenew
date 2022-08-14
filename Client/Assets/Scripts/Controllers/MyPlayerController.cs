@@ -1,8 +1,7 @@
 ﻿using Google.Protobuf.Protocol;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Define;
+
 
 public class MyPlayerController : PlayerController
 {
@@ -11,12 +10,15 @@ public class MyPlayerController : PlayerController
 	public int WeaponDamage { get; private set; }
 	public int ArmorDefence { get; private set; }
 
+	const int visionRange = 3;
+	const int cameraSafeArea = 7;
+
 	protected override void Init()
 	{
 		base.Init();
 		RefreshAdditionalStat();
 
-		LoadPartialMap();
+		LoadPartialMap(visionRange);
 	}
 
 	protected override void UpdateController()
@@ -47,7 +49,10 @@ public class MyPlayerController : PlayerController
 
 		if (_coSkillCooltime == null && Input.GetKey(KeyCode.Space))
 		{
-			Debug.Log("Skill !");
+            if (Managers.Chat.IsChat)
+                return;
+
+            Debug.Log("Skill !");
 
 			C_Skill skill = new C_Skill() { Info = new SkillInfo() };
 			skill.Info.SkillId = 2;
@@ -66,11 +71,18 @@ public class MyPlayerController : PlayerController
 
 	void LateUpdate()
 	{
-		Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+		float min = Managers.Map.MinY + cameraSafeArea;
+		float max = Managers.Map.MaxY - cameraSafeArea;
+		float yPos = Mathf.Clamp(transform.position.y, min, max);
+		Vector3 camPos = new Vector3(transform.position.x, yPos, -10);
+
+		Camera.main.transform.position = camPos;
 	}
 
 	void GetUIKeyInput()
 	{
+
+
 		if (Input.GetKeyDown(KeyCode.I))
 		{
 			UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
@@ -106,7 +118,10 @@ public class MyPlayerController : PlayerController
 	// 키보드 입력
 	void GetDirInput()
 	{
-		_moveKeyPressed = true;
+        if (Managers.Chat.IsChat)
+            return;
+
+        _moveKeyPressed = true;
 
 		if (Input.GetKey(KeyCode.W))
 		{
@@ -166,6 +181,7 @@ public class MyPlayerController : PlayerController
 		}
 
 		CheckUpdatedFlag();
+		LoadPartialMap(visionRange);
 	}
 
 	protected override void CheckUpdatedFlag()
@@ -201,11 +217,13 @@ public class MyPlayerController : PlayerController
 		}
 	}
 
-	private void LoadPartialMap()
+	private void LoadPartialMap(int range)
     {
-		Debug.Log($"CurPlayer Pos :: {CellPos.x},{CellPos.y}");
-        Vector2Int tileIndex = Managers.Map.GetCurTileMap(CellPos);
-		Debug.Log($"CurTile Index :: {tileIndex.x},{tileIndex.y}");
-		Managers.Map.ToggleDivision(tileIndex);
+		Managers.Map.ToggleDivision(CellPos, range);
+    }
+
+    public override void ShowChatBox(string message)
+    {
+        _chatPopup.Show(message);
     }
 }

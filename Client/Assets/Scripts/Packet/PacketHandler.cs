@@ -4,14 +4,28 @@ using ServerCore;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 class PacketHandler
 {
 	public static void S_EnterGameHandler(PacketSession session, IMessage packet)
 	{
 		S_EnterGame enterGamePacket = packet as S_EnterGame;
+
+        Debug.Log($"Map 이동 {Managers.Map.Id} => {enterGamePacket.MapId}");
+
+		if (enterGamePacket.MapId > Managers.Map.Id) Debug.Log("다음 방으로 이동");
+		if (enterGamePacket.MapId < Managers.Map.Id) Debug.Log("이전 방으로 이동");
+
+
+        if (enterGamePacket.MapId != Managers.Map.Id)
+        {
+			Managers.Map.Id = enterGamePacket.MapId;
+            Managers.Map.LoadMap(Managers.Map.Id);
+        }
+
 		Managers.Object.Add(enterGamePacket.Player, myPlayer: true);
-	}
+    }
 
 	public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
 	{
@@ -21,12 +35,10 @@ class PacketHandler
 
 	public static void S_SpawnHandler(PacketSession session, IMessage packet)
 	{
-		S_Spawn spawnPacket = packet as S_Spawn;
-		foreach (ObjectInfo obj in spawnPacket.Objects)
-		{
-			Managers.Object.Add(obj, myPlayer: false);
-		}
-	}
+        S_Spawn spawnPacket = packet as S_Spawn;
+        foreach (ObjectInfo obj in spawnPacket.Objects)
+            Managers.Object.Add(obj, myPlayer: false);
+    }
 
 	public static void S_DespawnHandler(PacketSession session, IMessage packet)
 	{
@@ -46,7 +58,11 @@ class PacketHandler
 			return;
 
 		if (Managers.Object.MyPlayer.Id == movePacket.ObjectId)
+        {
+			Vector2Int cellPos = new Vector2Int(movePacket.PosInfo.PosX, movePacket.PosInfo.PosY);
+			Managers.Info.SetCoordText(cellPos);
 			return;
+        }
 
 		BaseController bc = go.GetComponent<BaseController>();
 		if (bc == null)
@@ -117,21 +133,24 @@ class PacketHandler
 		S_Login loginPacket = (S_Login)packet;
 		Debug.Log($"LoginOk({loginPacket.LoginOk})");
 
-		// TODO : 로비 UI에서 캐릭터 보여주고, 선택할 수 있도록
+		// 해당 계정의 캐릭터가 없으면 캐릭터 생성 요청을 보낸다.
 		if (loginPacket.Players == null || loginPacket.Players.Count == 0)
 		{
 			C_CreatePlayer createPacket = new C_CreatePlayer();
 			createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
 			Managers.Network.Send(createPacket);
 		}
-		else
+		else // 해당 계정의 캐릭터가 있으면 첫번째 캐릭터로 게임입장 시도 한다.
 		{
 			// 무조건 첫번째 로그인
 			LobbyPlayerInfo info = loginPacket.Players[0];
 			C_EnterGame enterGamePacket = new C_EnterGame();
 			enterGamePacket.Name = info.Name;
-			Managers.Network.Send(enterGamePacket);
-		}
+
+            Managers.Map.Id = loginPacket.MapId;
+            Managers.Scene.LoadScene(Define.Scene.Game_1);
+            Managers.Network.Send(enterGamePacket);
+        }
 	}
 
 	public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)
@@ -219,9 +238,33 @@ class PacketHandler
 
 	public static void S_PingHandler(PacketSession session, IMessage packet)
 	{
+
+		// tick 계산
+		int pingpongCycleMs = 5000;
+		if(Managers.Network.LastPingTick != 0)
+        {
+			int curTick = System.Environment.TickCount;
+			int ping = Mathf.Abs(curTick - Managers.Network.LastPingTick);
+			Managers.Info.SetPingText(ping);
+			Managers.Network.LastPingTick = curTick + pingpongCycleMs;
+        }
+        else
+        {
+			Managers.Network.LastPingTick = System.Environment.TickCount + pingpongCycleMs;
+		}
+
 		C_Pong pongPacket = new C_Pong();
 		Debug.Log("[Server] PingCheck");
 		Managers.Network.Send(pongPacket);
+	}
+
+    public static void S_ChatHandler(PacketSession session, IMessage packet)
+    {
+		S_Chat chatPacket = (S_Chat)packet;
+
+		GameScene gameScene = (GameScene)Managers.Scene.CurrentScene;
+		Debug.Log($"rev message : {chatPacket.Message}");
+		Managers.Chat.RecvChatPacket(chatPacket);
 	}
 }
 

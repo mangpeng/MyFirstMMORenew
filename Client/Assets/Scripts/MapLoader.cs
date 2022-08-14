@@ -6,6 +6,6 @@ public class MapLoader : MonoBehaviour
 {
     void Start()
     {
-        Managers.Map.LoadMap(1, divideCount:1);
+        Managers.Map.LoadMap(1, divideCount:2);
     }
 }

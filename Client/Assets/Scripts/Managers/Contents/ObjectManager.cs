@@ -125,6 +125,8 @@ public class ObjectManager
 
 	public void Clear()
 	{
+		Debug.Log(_objects.Count);
+
 		foreach (GameObject obj in _objects.Values)
 			Managers.Resource.Destroy(obj);
 		_objects.Clear();

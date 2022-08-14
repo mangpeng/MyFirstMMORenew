@@ -9,9 +9,13 @@ public class PlayerController : CreatureController
 	protected Coroutine _coSkill;
 	protected bool _rangedSkill = false;
 
+	protected UI_ChatPopup _chatPopup;
+
 	protected override void Init()
 	{
 		base.Init();
+
+		_chatPopup = GetComponentInChildren<UI_ChatPopup>();
 	}
 
 	protected override void UpdateAnimation()
@@ -139,4 +143,9 @@ public class PlayerController : CreatureController
 	{
 		Debug.Log("Player HIT !");
 	}
+
+	public virtual void ShowChatBox(string message)
+    {
+		_chatPopup.Show(message);
+    }
 }

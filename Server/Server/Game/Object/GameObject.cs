@@ -124,7 +124,7 @@ namespace Server.Game
 			S_ChangeHp changePacket = new S_ChangeHp();
 			changePacket.ObjectId = Id;
 			changePacket.Hp = Stat.Hp;
-			Room.Broadcast(CellPos, changePacket);
+			Room.BroadCastVision(CellPos, changePacket);
 
 			if (Stat.Hp <= 0)
 			{
@@ -140,7 +140,7 @@ namespace Server.Game
 			S_Die diePacket = new S_Die();
 			diePacket.ObjectId = Id;
 			diePacket.AttackerId = attacker.Id;
-			Room.Broadcast(CellPos, diePacket);
+			Room.BroadCastVision(CellPos, diePacket);
 
 			GameRoom room = Room;
 			room.LeaveGame(Id);

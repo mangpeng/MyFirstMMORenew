@@ -9,7 +9,8 @@ public class Define
         Unknown,
         Login,
         Lobby,
-        Game,
+        Game_1,
+        Game_2,
     }
 
     public enum Sound
@@ -23,5 +24,14 @@ public class Define
     {
         Click,
         Drag,
+    }
+
+    public enum MAP
+    {
+        EMPTY = 0,
+        OBSTACLE,
+        PORTAL_PREV,
+        PORTAL_NEXT,
+        RESPAWN
     }
 }

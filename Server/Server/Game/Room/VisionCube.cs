@@ -88,8 +88,8 @@ namespace Server.Game.Room
 				Owner.Session.Send(spawnPacket);
 			}
 
-			// 기존엔 있었는데 사라진 애들 Despawn 처리
-			List<GameObject> removed = PreviousObjects.Except(currentObjects).ToList();
+            // 기존엔 있었는데 사라진 애들 Despawn 처리
+            List<GameObject> removed = PreviousObjects.Except(currentObjects).ToList();
 			if (removed.Count > 0)
 			{
 				S_Despawn despawnPacket = new S_Despawn();

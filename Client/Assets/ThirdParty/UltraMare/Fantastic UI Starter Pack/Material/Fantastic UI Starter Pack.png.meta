@@ -407,6 +407,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -415,12 +417,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -438,9 +440,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 1
   platformSettings:
   - serializedVersion: 3
@@ -3168,6 +3173,135 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Fantastic UI Starter Pack_22: 21300044
+      Fantastic UI Starter Pack_29: 21300058
+      Fantastic UI Starter Pack_8: 21300016
+      Fantastic UI Starter Pack_51: 21300102
+      Fantastic UI Starter Pack_62: 21300124
+      Fantastic UI Starter Pack_63: 21300126
+      Fantastic UI Starter Pack_24: 21300048
+      Fantastic UI Starter Pack_120: 21300240
+      Fantastic UI Starter Pack_89: 21300178
+      Fantastic UI Starter Pack_106: 21300212
+      Fantastic UI Starter Pack_64: 21300128
+      Fantastic UI Starter Pack_100: 21300200
+      Fantastic UI Starter Pack_126: 21300252
+      Fantastic UI Starter Pack_45: 21300090
+      Fantastic UI Starter Pack_39: 21300078
+      Fantastic UI Starter Pack_124: 21300248
+      Fantastic UI Starter Pack_3: 21300006
+      Fantastic UI Starter Pack_71: 21300142
+      Fantastic UI Starter Pack_11: 21300022
+      Fantastic UI Starter Pack_82: 21300164
+      Fantastic UI Starter Pack_49: 21300098
+      Fantastic UI Starter Pack_42: 21300084
+      Fantastic UI Starter Pack_61: 21300122
+      Fantastic UI Starter Pack_104: 21300208
+      Fantastic UI Starter Pack_50: 21300100
+      Fantastic UI Starter Pack_90: 21300180
+      Fantastic UI Starter Pack_53: 21300106
+      Fantastic UI Starter Pack_93: 21300186
+      Fantastic UI Starter Pack_111: 21300222
+      Fantastic UI Starter Pack_74: 21300148
+      Fantastic UI Starter Pack_21: 21300042
+      Fantastic UI Starter Pack_26: 21300052
+      Fantastic UI Starter Pack_99: 21300198
+      Fantastic UI Starter Pack_6: 21300012
+      Fantastic UI Starter Pack_37: 21300074
+      Fantastic UI Starter Pack_33: 21300066
+      Fantastic UI Starter Pack_84: 21300168
+      Fantastic UI Starter Pack_76: 21300152
+      Fantastic UI Starter Pack_69: 21300138
+      Fantastic UI Starter Pack_112: 21300224
+      Fantastic UI Starter Pack_27: 21300054
+      Fantastic UI Starter Pack_20: 21300040
+      Fantastic UI Starter Pack_116: 21300232
+      Fantastic UI Starter Pack_102: 21300204
+      Fantastic UI Starter Pack_2: 21300004
+      Fantastic UI Starter Pack_7: 21300014
+      Fantastic UI Starter Pack_75: 21300150
+      Fantastic UI Starter Pack_98: 21300196
+      Fantastic UI Starter Pack_87: 21300174
+      Fantastic UI Starter Pack_40: 21300080
+      Fantastic UI Starter Pack_91: 21300182
+      Fantastic UI Starter Pack_114: 21300228
+      Fantastic UI Starter Pack_59: 21300118
+      Fantastic UI Starter Pack_4: 21300008
+      Fantastic UI Starter Pack_73: 21300146
+      Fantastic UI Starter Pack_5: 21300010
+      Fantastic UI Starter Pack_86: 21300172
+      Fantastic UI Starter Pack_119: 21300238
+      Fantastic UI Starter Pack_30: 21300060
+      Fantastic UI Starter Pack_31: 21300062
+      Fantastic UI Starter Pack_44: 21300088
+      Fantastic UI Starter Pack_67: 21300134
+      Fantastic UI Starter Pack_80: 21300160
+      Fantastic UI Starter Pack_9: 21300018
+      Fantastic UI Starter Pack_66: 21300132
+      Fantastic UI Starter Pack_123: 21300246
+      Fantastic UI Starter Pack_60: 21300120
+      Fantastic UI Starter Pack_108: 21300216
+      Fantastic UI Starter Pack_88: 21300176
+      Fantastic UI Starter Pack_94: 21300188
+      Fantastic UI Starter Pack_103: 21300206
+      Fantastic UI Starter Pack_10: 21300020
+      Fantastic UI Starter Pack_117: 21300234
+      Fantastic UI Starter Pack_36: 21300072
+      Fantastic UI Starter Pack_47: 21300094
+      Fantastic UI Starter Pack_43: 21300086
+      Fantastic UI Starter Pack_122: 21300244
+      Fantastic UI Starter Pack_107: 21300214
+      Fantastic UI Starter Pack_32: 21300064
+      Fantastic UI Starter Pack_78: 21300156
+      Fantastic UI Starter Pack_19: 21300038
+      Fantastic UI Starter Pack_55: 21300110
+      Fantastic UI Starter Pack_34: 21300068
+      Fantastic UI Starter Pack_97: 21300194
+      Fantastic UI Starter Pack_125: 21300250
+      Fantastic UI Starter Pack_68: 21300136
+      Fantastic UI Starter Pack_0: 21300000
+      Fantastic UI Starter Pack_85: 21300170
+      Fantastic UI Starter Pack_110: 21300220
+      Fantastic UI Starter Pack_28: 21300056
+      Fantastic UI Starter Pack_113: 21300226
+      Fantastic UI Starter Pack_79: 21300158
+      Fantastic UI Starter Pack_127: 21300254
+      Fantastic UI Starter Pack_118: 21300236
+      Fantastic UI Starter Pack_115: 21300230
+      Fantastic UI Starter Pack_18: 21300036
+      Fantastic UI Starter Pack_70: 21300140
+      Fantastic UI Starter Pack_109: 21300218
+      Fantastic UI Starter Pack_96: 21300192
+      Fantastic UI Starter Pack_14: 21300028
+      Fantastic UI Starter Pack_23: 21300046
+      Fantastic UI Starter Pack_48: 21300096
+      Fantastic UI Starter Pack_56: 21300112
+      Fantastic UI Starter Pack_15: 21300030
+      Fantastic UI Starter Pack_57: 21300114
+      Fantastic UI Starter Pack_101: 21300202
+      Fantastic UI Starter Pack_52: 21300104
+      Fantastic UI Starter Pack_25: 21300050
+      Fantastic UI Starter Pack_72: 21300144
+      Fantastic UI Starter Pack_77: 21300154
+      Fantastic UI Starter Pack_12: 21300024
+      Fantastic UI Starter Pack_16: 21300032
+      Fantastic UI Starter Pack_54: 21300108
+      Fantastic UI Starter Pack_92: 21300184
+      Fantastic UI Starter Pack_41: 21300082
+      Fantastic UI Starter Pack_83: 21300166
+      Fantastic UI Starter Pack_46: 21300092
+      Fantastic UI Starter Pack_105: 21300210
+      Fantastic UI Starter Pack_38: 21300076
+      Fantastic UI Starter Pack_58: 21300116
+      Fantastic UI Starter Pack_81: 21300162
+      Fantastic UI Starter Pack_121: 21300242
+      Fantastic UI Starter Pack_95: 21300190
+      Fantastic UI Starter Pack_13: 21300026
+      Fantastic UI Starter Pack_17: 21300034
+      Fantastic UI Starter Pack_35: 21300070
+      Fantastic UI Starter Pack_1: 21300002
+      Fantastic UI Starter Pack_65: 21300130
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

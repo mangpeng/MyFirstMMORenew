@@ -8,6 +8,8 @@ using Google.Protobuf;
 
 public class NetworkManager
 {
+	public int LastPingTick { get; set; }
+
 	public int AccountId { get; set; }
 	public int Token { get; set; }
 

@@ -38,7 +38,7 @@ public class UI_SelectServerPopup_Item : UI_Base
 	void OnClickButton(PointerEventData evt)
 	{
 		Managers.Network.ConnectToGame(Info);
-		Managers.Scene.LoadScene(Define.Scene.Game);
+		//Managers.Scene.LoadScene(Define.Scene.Game); => S_LoginHandler로 이동 mapID를 받기 위해서
 		Managers.UI.ClosePopupUI();
 	}
 }

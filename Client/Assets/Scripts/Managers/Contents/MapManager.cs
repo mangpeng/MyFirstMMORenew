@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -29,6 +30,7 @@ public struct PQNode : IComparable<PQNode>
 
 public class MapManager
 {
+	public int Id { get;  set; } = 0;
 	public Grid CurrentGrid { get; private set; }
 
 	public int MinX { get; set; }
@@ -42,20 +44,25 @@ public class MapManager
 	bool[,] _collision;
 
 	public int DivideCount { get; private set; }
-	public int SlicedCellSize { get; private set; }
-	
+
+	public int SlicedCellWidthSize { get; private set; }
+	public int SlicedCellHeightSize { get; private set; }
+
+	public Vector3Int BaseTileMin { get; private set; }
+	public Vector3Int BaseTileMax { get; private set; }
+
 	Tilemap[,] slicedBaseTile;
 	Tilemap[,] slicedEnvTile;
 
-	Tilemap curActiveBaseTile;
-	Tilemap curActiveEvnTile;
+	List<Tilemap> activeBaseTileList = new List<Tilemap>();
+	List<Tilemap> activeEnvTileList = new List<Tilemap>();
 
 
 	public bool CanGo(Vector3Int cellPos)
 	{
-		if (cellPos.x < MinX || cellPos.x > MaxX)
+		if (cellPos.x < MinX || cellPos.x > MaxX - 1)
 			return false;
-		if (cellPos.y < MinY || cellPos.y > MaxY)
+		if (cellPos.y < MinY || cellPos.y > MaxY - 1)
 			return false;
 
 		int x = cellPos.x - MinX;
@@ -63,56 +70,27 @@ public class MapManager
 		return !_collision[y, x];
 	}
 
-	//public void LoadMap(int mapId)
-	//{
-	//	DestroyMap();
-
-	//	string mapName = "Map_" + mapId.ToString("000");
-	//	GameObject go = Managers.Resource.Instantiate($"Map/{mapName}");
-	//	go.name = "Map";
-
-	//	GameObject collision = Util.FindChild(go, "Tilemap_Collision", true);
-	//	if (collision != null)
-	//		collision.SetActive(false);
-
-	//	CurrentGrid = go.GetComponent<Grid>();
-
-	//	// Collision 관련 파일
-	//	TextAsset txt = Managers.Resource.Load<TextAsset>($"Map/{mapName}");
-	//	StringReader reader = new StringReader(txt.text);
-
-	//	MinX = int.Parse(reader.ReadLine());
-	//	MaxX = int.Parse(reader.ReadLine());
-	//	MinY = int.Parse(reader.ReadLine());
-	//	MaxY = int.Parse(reader.ReadLine());
-
-	//	int xCount = MaxX - MinX + 1;
-	//	int yCount = MaxY - MinY + 1;
-	//	_collision = new bool[yCount, xCount];
-
-	//	for (int y = 0; y < yCount; y++)
-	//	{
-	//		string line = reader.ReadLine();
-	//		for (int x = 0; x < xCount; x++)
-	//		{
-	//			_collision[y, x] = (line[x] == '1' ? true : false);
-	//		}
-	//	}
-	//}
-
-    public void LoadMap(int mapId, int divideCount = 2)
+    public void LoadMap(int mapId, int divideCount = 1)
     {
+		Id = mapId;
 		DivideCount = divideCount;
 
         DestroyMap();
 
-        string mapName = "Map_" + mapId.ToString("000");
+        string mapName = "Map_" + Id.ToString("000");
         GameObject root = Managers.Resource.Instantiate($"Map/{mapName}");
         root.name = "Map";
 
         GameObject collision = Util.FindChild(root, "Tilemap_Collision", true);
-        if (collision != null)
-            collision.SetActive(false);
+        if (collision != null) collision.SetActive(false);
+
+        GameObject portal = Util.FindChild(root, "Tilemap_Portal", true);
+        if (portal != null) portal.SetActive(false);
+
+        GameObject gen = Util.FindChild(root, "Tilemap_Gen", true);
+        if (gen != null) gen.SetActive(false);
+
+
 
         CurrentGrid = root.GetComponent<Grid>();
 
@@ -121,10 +99,12 @@ public class MapManager
 		{
 
 			Tilemap originTile = root.transform.GetChild(0).GetComponent<Tilemap>();
-			Vector3Int originMin = originTile.cellBounds.min;
-			Vector3Int originMax = originTile.cellBounds.max;
+			originTile.CompressBounds();
+			BaseTileMin = originTile.cellBounds.min;
+			BaseTileMax = originTile.cellBounds.max;
 
-            SlicedCellSize = (int)((originMax.y - originMin.y) / (float)divideCount);
+            SlicedCellWidthSize = (int)((BaseTileMax.x - BaseTileMin.x) / (float)divideCount);
+            SlicedCellHeightSize = (int)((BaseTileMax.y - BaseTileMin.y) / (float)divideCount);
 
             string groupName = originTile.name;
             GameObject group = new GameObject(groupName);
@@ -139,12 +119,16 @@ public class MapManager
                     Tilemap slice = Tilemap.Instantiate(originTile);
                     slice.ClearAllTiles();
 
-                    for (int y = 0; y < SlicedCellSize; y++)
+                    for (int y = 0; y < SlicedCellHeightSize; y++)
                     {
-                        for (int x = 0; x < SlicedCellSize; x++)
+                        for (int x = 0; x < SlicedCellWidthSize; x++)
                         {
-                            int cellYPos = originMin.y + dy * SlicedCellSize + y;
-                            int cellXPos = originMin.x + dx * SlicedCellSize + x;
+							// -22 ~ -5
+							// -5 ~ -10
+							
+							
+                            int cellYPos = BaseTileMin.y + dy * SlicedCellHeightSize + y;
+                            int cellXPos = BaseTileMin.x + dx * SlicedCellWidthSize + x;
 
                             TileBase tile = originTile.GetTile(new Vector3Int(cellXPos, cellYPos, 0));
                             slice.SetTile(new Vector3Int(cellXPos, cellYPos, 0), tile);
@@ -153,10 +137,10 @@ public class MapManager
 
                     slice.RefreshAllTiles();
                     slice.ResizeBounds();
-                    int cellMinYPos = originMin.y + dy * SlicedCellSize + 0;
-                    int cellMinXPos = originMin.x + dx * SlicedCellSize + 0;
-                    int cellMaxYPos = originMin.y + dy * SlicedCellSize + SlicedCellSize;
-                    int cellMaxXPos = originMin.x + dx * SlicedCellSize + SlicedCellSize;
+                    int cellMinYPos = BaseTileMin.y + dy * SlicedCellHeightSize + 0;
+                    int cellMinXPos = BaseTileMin.x + dx * SlicedCellWidthSize + 0;
+                    int cellMaxYPos = BaseTileMin.y + dy * SlicedCellHeightSize + SlicedCellHeightSize;
+                    int cellMaxXPos = BaseTileMin.x + dx * SlicedCellWidthSize + SlicedCellWidthSize;
                     slice.gameObject.name = $"{dx},{dy} ({cellMinXPos},{cellMinYPos})~,({cellMaxXPos},{cellMaxYPos}))";
                     slice.transform.parent = group.transform;
 					slice.gameObject.SetActive(false);
@@ -167,19 +151,9 @@ public class MapManager
 			Managers.Resource.DestroyImmediate(originTile.gameObject);
         }
 
-		// Divide Env TileMap
-		{
-
-			Tilemap originTile = root.transform.GetChild(1).GetComponent<Tilemap>();
-
-			foreach(Transform tr in root.transform)
-			{
-				Debug.Log(tr.name);
-            }
-
-            Vector3Int originMin = originTile.cellBounds.min;
-            Vector3Int originMax = originTile.cellBounds.max;
-
+        // Divide Env TileMap
+        {
+            Tilemap originTile = root.transform.GetChild(1).GetComponent<Tilemap>();
 
             string groupName = originTile.name;
             GameObject group = new GameObject(groupName);
@@ -194,12 +168,12 @@ public class MapManager
                     Tilemap slice = Tilemap.Instantiate(originTile);
                     slice.ClearAllTiles();
 
-                    for (int y = 0; y < SlicedCellSize; y++)
+                    for (int y = 0; y < SlicedCellHeightSize; y++)
                     {
-                        for (int x = 0; x < SlicedCellSize; x++)
+                        for (int x = 0; x < SlicedCellWidthSize; x++)
                         {
-                            int cellYPos = originMin.y + dy * SlicedCellSize + y;
-                            int cellXPos = originMin.x + dx * SlicedCellSize + x;
+                            int cellYPos = BaseTileMin.y + dy * SlicedCellHeightSize + y;
+                            int cellXPos = BaseTileMin.x + dx * SlicedCellWidthSize + x;
 
                             TileBase tile = originTile.GetTile(new Vector3Int(cellXPos, cellYPos, 0));
                             slice.SetTile(new Vector3Int(cellXPos, cellYPos, 0), tile);
@@ -208,14 +182,14 @@ public class MapManager
 
                     slice.RefreshAllTiles();
                     slice.ResizeBounds();
-                    int cellMinYPos = originMin.y + dy * SlicedCellSize + 0;
-                    int cellMinXPos = originMin.x + dx * SlicedCellSize + 0;
-                    int cellMaxYPos = originMin.y + dy * SlicedCellSize + SlicedCellSize;
-                    int cellMaxXPos = originMin.x + dx * SlicedCellSize + SlicedCellSize;
+                    int cellMinYPos = BaseTileMin.y + dy * SlicedCellHeightSize + 0;
+                    int cellMinXPos = BaseTileMin.x + dx * SlicedCellWidthSize + 0;
+                    int cellMaxYPos = BaseTileMin.y + dy * SlicedCellHeightSize + SlicedCellHeightSize;
+                    int cellMaxXPos = BaseTileMin.x + dx * SlicedCellWidthSize + SlicedCellWidthSize;
                     slice.gameObject.name = $"{dx},{dy} ({cellMinXPos},{cellMinYPos})~,({cellMaxXPos},{cellMaxYPos}))";
                     slice.transform.parent = group.transform;
                     slice.gameObject.SetActive(false);
-					slicedEnvTile[dy, dx] = slice;
+                    slicedEnvTile[dy, dx] = slice;
                 }
             }
 
@@ -255,33 +229,50 @@ public class MapManager
 		}
 	}
 
-	public Vector2Int GetCurTileMap(Vector3Int cell)
+	public Vector2Int GetCollapsedTilesIndex(Vector3Int cell)
     {
-		// -30 0 30 60
-		// 0~30 0~30 0~30
-		// -20 => 0
-		// 10 = >1
-		int curDivisionX = (cell.x + SlicedCellSize) / SlicedCellSize - 1;
-		int curDivisionY = (cell.y + SlicedCellSize) / SlicedCellSize - 1;
+		int curDivisionX = (cell.x + (BaseTileMax.x - BaseTileMin.x) - BaseTileMax.x) / SlicedCellWidthSize;
+		int curDivisionY = (cell.y + (BaseTileMax.y - BaseTileMin.y) - BaseTileMax.y) / SlicedCellHeightSize;
 
 		return new Vector2Int(curDivisionX, curDivisionY);
     }
 
     public Vector2Int GetCurTileMap(Pos pos)
     {
-        return GetCurTileMap(Pos2Cell(pos));
+        return GetCollapsedTilesIndex(Pos2Cell(pos));
     }
 
-    public void ToggleDivision(Vector2Int tileIndex)
+    public void ToggleDivision(Vector3Int pos, int range = 10)
 	{
-		if (curActiveBaseTile != null) curActiveBaseTile.gameObject.SetActive(false);
-		if (curActiveEvnTile!= null) curActiveEvnTile.gameObject.SetActive(false);
+		HashSet<Tilemap> baseTileset = new HashSet<Tilemap>();
+		HashSet<Tilemap> EnvTileset = new HashSet<Tilemap>();
 
-		curActiveBaseTile = slicedBaseTile[tileIndex.y, tileIndex.x];
-		curActiveEvnTile = slicedEnvTile[tileIndex.y, tileIndex.x];
+		for(int dy = pos.y - range; dy <= pos.y + range; dy++)
+        {
+			for(int dx = pos.x - range; dx <= pos.x + range; dx++)
+            {
+				Vector2Int tileIdx = GetCollapsedTilesIndex(new Vector3Int(dx, dy, 0));
+				if(tileIdx.x >= 0 && tileIdx.x < slicedEnvTile.GetLength(1) &&
+					tileIdx.y >= 0 && tileIdx.y < slicedEnvTile.GetLength(0))
+                {
+					baseTileset.Add(slicedBaseTile[tileIdx.y, tileIdx.x]);
+					EnvTileset.Add(slicedEnvTile[tileIdx.y, tileIdx.x]);
+				}
+            }
+        }
 
-		curActiveBaseTile.gameObject.SetActive(true);
-		curActiveEvnTile.gameObject.SetActive(true);
+		List<Tilemap> prevBaseTiles = activeBaseTileList.Except(baseTileset).ToList();
+		List<Tilemap> prevEnvTiles = activeEnvTileList.Except(EnvTileset).ToList();
+		List<Tilemap> newBaseTiles = baseTileset.Except(activeBaseTileList).ToList();
+		List<Tilemap> newEnvTiles = EnvTileset.Except(activeEnvTileList).ToList();
+
+        foreach (Tilemap tm in prevBaseTiles) tm.gameObject.SetActive(false);
+        foreach (Tilemap tm in prevEnvTiles) tm.gameObject.SetActive(false);
+        foreach (Tilemap tm in newBaseTiles) tm.gameObject.SetActive(true);
+        foreach (Tilemap tm in newEnvTiles) tm.gameObject.SetActive(true);
+
+		activeBaseTileList = baseTileset.ToList();
+		activeEnvTileList = EnvTileset.ToList();
 	}
 
 
@@ -395,13 +386,13 @@ public class MapManager
 		return cells;
 	}
 
-	Pos Cell2Pos(Vector3Int cell)
+	public Pos Cell2Pos(Vector3Int cell)
 	{
 		// CellPos -> ArrayPos
 		return new Pos(MaxY - cell.y, cell.x - MinX);
 	}
 
-	Vector3Int Pos2Cell(Pos pos)
+	public Vector3Int Pos2Cell(Pos pos)
 	{
 		// ArrayPos -> CellPos
 		return new Vector3Int(pos.X + MinX, MaxY - pos.Y, 0);

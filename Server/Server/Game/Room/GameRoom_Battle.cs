@@ -25,7 +25,45 @@ namespace Server.Game
 					return;
 			}
 
-			info.PosInfo.State = movePosInfo.State;
+			// 포탈 위치 했는지 체크
+			if(Map.IsPrevProtal(new Vector2Int(movePosInfo.PosX, movePosInfo.PosY)))
+            {
+                Console.WriteLine("PrevPortal!!");
+
+                GameRoom nextRoom = GameLogic.Instance.Find(RoomId - 1);
+                if (nextRoom != null)
+                {
+					LeaveGame(player.Id);
+					player.CellPos = new Vector2Int(-6, 22);
+                    nextRoom.EnterGame(player, randomPos: false);
+                    Console.WriteLine("이전 방으로 이동");
+					return;
+                }
+                else
+                {
+                    Console.WriteLine("이전 방이 없습니다.");
+                }
+            }
+            if (Map.IsNextProtal(new Vector2Int(movePosInfo.PosX, movePosInfo.PosY)))
+            {
+                Console.WriteLine("NextPortal!!");
+
+                GameRoom nextRoom = GameLogic.Instance.Find(RoomId + 1);
+                if (nextRoom != null)
+                {
+					LeaveGame(player.Id);
+					player.CellPos = new Vector2Int(-11, -6);
+					nextRoom.EnterGame(player, randomPos: false);
+					Console.WriteLine("다음 방으로 이동");
+					return;
+                }
+                else
+                {
+                    Console.WriteLine("다음 방이 없습니다.");
+                }
+            }
+
+            info.PosInfo.State = movePosInfo.State;
 			info.PosInfo.MoveDir = movePosInfo.MoveDir;
 			Map.ApplyMove(player, new Vector2Int(movePosInfo.PosX, movePosInfo.PosY));
 
@@ -34,7 +72,7 @@ namespace Server.Game
 			resMovePacket.ObjectId = player.Info.ObjectId;
 			resMovePacket.PosInfo = movePacket.PosInfo;
 
-			Broadcast(player.CellPos, resMovePacket);
+			BroadCastVision(player.CellPos, resMovePacket);
 		}
 
 		public void HandleSkill(Player player, C_Skill skillPacket)
@@ -51,7 +89,7 @@ namespace Server.Game
 			S_Skill skill = new S_Skill() { Info = new SkillInfo() };
 			skill.ObjectId = info.ObjectId;
 			skill.Info.SkillId = skillPacket.Info.SkillId;
-			Broadcast(player.CellPos, skill);
+			BroadCastVision(player.CellPos, skill);
 
 			Data.Skill skillData = null;
 			if (DataManager.SkillDict.TryGetValue(skillPacket.Info.SkillId, out skillData) == false)
@@ -88,5 +126,17 @@ namespace Server.Game
 			}
 		}
 
-	}
+        public void HandleChat(Player player, C_Chat chatPacket)
+        {
+            if (player == null)
+                return;
+
+            // 다른 플레이어한테도 알려준다
+            S_Chat resChatPacket = new S_Chat();
+			resChatPacket.ObjectId = player.Info.ObjectId;
+			resChatPacket.Message = chatPacket.Message;
+
+			BroadCastRoom(resChatPacket);
+        }
+    }
 }

@@ -10,7 +10,7 @@ namespace Server.Game
 {
 	public partial class GameRoom : JobSerializer
 	{
-		public const int VisionCells = 5;
+		public const int VisionCells = 7;
 
 		public int RoomId { get; set; }
 
@@ -64,7 +64,7 @@ namespace Server.Game
 			}
 
 			// TEMP
-			for (int i = 0; i < 500; i++)
+			for (int i = 0; i < Map.RespawnList.Count() /2; i++)
 			{
 				Monster monster = ObjectManager.Instance.Add<Monster>();
 				monster.Init(1);
@@ -84,22 +84,32 @@ namespace Server.Game
 			if (gameObject == null)
 				return;
 
+			GameObjectType type = ObjectManager.GetObjectTypeById(gameObject.Id);
+
 			if (randomPos)
 			{
-				Vector2Int respawnPos;
-				while (true)
-				{
-					respawnPos.x = _rand.Next(Map.MinX, Map.MaxX + 1);
-					respawnPos.y = _rand.Next(Map.MinY, Map.MaxY + 1);
-					if (Map.Find(respawnPos) == null)
+				if(type == GameObjectType.Monster)
+                {
+                    Vector2Int? respanPos = Map.GetAvailiableGenSpot();
+                    if (respanPos != null)
+                        gameObject.CellPos = (Vector2Int)respanPos;
+                }
+				else
+                {
+					Vector2Int respawnPos;
+					while (true)
 					{
-						gameObject.CellPos = respawnPos;
-						break;
+						respawnPos.x = _rand.Next(Map.MinX, Map.MaxX + 1);
+						respawnPos.y = _rand.Next(Map.MinY, Map.MaxY + 1);
+						if (Map.CanGo(respawnPos) == true)
+						{
+							gameObject.CellPos = respawnPos;
+							break;
+						}
 					}
-				}
-			}
+                }
+            }
 
-			GameObjectType type = ObjectManager.GetObjectTypeById(gameObject.Id);
 
 			if (type == GameObjectType.Player)
 			{
@@ -116,6 +126,7 @@ namespace Server.Game
 				{
 					S_EnterGame enterPacket = new S_EnterGame();
 					enterPacket.Player = player.Info;
+					enterPacket.MapId = RoomId;
 					player.Session.Send(enterPacket);
 
 					player.Vision.Update();
@@ -146,7 +157,7 @@ namespace Server.Game
 			{
 				S_Spawn spawnPacket = new S_Spawn();
 				spawnPacket.Objects.Add(gameObject.Info);
-				Broadcast(gameObject.CellPos, spawnPacket);
+				BroadCastVision(gameObject.CellPos, spawnPacket);
 			}
 		}
 
@@ -203,7 +214,7 @@ namespace Server.Game
 			{
 				S_Despawn despawnPacket = new S_Despawn();
 				despawnPacket.ObjectIds.Add(objectId);
-				Broadcast(cellPos, despawnPacket);
+				BroadCastVision(cellPos, despawnPacket);
 			}
 		}
 
@@ -242,24 +253,40 @@ namespace Server.Game
 			return null;
 		}
 
-		public void Broadcast(Vector2Int pos, IMessage packet)
+		public int BroadCastVision(Vector2Int pos, IMessage packet)
 		{
 			List<Zone> zones = GetAdjacentZones(pos);
 
-			foreach (Player p in zones.SelectMany(z => z.Players))
-			{
-				int dx = p.CellPos.x - pos.x;
-				int dy = p.CellPos.y - pos.y;
-				if (Math.Abs(dx) > GameRoom.VisionCells)
-					continue;
-				if (Math.Abs(dy) > GameRoom.VisionCells)
-					continue;
+			for(int i =0; i< zones.Count; i++)
+            {
+				foreach(Player p in zones[i].Players)
+                {
+                    int dx = p.CellPos.x - pos.x;
+                    int dy = p.CellPos.y - pos.y;
+                    if (Math.Abs(dx) > GameRoom.VisionCells)
+                        continue;
+                    if (Math.Abs(dy) > GameRoom.VisionCells)
+                        continue;
 
-				p.Session.Send(packet);
-			}
+                    p.Session.Send(packet);
+                }
+            }
+
+			return zones.Select(z => z.Players).Count();
 		}
 
-		public List<Player> GetAdjacentPlayers(Vector2Int pos, int range)
+        public int BroadCastRoom(IMessage packet)
+        {
+            foreach (var pair in _players)
+            {
+				Player p = pair.Value;
+				p.Session.Send(packet);
+			}
+
+			return _players.Count();
+        }
+
+        public List<Player> GetAdjacentPlayers(Vector2Int pos, int range)
 		{
 			List<Zone> zones = GetAdjacentZones(pos, range);
 			return zones.SelectMany(z => z.Players).ToList();
