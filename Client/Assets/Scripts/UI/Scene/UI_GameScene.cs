@@ -9,6 +9,7 @@ public class UI_GameScene : UI_Scene
     public UI_FriendList FriendUI { get; private set; }
     public ChatScroll chatUI { get; private set; }
     public UI_GameInfo gameInfo{ get; private set; }
+    public UI_Boss bossUI { get; private set; }
 
     public override void Init()
 	{
@@ -19,11 +20,13 @@ public class UI_GameScene : UI_Scene
         FriendUI = GetComponentInChildren<UI_FriendList>();
         chatUI = GetComponentInChildren<ChatScroll>();
         gameInfo = GetComponentInChildren<UI_GameInfo>();
+        bossUI = GetComponentInChildren<UI_Boss>();
 
         StatUI.gameObject.SetActive(false);
         InvenUI.gameObject.SetActive(false);
         FriendUI.gameObject.SetActive(false);
         chatUI.gameObject.SetActive(true);
         gameInfo.gameObject.SetActive(true);
+        bossUI.gameObject.SetActive(false);
     }
 }

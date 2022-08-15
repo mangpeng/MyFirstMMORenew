@@ -52,12 +52,19 @@ namespace Server.Game
 		{
 			Info.PosInfo = PosInfo;
 			Info.StatInfo = Stat;
+
+			SetType();
 		}
 
 		public virtual void Update()
 		{
 
 		}
+
+		public virtual void SetType()
+        {
+
+        }
 
 		public Vector2Int CellPos
 		{
@@ -118,14 +125,26 @@ namespace Server.Game
 			if (Room == null)
 				return;
 
+			
 			damage = Math.Max(damage - TotalDefence, 0);
-			Stat.Hp = Math.Max(Stat.Hp - damage, 0);
+
+            if (ObjectType == GameObjectType.Boss)
+            {
+                if (damage < 50)
+                    damage = 1;
+            }
+
+
+            Stat.Hp = Math.Max(Stat.Hp - damage, 0);
+
 
 			S_ChangeHp changePacket = new S_ChangeHp();
 			changePacket.ObjectId = Id;
 			changePacket.Hp = Stat.Hp;
 			Room.BroadCastVision(CellPos, changePacket);
 
+            Console.WriteLine(damage);
+            Console.WriteLine(Stat.Hp);
 			if (Stat.Hp <= 0)
 			{
 				OnDead(attacker);

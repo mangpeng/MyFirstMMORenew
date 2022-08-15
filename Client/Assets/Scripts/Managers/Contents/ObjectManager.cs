@@ -64,15 +64,15 @@ public class ObjectManager
 		}
         else if (objectType == GameObjectType.Boss)
         {
-            GameObject go = Managers.Resource.Instantiate("Creature/Monster");
+            GameObject go = Managers.Resource.Instantiate("Creature/Boss");
             go.name = info.Name;
             _objects.Add(info.ObjectId, go);
 
-            MonsterController mc = go.GetComponent<MonsterController>();
-            mc.Id = info.ObjectId;
-            mc.PosInfo = info.PosInfo;
-            mc.Stat = info.StatInfo;
-            mc.SyncPos();
+            BossController bc = go.GetComponent<BossController>();
+            bc.Id = info.ObjectId;
+            bc.PosInfo = info.PosInfo;
+            bc.Stat = info.StatInfo;
+            bc.SyncPos();
         }
         else if (objectType == GameObjectType.Projectile)
 		{

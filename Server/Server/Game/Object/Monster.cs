@@ -14,11 +14,17 @@ namespace Server.Game
 
 		public Monster()
 		{
-			ObjectType = GameObjectType.Monster;
 		}
 
-		public virtual void Init(int templateId)
+        public override void SetType()
+        {
+			ObjectType = GameObjectType.Monster;
+        }
+
+
+        public virtual void Init(int templateId)
 		{
+
 			TemplateId = templateId;
 
 			MonsterData monsterData = null;
@@ -123,7 +129,7 @@ namespace Server.Game
 			BroadcastMove();
 		}
 
-		void BroadcastMove()
+		protected void BroadcastMove()
 		{
 			// 다른 플레이어한테도 알려준다
 			S_Move movePacket = new S_Move();

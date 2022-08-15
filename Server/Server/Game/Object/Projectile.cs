@@ -11,10 +11,15 @@ namespace Server.Game
 
 		public Projectile()
 		{
-			ObjectType = GameObjectType.Projectile;
+			
 		}
 
-		public override void Update()
+        public override void SetType()
+        {
+            ObjectType = GameObjectType.Projectile;
+        }
+
+        public override void Update()
 		{
 
 		}

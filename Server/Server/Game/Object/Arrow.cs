@@ -9,7 +9,8 @@ namespace Server.Game
 	{
 		public GameObject Owner { get; set; }
 
-		public override void Update()
+
+        public override void Update()
 		{
 			if (Data == null || Data.projectile == null || Owner == null || Room == null)
 				return;

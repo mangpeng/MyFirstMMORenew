@@ -1,5 +1,43 @@
 {
   "monsters": [
+   {
+        "id": "0",
+        "name": "불의정령",
+        "stat": {
+            "level": "99",
+            "maxHp": "2000",
+            "attack": "500",
+            "speed": "1.0",
+            "totalExp": "10"
+        },
+        "rewards": [
+            {
+                "probability": "10",
+                "itemId": "1",
+                "count": "1"
+            },
+            {
+                "probability": "10",
+                "itemId": "2",
+                "count": "1"
+            },
+            {
+                "probability": "10",
+                "itemId": "100",
+                "count": "1"
+            },
+            {
+                "probability": "10",
+                "itemId": "101",
+                "count": "1"
+            },
+            {
+                "probability": "10",
+                "itemId": "200",
+                "count": "5"
+            }
+        ]
+    },
     {
         "id": "1",
         "name": "도플갱어",

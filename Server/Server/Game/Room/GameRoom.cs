@@ -1,15 +1,12 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
-using Server.Data;
-using Server.Game.Object;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Server.Game
 {
-	public enum RoomType
+    public enum RoomType
     {
 		Normal,
 		Boss
@@ -85,8 +82,9 @@ namespace Server.Game
             if (type == RoomType.Boss)
             {
 				Boss boss = ObjectManager.Instance.Add<Boss>();
-				boss.Init(1);
-				boss.CellPos = new Vector2Int(5, 5);
+				boss.Init(0);
+				// TODO 보스 시작 위치 하드 코딩되어 있음
+				boss.CellPos = new Vector2Int(6, 12);
 				EnterGame(boss, false);
             }
         }

@@ -49,6 +49,9 @@ class PacketHandler
 		}
 	}
 
+
+
+
 	public static void S_MoveHandler(PacketSession session, IMessage packet)
 	{
 		S_Move movePacket = packet as S_Move;
@@ -98,6 +101,11 @@ class PacketHandler
 		if (cc != null)
 		{
 			cc.Hp = changePacket.Hp;
+			if(ObjectManager.GetObjectTypeById(cc.Id) == GameObjectType.Boss)
+            {
+                UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+                gameSceneUI.bossUI.ChangeHp(changePacket.Hp);
+            }
 		}
 	}
 
@@ -117,6 +125,8 @@ class PacketHandler
 		}
 	}
 
+	
+	
 	public static void S_ConnectedHandler(PacketSession session, IMessage packet)
 	{
 		Debug.Log("S_ConnectedHandler");
