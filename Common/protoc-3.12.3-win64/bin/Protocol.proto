@@ -57,6 +57,7 @@ enum SkillType {
   SKILL_NONE = 0;
   SKILL_AUTO = 1;
   SKILL_PROJECTILE = 2;
+  SKILL_SPLASH = 3;
 }
 
 enum PlayerServerState {
@@ -230,6 +231,8 @@ message StatInfo {
 
 message SkillInfo {
   int32 skillId = 1;
+  int32 cellPosX = 2;
+  int32 cellPosY = 3;
 }
 
 message ItemInfo {

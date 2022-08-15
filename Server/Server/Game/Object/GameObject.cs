@@ -128,10 +128,14 @@ namespace Server.Game
 			
 			damage = Math.Max(damage - TotalDefence, 0);
 
+			// todo 보스가 입는 데미지 임시로 임의값 세팅
             if (ObjectType == GameObjectType.Boss)
             {
                 if (damage < 50)
-                    damage = 1;
+                {
+					Random rnd = new Random();
+					damage = rnd.Next(95, 105);
+                }
             }
 
 

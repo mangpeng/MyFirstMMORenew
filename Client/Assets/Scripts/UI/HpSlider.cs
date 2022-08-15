@@ -28,8 +28,6 @@ public class HpSlider : MonoBehaviour
         _sliderFg.fillAmount = (float)_curHp / _maxHp;
 
         _valueText.text = $"{_curHp}/{_maxHp}";
-
-        Debug.Log("설마 여기?");
     }
 
     public void ResetValue()

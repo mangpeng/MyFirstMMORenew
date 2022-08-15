@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.Protocol;
+using Server.Data;
 using System;
 using System.Collections.Generic;
 
@@ -84,10 +85,13 @@ namespace Server.Game
                     return;
                 }
 
+                Skill skillData = null;
+                DataManager.SkillDict.TryGetValue(3, out skillData);
+
                 // 스킬이 아직 사용 가능한지
                 Vector2Int dir = (_target.CellPos - CellPos);
                 int dist = dir.cellDistFromZero;
-                bool canUseSkill = (dist <= _defaultSkillRange);
+                bool canUseSkill = (dist <= skillData.splash.maxRange);
                 if (canUseSkill == false)
                 {
                     State = CreatureState.Idle;
@@ -96,9 +100,6 @@ namespace Server.Game
                 }
 
 
-                //Skill skillData = null;
-                //DataManager.SkillDict.TryGetValue(1, out skillData);
-
                 Console.WriteLine("스킬 사용");
 
                 // 데미지 판정
@@ -106,14 +107,16 @@ namespace Server.Game
                 _target.OnDamaged(this, 15);
 
                 // 스킬 사용 Broadcast
-                //S_Skill skill = new S_Skill() { Info = new SkillInfo() };
-                //skill.ObjectId = Id;
-                //skill.Info.SkillId = skillData.id;
-                //Room.BroadCastVision(CellPos, skill);
+                S_Skill skill = new S_Skill() { Info = new SkillInfo() };
+                skill.ObjectId = Id;
+                skill.Info.SkillId = skillData.id;
+                skill.Info.CellPosX = _target.CellPos.x;
+                skill.Info.CellPosY = _target.CellPos.y;
+                Room.BroadCastVision(CellPos, skill);
 
                 // 스킬 쿨타임 적용
-                //int coolTick = (int)(1000 * skillData.cooldown);
-                //_coolTick = Environment.TickCount64 + coolTick;
+                int coolTick = (int)(1000 * skillData.cooldown);
+                _coolTick = Environment.TickCount64 + coolTick;
             }
 
             if (_coolTick > Environment.TickCount64)
@@ -121,6 +124,39 @@ namespace Server.Game
 
             _coolTick = 0;
         }
+
+
+        public override void OnDead(GameObject attacker)
+        {
+            if (job != null)
+            {
+                job.Cancel = true;
+                job = null;
+            }
+
+            if (Room == null)
+                return;
+
+            S_Die diePacket = new S_Die();
+            diePacket.ObjectId = Id;
+            diePacket.AttackerId = attacker.Id;
+            Room.BroadCastVision(CellPos, diePacket);
+
+            GameRoom room = Room;
+            room.LeaveGame(Id);
+
+            //GameObject owner = attacker.GetOwner();
+            //if (owner.ObjectType == GameObjectType.Player)
+            //{
+            //    RewardData rewardData = GetRandomReward();
+            //    if (rewardData != null)
+            //    {
+            //        Player player = (Player)owner;
+            //        DbTransaction.RewardPlayer(player, rewardData, Room);
+            //    }
+            //}
+        }
+
 
         private long GetRanIdleDealyTime()
         {

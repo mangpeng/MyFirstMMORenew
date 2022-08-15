@@ -16,6 +16,7 @@ namespace Data
 		public int damage;
 		public SkillType skillType;
 		public ProjectileInfo projectile;
+		public SplashInfo splash;
 	}
 
 	public class ProjectileInfo
@@ -26,7 +27,15 @@ namespace Data
 		public string prefab;
 	}
 
-	[Serializable]
+    public class SplashInfo
+    {
+        public string name;
+        public float warningDelay;
+        public int minRange;
+        public int maxRange;
+    }
+
+    [Serializable]
 	public class SkillData : ILoader<int, Skill>
 	{
 		public List<Skill> skills = new List<Skill>();

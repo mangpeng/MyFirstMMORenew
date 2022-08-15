@@ -10,7 +10,8 @@ public class BossController2 : CreatureController
 
 	protected override void Init()
 	{
-		//base.Init();
+        //base.Init();
+        gameObject.Blink(0f, 0.2f, 6, Color.red);
 	}
 
 	protected override void UpdateIdle()
@@ -24,9 +25,9 @@ public class BossController2 : CreatureController
 		//Managers.Resource.Destroy(gameObject);
 	}
 
-	public override void UseSkill(int skillId)
+	public override void UseSkill(SkillInfo info)
 	{
-		if (skillId == 1)
+		if (info.SkillId == 1)
 		{
 			State = CreatureState.Skill;
 		}

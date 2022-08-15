@@ -24,9 +24,9 @@ public class MonsterController : CreatureController
 		//Managers.Resource.Destroy(gameObject);
 	}
 
-	public override void UseSkill(int skillId)
+	public override void UseSkill(SkillInfo info)
 	{
-		if (skillId == 1)
+		if (info.SkillId == 1)
 		{
 			State = CreatureState.Skill;
 		}

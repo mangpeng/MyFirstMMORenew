@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,4 +21,34 @@ public static class Extension
 	{
 		return go != null && go.activeSelf;
 	}
+
+	public static void Blink(this GameObject go, float toAlpha, float duration, int count, Color startColor, Action after = null)
+    {
+		DOTween.Kill(go);
+
+		SpriteRenderer[] srr = go.GetComponentsInChildren<SpriteRenderer>();
+
+		bool aftterCall = false;
+
+		foreach (var s in srr)
+			s.color = startColor;
+
+        foreach (var s in srr)
+        {
+			SpriteRenderer temp = s;
+			s.DOFade(toAlpha, duration).SetLoops(count, LoopType.Yoyo).SetEase(Ease.InSine)
+				.onComplete += () =>
+                {
+					temp.color = startColor;
+
+					if (aftterCall)
+                        return;
+                    aftterCall = true;
+					
+
+					after?.Invoke();
+                };
+        }
+    }
+
 }

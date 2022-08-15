@@ -107,9 +107,13 @@ namespace Server
 			DataManager.LoadData();
 		
 			GameLogic.Instance.Push(() => { 
-				GameLogic.Instance.Add(1, RoomType.Normal);
-				GameLogic.Instance.Add(2, RoomType.Normal);
-				GameLogic.Instance.Add(3, RoomType.Boss);
+				GameLogic.Instance.Add(1, RoomType.Normal, 7);
+				GameLogic.Instance.Add(2, RoomType.Normal, 7);
+
+				// TODO
+				// 보스전에서 vision 영역 작을 경우 스킬 쓰는 보스몹이 vision out 되면서 despawn 되면 
+				// 사용하던 스킬 gameobject를 컨트롤 할수 없어서 임시로 visionCells를 키워둠
+				GameLogic.Instance.Add(3, RoomType.Boss, 30);
 			});
 
 			// DNS (Domain Name System)

@@ -72,6 +72,14 @@ public class MapManager
 
     public void LoadMap(int mapId, int divideCount = 1)
     {
+		// 보스 맵이 아닌 경우 Boss UI 비활성화
+		if(mapId != 3)
+        {
+            UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+            if (gameSceneUI != null && gameSceneUI.bossUI.gameObject.activeSelf)
+                gameSceneUI.bossUI.gameObject.SetActive(false);
+        }
+
 		Id = mapId;
 		DivideCount = divideCount;
 
@@ -401,5 +409,24 @@ public class MapManager
 		return new Vector3Int(pos.X + MinX, MaxY - pos.Y, 0);
 	}
 
-	#endregion
+
+	public Vector3 Pos2World(Pos pos)
+    {
+		Vector3 temp = CurrentGrid.CellToWorld(Pos2Cell(pos));
+		temp.x += 0.5f;
+		temp.y += 0.5f;
+
+		return temp;
+	}
+
+    public Vector3 Cell2World(Vector3Int cell)
+    {
+        Vector3 temp = CurrentGrid.CellToWorld(cell);
+		temp.x += 0.5f;
+        temp.y += 0.5f;
+
+        return temp;
+    }
+
+    #endregion
 }

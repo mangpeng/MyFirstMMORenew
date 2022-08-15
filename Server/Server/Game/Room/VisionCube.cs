@@ -23,7 +23,7 @@ namespace Server.Game.Room
 
 			HashSet<GameObject> objects = new HashSet<GameObject>();
 
-			List<Zone> zones = Owner.Room.GetAdjacentZones(Owner.CellPos);
+			List<Zone> zones = Owner.Room.GetAdjacentZones(Owner.CellPos, Owner.Room.VisionCells);
 
 			Vector2Int cellPos = Owner.CellPos;
 			foreach (Zone zone in zones)
@@ -32,9 +32,9 @@ namespace Server.Game.Room
 				{
 					int dx = player.CellPos.x - cellPos.x;
 					int dy = player.CellPos.y - cellPos.y;
-					if (Math.Abs(dx) > GameRoom.VisionCells)
+					if (Math.Abs(dx) > Owner.Room.VisionCells)
 						continue;
-					if (Math.Abs(dy) > GameRoom.VisionCells)
+					if (Math.Abs(dy) > Owner.Room.VisionCells)
 						continue;
 					objects.Add(player);
 				}
@@ -43,20 +43,31 @@ namespace Server.Game.Room
 				{
 					int dx = monster.CellPos.x - cellPos.x;
 					int dy = monster.CellPos.y - cellPos.y;
-					if (Math.Abs(dx) > GameRoom.VisionCells)
+					if (Math.Abs(dx) > Owner.Room.VisionCells)
 						continue;
-					if (Math.Abs(dy) > GameRoom.VisionCells)
+					if (Math.Abs(dy) > Owner.Room.VisionCells)
 						continue;
 					objects.Add(monster);
 				}
 
-				foreach (Projectile projectile in zone.Projectiles)
+                foreach (Boss boss in zone.Bosses)
+                {
+                    int dx = boss.CellPos.x - cellPos.x;
+                    int dy = boss.CellPos.y - cellPos.y;
+                    if (Math.Abs(dx) > Owner.Room.VisionCells)
+                        continue;
+                    if (Math.Abs(dy) > Owner.Room.VisionCells)
+                        continue;
+                    objects.Add(boss);
+                }
+
+                foreach (Projectile projectile in zone.Projectiles)
 				{
 					int dx = projectile.CellPos.x - cellPos.x;
 					int dy = projectile.CellPos.y - cellPos.y;
-					if (Math.Abs(dx) > GameRoom.VisionCells)
+					if (Math.Abs(dx) > Owner.Room.VisionCells)
 						continue;
-					if (Math.Abs(dy) > GameRoom.VisionCells)
+					if (Math.Abs(dy) > Owner.Room.VisionCells)
 						continue;
 					objects.Add(projectile);
 				}
@@ -77,6 +88,7 @@ namespace Server.Game.Room
 			if (added.Count > 0)
 			{
 				S_Spawn spawnPacket = new S_Spawn();
+                Console.WriteLine($"spawn {added.Count}");
 
 				foreach (GameObject gameObject in added)
 				{

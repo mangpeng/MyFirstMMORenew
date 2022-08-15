@@ -1,9 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Util
 {
+    public static void RandomAction(params Action[] acitons)
+    {
+        int idx = UnityEngine.Random.Range(0, acitons.Length);
+        acitons[idx]?.Invoke();
+    }
+
     public static T GetOrAddComponent<T>(GameObject go) where T : UnityEngine.Component
     {
         T component = go.GetComponent<T>();

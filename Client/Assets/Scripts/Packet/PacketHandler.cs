@@ -1,4 +1,6 @@
-﻿using Google.Protobuf;
+﻿using Data;
+using DG.Tweening;
+using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using ServerCore;
 using System.Collections;
@@ -85,7 +87,7 @@ class PacketHandler
 		CreatureController cc = go.GetComponent<CreatureController>();
 		if (cc != null)
 		{
-			cc.UseSkill(skillPacket.Info.SkillId);
+			cc.UseSkill(skillPacket.Info);
 		}
 	}
 
@@ -105,7 +107,16 @@ class PacketHandler
             {
                 UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
                 gameSceneUI.bossUI.ChangeHp(changePacket.Hp);
-            }
+				cc.gameObject.Blink(0.3f, 0.1f, 4, Color.white);
+
+				Transform target = cc.transform.GetChild(0);
+				Vector3 originScale = target.localScale;
+				cc.transform.GetChild(0).DOScale(originScale * 1.05f, 0.1f).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InSine)
+					.onComplete += () =>
+                    {
+						cc.transform.GetChild(0).localScale = originScale;
+                    };
+			}
 		}
 	}
 

@@ -178,7 +178,16 @@ namespace Server.Game
 
 			// Zone
 			Zone zone = gameObject.Room.GetZone(gameObject.CellPos);
-			zone.Remove(gameObject);
+
+			if(gameObject.ObjectType == GameObjectType.Boss)
+            {
+				zone.Remove(gameObject);
+			}
+            else
+            {
+				zone.Remove(gameObject);
+
+            }
 
 			{
 				int x = posInfo.PosX - MinX;
@@ -240,7 +249,18 @@ namespace Server.Game
 					after.Monsters.Add(monster);
 				}
 			}
-			else if (type == GameObjectType.Projectile)
+            else if (type == GameObjectType.Boss)
+            {
+                Boss boss = (Boss)gameObject;
+                Zone now = gameObject.Room.GetZone(gameObject.CellPos);
+                Zone after = gameObject.Room.GetZone(dest);
+                if (now != after)
+                {
+                    now.Bosses.Remove(boss);
+                    after.Bosses.Add(boss);
+                }
+            }
+            else if (type == GameObjectType.Projectile)
 			{
 				Projectile projectile = (Projectile)gameObject;
 				Zone now = gameObject.Room.GetZone(gameObject.CellPos);
