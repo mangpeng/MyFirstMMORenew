@@ -46,11 +46,11 @@ namespace Server.Data
 	}
 
     public class SplashInfo
-	{
+    {
         public string name;
-		public float warningDelay;
-        public int minRange;
-        public int maxRange;
+        public float warningDelay;
+        public int hitCount;
+        public float hitInterval;
     }
 
     [Serializable]

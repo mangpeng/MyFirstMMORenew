@@ -118,6 +118,8 @@ class PacketHandler
                     };
 			}
 		}
+
+		Debug.Log("defeat");
 	}
 
 	public static void S_DieHandler(PacketSession session, IMessage packet)
@@ -322,7 +324,6 @@ class PacketHandler
     {
         S_UsePotion usePotionPacket = (S_UsePotion)packet;
 		Debug.Log($"S_UsePotion {usePotionPacket.ObjectId}");
-
 		GameObject go = Managers.Object.FindById(usePotionPacket.ObjectId);
         if (go == null)
             return;

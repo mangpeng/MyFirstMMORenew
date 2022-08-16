@@ -163,7 +163,6 @@ namespace Server.Game
 			BroadCastRoom(resChatPacket);
         }
 
-
         public void HandleUsePotion(Player player, C_UsePotion usePotionPacket)
         {
             if (player == null)
@@ -205,9 +204,8 @@ namespace Server.Game
                             }
                             {
 								S_UsePotion usePotionOkPacket = new S_UsePotion();
-								usePotionPacket.ObjectId = player.Id;
-                                Console.WriteLine($"S_UsePotion {usePotionPacket.ObjectId}");
-								player.Session.Send(usePotionOkPacket);
+								usePotionOkPacket.ObjectId = player.Info.ObjectId;
+								BroadCastVision(player.CellPos, usePotionOkPacket);
 							}
                         }
 						else

@@ -156,7 +156,7 @@ public class PlayerController : CreatureController
 
     public void ShowRecoverEffect()
     {
-		GameObject effect = Managers.Resource.Instantiate("Prefabs/Particle", transform);
-		effect.transform.localPosition = new Vector3(0, -1, 0);
+		GameObject effect = Managers.Resource.Instantiate("Particle/RecoverEffect", transform);
+		effect.transform.localPosition = new Vector3(0, -0.3f, 0);
     }
 }

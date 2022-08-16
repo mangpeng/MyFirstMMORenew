@@ -6,8 +6,8 @@
         "stat": {
             "level": "99",
             "maxHp": "2000",
-            "attack": "500",
-            "speed": "1.0",
+            "attack": "10",
+            "speed": "3.0",
             "totalExp": "10"
         },
         "rewards": [

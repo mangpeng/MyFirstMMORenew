@@ -378,6 +378,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2204840156229740310}
     m_Modifications:
+    - target: {fileID: 859217142867384704, guid: 8048dde9ad2c959409f7da1b29ee8323,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4c08ab37f63684943b7512f974ef85d6,
+        type: 3}
+    - target: {fileID: 1048607749716947320, guid: 8048dde9ad2c959409f7da1b29ee8323,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -203.7
+      objectReference: {fileID: 0}
     - target: {fileID: 1819924105063899316, guid: 8048dde9ad2c959409f7da1b29ee8323,
         type: 3}
       propertyPath: m_Pivot.x
@@ -508,6 +519,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillActive
       objectReference: {fileID: 0}
+    - target: {fileID: 5115853842991125794, guid: 8048dde9ad2c959409f7da1b29ee8323,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -203.7
+      objectReference: {fileID: 0}
     - target: {fileID: 6200828251407525253, guid: 8048dde9ad2c959409f7da1b29ee8323,
         type: 3}
       propertyPath: m_Color.a
@@ -532,6 +548,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FillClockwise
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220073878710188501, guid: 8048dde9ad2c959409f7da1b29ee8323,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 886d84d58b944984da656eb66835f2f2,
+        type: 3}
+    - target: {fileID: 6738938475318833592, guid: 8048dde9ad2c959409f7da1b29ee8323,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -203.7
       objectReference: {fileID: 0}
     - target: {fileID: 7974497313468071035, guid: 8048dde9ad2c959409f7da1b29ee8323,
         type: 3}

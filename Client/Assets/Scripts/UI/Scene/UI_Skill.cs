@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class UI_Skill : UI_Base
 {
-    const int POTION_COOL_TIME = 3;
+    const float POTION_COOL_TIME = 0.5f;
 
     public enum Images
     {

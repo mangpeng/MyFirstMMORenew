@@ -7,6 +7,15 @@ namespace Server.Game
 {
     public class Boss : Monster
     {
+        public enum SplashSkillType
+        {
+            None = 0,
+            Normal,
+            Splash_Cross,
+            Splash_Diagnal,
+            Splash_Area,
+        }
+
         public Boss() 
         {
             
@@ -20,12 +29,14 @@ namespace Server.Game
         const int IDLE_DELAY_MIN_TIME = 2;
         const int IDLE_DELAY_MAX_TIME = 3;
 
-        const int PATROL_SEARCH_MIN_RANGE = 10;
-        const int PATROL_SEARCH_MAX_RANGE = 20;
+        const int PATROL_SEARCH_MIN_RANGE = 20;
+        const int PATROL_SEARCH_MAX_RANGE = 30;
 
         Player _target;
         int _searchCellDist = 10;
         int _chaseCellDist = 20;
+
+        SplashSkillType _splashType = SplashSkillType.None;
 
         long _nextSearchTick = 0;
         protected override void UpdateIdle()
@@ -37,7 +48,7 @@ namespace Server.Game
             State = CreatureState.Moving;
         }
 
-        int _defaultSkillRange = 4;
+        int _defaultSkillRange = 10;
         long _nextMoveTick = 0;
         protected override void UpdateMoving()
         {
@@ -72,8 +83,32 @@ namespace Server.Game
         }
 
         long _coolTick = 0;
+        const float skillCoolDown = 2;
+        Skill _skillData = null;
+        Vector2Int _targetCellPos;
         protected override void UpdateSkill()
         {
+            if(_splashType != SplashSkillType.None)
+            {
+                switch (_splashType)
+                {
+                    case SplashSkillType.Normal:
+                        PlayNormal();
+                        break;
+                    case SplashSkillType.Splash_Cross:
+                        PlayCross();
+                        break;
+                    case SplashSkillType.Splash_Diagnal:
+                        PlayDiagnal();
+                        break;
+                    case SplashSkillType.Splash_Area:
+                        PlayArea();
+                        break;
+                }
+
+                return;
+            }
+
             if (_coolTick == 0)
             {
                 // 유효한 타겟인지
@@ -85,18 +120,19 @@ namespace Server.Game
                     return;
                 }
 
-                Skill skillData = null;
+        
 
                 // TODO random 스킬 사용
                 Random rnd = new Random();
-                int ranSkillIdx = rnd.Next(3, 6);
-
-                DataManager.SkillDict.TryGetValue(ranSkillIdx, out skillData);
+                int ranSkillIdx = rnd.Next(3, 7);
+                DataManager.SkillDict.TryGetValue(ranSkillIdx, out _skillData);
 
                 // 스킬이 아직 사용 가능한지
                 Vector2Int dir = (_target.CellPos - CellPos);
                 int dist = dir.cellDistFromZero;
-                bool canUseSkill = (dist <= skillData.splash.maxRange);
+
+                // todo 스킬 사용 가능함 범위 10으로 임의 세팅
+                bool canUseSkill = (dist <= 10);
                 if (canUseSkill == false)
                 {
                     State = CreatureState.Idle;
@@ -104,22 +140,20 @@ namespace Server.Game
                     return;
                 }
 
-
-                // 데미지 판정
-                //_target.OnDamaged(this, skillData.damage + TotalAttack);
-                _target.OnDamaged(this, 15);
-
                 // 스킬 사용 Broadcast
                 S_Skill skill = new S_Skill() { Info = new SkillInfo() };
                 skill.ObjectId = Id;
-                skill.Info.SkillId = skillData.id;
+                skill.Info.SkillId = _skillData.id;
                 skill.Info.CellPosX = _target.CellPos.x;
                 skill.Info.CellPosY = _target.CellPos.y;
-                
+
                 Room.BroadCastVision(CellPos, skill);
 
+                _splashType = (SplashSkillType)(_skillData.id - 2);
+                _targetCellPos = _target.CellPos;
+
                 // 스킬 쿨타임 적용
-                int coolTick = (int)(1000 * skillData.cooldown);
+                int coolTick = (int)(1000 * skillCoolDown);
                 _coolTick = Environment.TickCount64 + coolTick;
             }
 
@@ -129,6 +163,226 @@ namespace Server.Game
             _coolTick = 0;
         }
 
+        long _splashSkillDelayTick = 0;
+        long _splashSkillIntervalTick = 0;
+        bool isStartWarningWait = false;
+        bool isStartIntervalWait = false;
+        int elapsedCount = 0;
+
+        private void PlayNormal()
+        {
+            if(isStartWarningWait == false)
+            {
+                isStartWarningWait = true;
+                _splashSkillDelayTick = Environment.TickCount64 + (long)(_skillData.splash.warningDelay * 1000);
+                Console.WriteLine(Environment.TickCount64 / 1000f);
+            }
+
+
+            if (_splashSkillDelayTick > Environment.TickCount64)
+                return;
+
+            Console.WriteLine(Environment.TickCount64 / 1000f);
+
+            int[] dx = { -1, 0, +1 };
+            int[] dy = { -1, 0, +1 };
+            foreach (int x in dx)
+            {
+                foreach (int y in dy)
+                {
+                    Vector2Int pos = new Vector2Int(_targetCellPos.x + x, _targetCellPos.y + y);
+
+                    Player p = Room.FindPlayer(p =>
+                    {
+                        return p.CellPos == pos;
+                    });
+
+                    if(p != null)
+                    {
+                        p.OnDamaged(this, _skillData.damage + TotalAttack);
+                    }
+                }
+            }
+
+            _splashSkillDelayTick = 0;
+            _splashSkillIntervalTick = 0;
+            isStartWarningWait = false;
+            isStartIntervalWait = false;
+            elapsedCount = 0;
+            _splashType = SplashSkillType.None;
+        }
+
+        private void PlayCross()
+        {           
+
+            if(isStartWarningWait == false)
+            {
+                _splashSkillDelayTick = Environment.TickCount64 + (long)(_skillData.splash.warningDelay * 1000);
+                isStartWarningWait = true;
+            }
+
+            if (Environment.TickCount64 < _splashSkillDelayTick)
+                return;
+
+            if (elapsedCount < _skillData.splash.hitCount)
+            {
+                if (isStartIntervalWait == false)
+                {
+                    _splashSkillIntervalTick = Environment.TickCount64 + (long)(_skillData.splash.hitInterval * 1000);
+                    isStartIntervalWait = true;
+                }
+
+                if (Environment.TickCount64 < _splashSkillIntervalTick)
+                    return;
+
+                ++elapsedCount;
+
+                int[] dx = { 0, 0, -1, 1 };
+                int[] dy = { -1, 1, 0, 0 };
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2Int pos = new Vector2Int(CellPos.x + dx[i] * elapsedCount, CellPos.y + dy[i] * elapsedCount);
+                    Console.WriteLine($"splash {pos.x} {pos.y}");
+                    Player p = Room.FindPlayer(p =>
+                    {
+                        return p.CellPos == pos;
+                    });
+
+                    if (p != null)
+                    {
+                        p.OnDamaged(this, _skillData.damage + TotalAttack);
+                    }
+                }
+
+                _splashSkillIntervalTick = Environment.TickCount64 + (long)(_skillData.splash.hitInterval * 1000);
+            }
+            else
+            {
+                _splashSkillDelayTick = 0;
+                _splashSkillIntervalTick = 0;
+                isStartWarningWait = false;
+                isStartIntervalWait = false;
+                elapsedCount = 0;
+                _splashType = SplashSkillType.None;
+            }
+        }
+
+        private void PlayDiagnal()
+        {
+            if (isStartWarningWait == false)
+            {
+                _splashSkillDelayTick = Environment.TickCount64 + (long)(_skillData.splash.warningDelay * 1000);
+                isStartWarningWait = true;
+            }
+
+            if (Environment.TickCount64 < _splashSkillDelayTick)
+                return;
+
+            if (elapsedCount < _skillData.splash.hitCount)
+            {
+                if (isStartIntervalWait == false)
+                {
+                    _splashSkillIntervalTick = Environment.TickCount64 + (long)(_skillData.splash.hitInterval * 1000);
+                    isStartIntervalWait = true;
+                }
+
+                if (Environment.TickCount64 < _splashSkillIntervalTick)
+                    return;
+
+                ++elapsedCount;
+
+                int[] dx = { -1, +1 };
+                int[] dy = { -1, +1 };
+
+                for(int i = 0; i< 2; i++)
+                {
+                    for (int j = 0; j < 2; j++)
+                    {
+                        Vector2Int pos = new Vector2Int(CellPos.x + dx[i] * elapsedCount, CellPos.y + dy[j] * elapsedCount);
+                        Console.WriteLine($"splash {pos.x} {pos.y}");
+                        Player p = Room.FindPlayer(p =>
+                        {
+                            return p.CellPos == pos;
+                        });
+
+                        if (p != null)
+                        {
+                            p.OnDamaged(this, _skillData.damage + TotalAttack);
+                        }
+                    }
+                }
+
+                _splashSkillIntervalTick = Environment.TickCount64 + (long)(_skillData.splash.hitInterval * 1000);
+            }
+            else
+            {
+                _splashSkillDelayTick = 0;
+                _splashSkillIntervalTick = 0;
+                isStartWarningWait = false;
+                isStartIntervalWait = false;
+                elapsedCount = 0;
+                _splashType = SplashSkillType.None;
+            }
+        }
+
+        private void PlayArea()
+        {
+            if (isStartWarningWait == false)
+            {
+                _splashSkillDelayTick = Environment.TickCount64 + (long)(_skillData.splash.warningDelay * 1000);
+                isStartWarningWait = true;
+            }
+
+            if (Environment.TickCount64 < _splashSkillDelayTick)
+                return;
+
+            if (elapsedCount < _skillData.splash.hitCount)
+            {
+                if (isStartIntervalWait == false)
+                {
+                    _splashSkillIntervalTick = Environment.TickCount64 + (long)(_skillData.splash.hitInterval * 1000);
+                    isStartIntervalWait = true;
+                }
+
+                if (Environment.TickCount64 < _splashSkillIntervalTick)
+                    return;
+
+                ++elapsedCount;
+
+                int range = elapsedCount + 1;
+                for (int x = -range; x <= range; x++)
+                {
+                    for (int y = -range; y <= range; y++)
+                    {
+                        if (Math.Abs(x) != range && Math.Abs(y) != range)
+                            continue;
+
+                        Vector2Int pos = new Vector2Int(CellPos.x + x * elapsedCount, CellPos.y + y * elapsedCount);
+                        Player p = Room.FindPlayer(p =>
+                        {
+                            return p.CellPos == pos;
+                        });
+
+                        if (p != null)
+                        {
+                            p.OnDamaged(this, _skillData.damage + TotalAttack);
+                        }
+                    }
+                }
+
+                _splashSkillIntervalTick = Environment.TickCount64 + (long)(_skillData.splash.hitInterval * 1000);
+            }
+            else
+            {
+                _splashSkillDelayTick = 0;
+                _splashSkillIntervalTick = 0;
+                isStartWarningWait = false;
+                isStartIntervalWait = false;
+                elapsedCount = 0;
+                _splashType = SplashSkillType.None;
+            }
+        }
 
         public override void OnDead(GameObject attacker)
         {

@@ -69,55 +69,15 @@ public class BossController : CreatureController
             return;
 
         if (State == CreatureState.Idle)
-        {
-            Debug.Log("State Idle play idle");
             _animator.Play("IDLE");
-            //switch (Dir)
-            //{
-            //    case MoveDir.Up:
-            //    case MoveDir.Down:
-            //    case MoveDir.Left:
-            //    case MoveDir.Right:
-            //        _animator.Play("IDLE");
-            //        break;
-            //}
-        }
         else if (State == CreatureState.Moving)
-        {
-            Debug.Log("State Moving play idle");
             _animator.Play("IDLE");
-            //switch (Dir)
-            //{
-            //    case MoveDir.Up:
-            //    case MoveDir.Down:
-            //    case MoveDir.Left:
-            //    case MoveDir.Right:
-            //        _animator.Play("IDLE");
-            //        break;
-            //}
-        }
         else if (State == CreatureState.Skill)
         {
-            Debug.Log("State skill play attack");
             _animator.Play("ATTACK");
             PlaySkill(_nextSkillType);
-            //switch (Dir)
-            //{
-            //    case MoveDir.Up:
-            //    case MoveDir.Down:
-            //    case MoveDir.Left:
-            //    case MoveDir.Right:
-            //        _animator.Play("ATTACK");
-            //        PlaySkill(_nextSkillType);
-            //        break;
-            //}
         }
-        else
-        {
-
-        }
-    }
-
+    }   
 
     protected override void UpdateIdle()
 	{
@@ -217,6 +177,8 @@ public class BossController : CreatureController
         StartCoroutine(CDominoRect(3, 0.2f));
     }
 
+
+
     private void PlayNormal()
     {
         Vector3 skillWorldPos = Managers.Map.Cell2World(new Vector3Int(_skillCellPos.x, _skillCellPos.y, 0));
@@ -245,8 +207,6 @@ public class BossController : CreatureController
             }
         }
     }
-
-
 
     IEnumerator CDominoVerHor(int count, float interval)
     {
@@ -360,6 +320,7 @@ public class BossController : CreatureController
             yield return new WaitForSeconds(interval);
         }
     }
+
 
     public void ShowWarning(Vector3 pos, int blinkCount, float blinkInterval, float afterDelay = 0f, Action after = null)
     {

@@ -31,9 +31,10 @@ namespace Data
     {
         public string name;
         public float warningDelay;
-        public int minRange;
-        public int maxRange;
+        public int hitCount;
+        public float hitInterval;
     }
+ 
 
     [Serializable]
 	public class SkillData : ILoader<int, Skill>
