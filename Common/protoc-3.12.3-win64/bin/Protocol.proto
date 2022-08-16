@@ -22,13 +22,16 @@ enum MsgId {
   S_CREATE_PLAYER = 15;
   S_ITEM_LIST = 16;
   S_ADD_ITEM = 17;
-  C_EQUIP_ITEM = 18;
-  S_EQUIP_ITEM = 19;
-  S_CHANGE_STAT = 20;
-  S_PING = 21;
-  C_PONG = 22;
-  S_CHAT = 23;
-  C_CHAT = 24;
+  S_REMOVE_ITEM = 18;
+  C_EQUIP_ITEM = 19;
+  S_EQUIP_ITEM = 20;
+  S_CHANGE_STAT = 21;
+  S_PING = 22;
+  C_PONG = 23;
+  S_CHAT = 24;
+  C_CHAT = 25;
+  S_USE_POTION = 26;
+  C_USE_POTION = 27;
 }
 
 enum CreatureState {
@@ -159,6 +162,7 @@ message S_CreatePlayer {
 
 message C_EnterGame {
   string name = 1;
+  bool isTest = 2;
 }
 
 message S_ItemList {
@@ -166,6 +170,10 @@ message S_ItemList {
 }
 
 message S_AddItem {
+  repeated ItemInfo items = 1;
+}
+
+message S_RemoveItem {
   repeated ItemInfo items = 1;
 }
 
@@ -197,6 +205,15 @@ message S_Chat {
 message C_Chat {
   int32 objectId = 1;
   string message = 2;
+}
+
+message S_UsePotion {
+  int32 objectId = 1;
+}
+
+message C_UsePotion {
+  int32 objectId = 1;
+  ItemInfo itemInfo = 2;
 }
 
 

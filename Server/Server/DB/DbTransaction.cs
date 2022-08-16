@@ -111,7 +111,6 @@ namespace Server.DB
 
 							// Client Noti
 							{
-                                Console.WriteLine("아이템 획득3");
 								S_AddItem itemPacket = new S_AddItem();
 								ItemInfo itemInfo = new ItemInfo();
 								itemInfo.MergeFrom(newItem.Info);

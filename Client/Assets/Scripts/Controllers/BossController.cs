@@ -155,10 +155,17 @@ public class BossController : CreatureController
         switch (nextSkillType)
         {
             case SplashSkillType.Normal:
+                UseSkillNormal();
+                break;
             case SplashSkillType.Splash_Cross:
+                UseSkillCross();
+                break;
             case SplashSkillType.Splash_Diagnal:
+                UseSkillDiagnal();
+                break;
             case SplashSkillType.Splash_Area:
-                Util.RandomAction(UseSkillNormal, UseSkillCross, UseSkillDiagnal, UseSkillArea);
+                UseSkillArea();
+                //Util.RandomAction(UseSkillNormal, UseSkillCross, UseSkillDiagnal, UseSkillArea);
                 break;
             default:
                 Debug.Log("유요하지 않은 스킬 타입");

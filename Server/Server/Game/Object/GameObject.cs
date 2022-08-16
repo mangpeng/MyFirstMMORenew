@@ -147,8 +147,6 @@ namespace Server.Game
 			changePacket.Hp = Stat.Hp;
 			Room.BroadCastVision(CellPos, changePacket);
 
-            Console.WriteLine(damage);
-            Console.WriteLine(Stat.Hp);
 			if (Stat.Hp <= 0)
 			{
 				OnDead(attacker);

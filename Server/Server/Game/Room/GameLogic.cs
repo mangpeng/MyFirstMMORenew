@@ -8,6 +8,13 @@ namespace Server.Game
 	{
 		public static GameLogic Instance { get; } = new GameLogic();
 
+		public int RoomCount {
+			get
+			{
+				return _roomId;
+			}
+		}
+
 		Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>();
 		int _roomId = 1;
 

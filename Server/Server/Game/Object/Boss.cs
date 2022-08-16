@@ -86,7 +86,12 @@ namespace Server.Game
                 }
 
                 Skill skillData = null;
-                DataManager.SkillDict.TryGetValue(3, out skillData);
+
+                // TODO random 스킬 사용
+                Random rnd = new Random();
+                int ranSkillIdx = rnd.Next(3, 6);
+
+                DataManager.SkillDict.TryGetValue(ranSkillIdx, out skillData);
 
                 // 스킬이 아직 사용 가능한지
                 Vector2Int dir = (_target.CellPos - CellPos);
@@ -100,8 +105,6 @@ namespace Server.Game
                 }
 
 
-                Console.WriteLine("스킬 사용");
-
                 // 데미지 판정
                 //_target.OnDamaged(this, skillData.damage + TotalAttack);
                 _target.OnDamaged(this, 15);
@@ -112,6 +115,7 @@ namespace Server.Game
                 skill.Info.SkillId = skillData.id;
                 skill.Info.CellPosX = _target.CellPos.x;
                 skill.Info.CellPosY = _target.CellPos.y;
+                
                 Room.BroadCastVision(CellPos, skill);
 
                 // 스킬 쿨타임 적용

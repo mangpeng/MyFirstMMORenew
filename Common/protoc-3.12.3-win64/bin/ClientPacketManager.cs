@@ -49,6 +49,8 @@ class PacketManager
 		_handler.Add((ushort)MsgId.SItemList, PacketHandler.S_ItemListHandler);		
 		_onRecv.Add((ushort)MsgId.SAddItem, MakePacket<S_AddItem>);
 		_handler.Add((ushort)MsgId.SAddItem, PacketHandler.S_AddItemHandler);		
+		_onRecv.Add((ushort)MsgId.SRemoveItem, MakePacket<S_RemoveItem>);
+		_handler.Add((ushort)MsgId.SRemoveItem, PacketHandler.S_RemoveItemHandler);		
 		_onRecv.Add((ushort)MsgId.SEquipItem, MakePacket<S_EquipItem>);
 		_handler.Add((ushort)MsgId.SEquipItem, PacketHandler.S_EquipItemHandler);		
 		_onRecv.Add((ushort)MsgId.SChangeStat, MakePacket<S_ChangeStat>);
@@ -56,7 +58,9 @@ class PacketManager
 		_onRecv.Add((ushort)MsgId.SPing, MakePacket<S_Ping>);
 		_handler.Add((ushort)MsgId.SPing, PacketHandler.S_PingHandler);		
 		_onRecv.Add((ushort)MsgId.SChat, MakePacket<S_Chat>);
-		_handler.Add((ushort)MsgId.SChat, PacketHandler.S_ChatHandler);
+		_handler.Add((ushort)MsgId.SChat, PacketHandler.S_ChatHandler);		
+		_onRecv.Add((ushort)MsgId.SUsePotion, MakePacket<S_UsePotion>);
+		_handler.Add((ushort)MsgId.SUsePotion, PacketHandler.S_UsePotionHandler);
 	}
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

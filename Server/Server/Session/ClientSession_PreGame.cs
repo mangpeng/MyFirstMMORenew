@@ -142,7 +142,14 @@ namespace Server
 
 			GameLogic.Instance.Push(() =>
 			{
-				GameRoom room = GameLogic.Instance.Find(1);
+				int roomdIdx = 1;
+				if (enterGamePacket.IsTest)
+				{
+					Random rnd = new Random();
+					roomdIdx = rnd.Next(1, GameLogic.Instance.RoomCount-1);
+				}
+
+                GameRoom room = GameLogic.Instance.Find(roomdIdx);
 				room.Push(room.EnterGame, MyPlayer, true);
 			});
 		}

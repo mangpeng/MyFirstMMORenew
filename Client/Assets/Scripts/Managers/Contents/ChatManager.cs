@@ -37,8 +37,12 @@ public class ChatManager
         if (_chatScroll == null)
             _chatScroll = GameObject.FindObjectOfType<ChatScroll>();
 
-        string playerId = packet.ObjectId.ToString();
+        PlayerController pc = Managers.Object.FindById(packet.ObjectId).GetComponent<PlayerController>();
+
+        string playerId = pc.name;
         string msg = packet.Message;
+
+
 
         if (Managers.Object.MyPlayer.Id == packet.ObjectId)
         {

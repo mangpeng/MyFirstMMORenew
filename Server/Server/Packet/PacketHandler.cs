@@ -54,7 +54,9 @@ class PacketHandler
 	{
 		C_EnterGame enterGamePacket = (C_EnterGame)packet;
 		ClientSession clientSession = (ClientSession)session;
+
 		clientSession.HandleEnterGame(enterGamePacket);
+		
 	}
 
 	public static void C_CreatePlayerHandler(PacketSession session, IMessage packet)
@@ -101,4 +103,21 @@ class PacketHandler
 
         room.Push(room.HandleChat, player, chatPacket);
     }
+
+    public static void C_UsePotionHandler(PacketSession session, IMessage packet)
+    {
+        C_UsePotion usePotionPacket = (C_UsePotion)packet;
+        ClientSession clientSession = (ClientSession)session;
+
+        Player player = clientSession.MyPlayer;
+        if (player == null)
+            return;
+
+        GameRoom room = player.Room;
+        if (room == null)
+            return;
+
+        room.Push(room.HandleUsePotion, player, usePotionPacket);
+    }
+
 }

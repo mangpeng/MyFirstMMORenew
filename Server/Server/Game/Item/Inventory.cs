@@ -16,7 +16,12 @@ namespace Server.Game
 			Items.Add(item.ItemDbId, item);
 		}
 
-		public Item Get(int itemDbId)
+        public void Remove(Item item)
+        {
+            Items.Remove(item.ItemDbId);
+        }
+
+        public Item Get(int itemDbId)
 		{
 			Item item = null;
 			Items.TryGetValue(itemDbId, out item);

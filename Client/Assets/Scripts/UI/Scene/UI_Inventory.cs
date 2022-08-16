@@ -36,8 +36,13 @@ public class UI_Inventory : UI_Base
 		List<Item> items = Managers.Inven.Items.Values.ToList();
 		items.Sort((left, right) => { return left.Slot - right.Slot; });
 
-		foreach (Item item in items)
-		{
+		for(int slot = 0; slot < ITEM_MAX_COUNT; slot++)
+        {
+            Items[slot].SetItem(null);
+        }
+
+        foreach (Item item in items)
+        {
             if (item.Slot < 0 || item.Slot >= ITEM_MAX_COUNT)
                 continue;
 
@@ -46,6 +51,6 @@ public class UI_Inventory : UI_Base
 
 
             Items[item.Slot].SetItem(item);
-		}
-	}
+        }
+    }
 }

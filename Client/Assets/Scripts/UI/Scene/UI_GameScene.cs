@@ -6,6 +6,7 @@ public class UI_GameScene : UI_Scene
 {
     public UI_Stat StatUI { get; private set; }
     public UI_Inventory InvenUI { get; private set; }
+    public UI_Skill SkillUI { get; private set; }
     public UI_FriendList FriendUI { get; private set; }
     public ChatScroll chatUI { get; private set; }
     public UI_GameInfo gameInfo{ get; private set; }
@@ -17,6 +18,7 @@ public class UI_GameScene : UI_Scene
 
         StatUI = GetComponentInChildren<UI_Stat>();
         InvenUI = GetComponentInChildren<UI_Inventory>();
+        SkillUI = GetComponentInChildren<UI_Skill>();
         FriendUI = GetComponentInChildren<UI_FriendList>();
         chatUI = GetComponentInChildren<ChatScroll>();
         gameInfo = GetComponentInChildren<UI_GameInfo>();
@@ -24,6 +26,7 @@ public class UI_GameScene : UI_Scene
 
         StatUI.gameObject.SetActive(false);
         InvenUI.gameObject.SetActive(false);
+        SkillUI.gameObject.SetActive(true);
         FriendUI.gameObject.SetActive(false);
         chatUI.gameObject.SetActive(true);
         gameInfo.gameObject.SetActive(true);

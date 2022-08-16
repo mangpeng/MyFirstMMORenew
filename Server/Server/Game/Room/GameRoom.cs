@@ -73,7 +73,7 @@ namespace Server.Game
 			if(type == RoomType.Normal)
             {
                 // TEMP
-                for (int i = 0; i < Map.RespawnList.Count() / 2; i++)
+                for (int i = 0; i < Map.RespawnList.Count(); i++)
                 {
                     Monster monster = ObjectManager.Instance.Add<Monster>();
                     monster.Init(1);

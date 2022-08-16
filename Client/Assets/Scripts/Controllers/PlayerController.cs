@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.Protocol;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,12 +11,16 @@ public class PlayerController : CreatureController
 	protected bool _rangedSkill = false;
 
 	protected UI_ChatPopup _chatPopup;
+	protected IdBar _idBar;
 
 	protected override void Init()
 	{
 		base.Init();
 
 		_chatPopup = GetComponentInChildren<UI_ChatPopup>();
+		_idBar = GetComponentInChildren<IdBar>();
+
+		_idBar.SetText(name);
 	}
 
 	protected override void UpdateAnimation()
@@ -147,5 +152,11 @@ public class PlayerController : CreatureController
 	public virtual void ShowChatBox(string message)
     {
 		_chatPopup.Show(message);
+    }
+
+    public void ShowRecoverEffect()
+    {
+		GameObject effect = Managers.Resource.Instantiate("Prefabs/Particle", transform);
+		effect.transform.localPosition = new Vector3(0, -1, 0);
     }
 }

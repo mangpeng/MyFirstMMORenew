@@ -78,6 +78,7 @@ class PacketHandler
 			LobbyPlayerInfo info = loginPacket.Players[0];
 			C_EnterGame enterGamePacket = new C_EnterGame();
 			enterGamePacket.Name = info.Name;
+			enterGamePacket.IsTest = true;
 			serverSession.Send(enterGamePacket);
 		}
 	}
@@ -109,7 +110,11 @@ class PacketHandler
 	{
 	}
 
-	public static void S_EquipItemHandler(PacketSession session, IMessage packet)
+    public static void S_RemoveItemHandler(PacketSession session, IMessage packet)
+    {
+    }
+
+    public static void S_EquipItemHandler(PacketSession session, IMessage packet)
 	{
 	}
 
@@ -123,6 +128,11 @@ class PacketHandler
 	public static void S_PingHandler(PacketSession session, IMessage packet)
 	{
 		C_Pong pongPacket = new C_Pong();
+	}
+
+    internal static void S_UsePotionHandler(PacketSession session, IMessage packet)
+    {
+		S_UsePotion usePotionPacket = new S_UsePotion();
 	}
 
     public static void S_ChatHandler(PacketSession session, IMessage packet)

@@ -27,6 +27,7 @@ namespace AccountServer.Controllers
 		[Route("create")]
 		public CreateAccountPacketRes CreateAccount([FromBody] CreateAccountPacketReq req)
 		{
+            Console.WriteLine($"req create : {req.AccountName} {req.Password}");
 			CreateAccountPacketRes res = new CreateAccountPacketRes();
 
 			AccountDb account = _context.Accounts
@@ -57,6 +58,7 @@ namespace AccountServer.Controllers
 		[Route("login")]
 		public LoginAccountPacketRes LoginAccount([FromBody] LoginAccountPacketReq req)
 		{
+			Console.WriteLine($"req login : {req.AccountName} {req.Password}");
 			LoginAccountPacketRes res = new LoginAccountPacketRes();
 
 			AccountDb account = _context.Accounts

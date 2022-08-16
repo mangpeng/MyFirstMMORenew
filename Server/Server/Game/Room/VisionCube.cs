@@ -88,7 +88,6 @@ namespace Server.Game.Room
 			if (added.Count > 0)
 			{
 				S_Spawn spawnPacket = new S_Spawn();
-                Console.WriteLine($"spawn {added.Count}");
 
 				foreach (GameObject gameObject in added)
 				{

@@ -167,6 +167,7 @@ class PacketHandler
 			LobbyPlayerInfo info = loginPacket.Players[0];
 			C_EnterGame enterGamePacket = new C_EnterGame();
 			enterGamePacket.Name = info.Name;
+			enterGamePacket.IsTest = false;
 
             Managers.Map.Id = loginPacket.MapId;
             Managers.Scene.LoadScene(Define.Scene.Game_1);
@@ -199,13 +200,17 @@ class PacketHandler
 		Managers.Inven.Clear();
 
 		// 메모리에 아이템 정보 적용
+		Debug.Log($"ItemList : {itemList.Items.Count}");
 		foreach (ItemInfo itemInfo in itemList.Items)
 		{
 			Item item = Item.MakeItem(itemInfo);
 			Managers.Inven.Add(item);
 		}
 
-		if (Managers.Object.MyPlayer != null)
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        gameSceneUI.SkillUI.RefreshUI();
+
+        if (Managers.Object.MyPlayer != null)
 			Managers.Object.MyPlayer.RefreshAdditionalStat();
 	}
 
@@ -225,10 +230,35 @@ class PacketHandler
 		UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
 		gameSceneUI.InvenUI.RefreshUI();
 		gameSceneUI.StatUI.RefreshUI();
+		gameSceneUI.SkillUI.RefreshUI();
 
 		if (Managers.Object.MyPlayer != null)
 			Managers.Object.MyPlayer.RefreshAdditionalStat();
 	}
+
+    public static void S_RemoveItemHandler(PacketSession session, IMessage packet)
+    {
+        S_RemoveItem itemList = (S_RemoveItem)packet;
+
+        // 메모리에 아이템 정보 적용
+        foreach (ItemInfo itemInfo in itemList.Items)
+        {
+            Item item = Item.MakeItem(itemInfo);
+            Managers.Inven.Remove(item);
+        }
+
+        Debug.Log("아이템을 소모했습니다!");
+
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        gameSceneUI.InvenUI.RefreshUI();
+        gameSceneUI.StatUI.RefreshUI();
+        gameSceneUI.SkillUI.RefreshUI();
+
+        if (Managers.Object.MyPlayer != null)
+            Managers.Object.MyPlayer.RefreshAdditionalStat();
+    }
+
+       
 
 	public static void S_EquipItemHandler(PacketSession session, IMessage packet)
 	{
@@ -287,6 +317,22 @@ class PacketHandler
 		Debug.Log($"rev message : {chatPacket.Message}");
 		Managers.Chat.RecvChatPacket(chatPacket);
 	}
+
+    public static void S_UsePotionHandler(PacketSession session, IMessage packet)
+    {
+        S_UsePotion usePotionPacket = (S_UsePotion)packet;
+		Debug.Log($"S_UsePotion {usePotionPacket.ObjectId}");
+
+		GameObject go = Managers.Object.FindById(usePotionPacket.ObjectId);
+        if (go == null)
+            return;
+
+        PlayerController pc = go.GetComponent<PlayerController>();
+        if (pc != null)
+        {
+			pc.ShowRecoverEffect();
+        }
+    }
 }
 
 

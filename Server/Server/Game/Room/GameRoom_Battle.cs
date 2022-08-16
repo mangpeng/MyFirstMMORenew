@@ -1,8 +1,10 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Server.Data;
+using Server.DB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Server.Game
@@ -159,6 +161,76 @@ namespace Server.Game
 			resChatPacket.Message = chatPacket.Message;
 
 			BroadCastRoom(resChatPacket);
+        }
+
+
+        public void HandleUsePotion(Player player, C_UsePotion usePotionPacket)
+        {
+            if (player == null)
+                return;
+
+
+            // 아이템 리스트 새로 보냄 <= 문제 있다. 물약 소모는 게임 도중 빈번하게 일어나므로..
+            // db에 의해 서버 로직이 느려진다..
+            {
+
+            }
+
+            // 1. 인벤에서 아이템 제거 -> db에 저장 -> 아이템 리스트 새로 보냄
+            // db에서 아이템 제거
+            {
+                using (AppDbContext db = new AppDbContext())
+                {
+					ItemDb potion = db.Items
+						.Where(i => i.ItemDbId == usePotionPacket.ItemInfo.ItemDbId)
+						.FirstOrDefault();
+
+					// db에서 아이템 삭제
+                    {
+                        db.Remove(potion);
+                        bool success = db.SaveChangesEx();
+                        if (success)
+                        {
+                            Item removeItem = Item.MakeItem(potion);
+                            player.Inven.Remove(removeItem);
+
+                            // 클라에게 삭제된 아이템 정보 알림
+                            {
+                                Console.WriteLine("아이템 소모");
+                                S_RemoveItem removePacket = new S_RemoveItem();
+                                ItemInfo itemInfo = new ItemInfo();
+                                itemInfo.MergeFrom(removeItem.Info);
+                                removePacket.Items.Add(itemInfo);
+                                player.Session.Send(removePacket);
+                            }
+                            {
+								S_UsePotion usePotionOkPacket = new S_UsePotion();
+								usePotionPacket.ObjectId = player.Id;
+                                Console.WriteLine($"S_UsePotion {usePotionPacket.ObjectId}");
+								player.Session.Send(usePotionOkPacket);
+							}
+                        }
+						else
+                        {
+                            Console.WriteLine("아이템 삭제 실패");
+                        }
+                    }
+
+                }
+            }
+
+
+
+			// 2. 캐릭터 hp 증가
+			// todo 임시로 체력 50회복
+			int recoveryAmoount = 50;
+			player.Stat.Hp = Math.Clamp(player.Stat.Hp + recoveryAmoount, 0, player.Stat.MaxHp);
+
+            S_ChangeHp changePacket = new S_ChangeHp();
+            changePacket.ObjectId = player.Id;
+            changePacket.Hp = player.Stat.Hp;
+            BroadCastVision(player.CellPos, changePacket);
+
         }
     }
 }
