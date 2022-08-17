@@ -81,8 +81,8 @@
 		{
             "id": "7",
             "name": "관통 화살",
-            "cooldown": "0.5",
-            "damage": "5",
+            "cooldown": "0.3",
+            "damage": "20",
             "skillType": "SkillProjectile",
 			"skillIcon": "Textures/Skill/archer_skill_penetration",
             "projectile": {
@@ -95,7 +95,7 @@
 		{
             "id": "8",
             "name": "매의 눈",
-            "cooldown": "0.5",
+            "cooldown": "30",
             "damage": "5",
             "skillType": "SkillProjectile",
 			"skillIcon": "Textures/Skill/archer_skill_attackSpeedUp",

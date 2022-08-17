@@ -81,6 +81,7 @@ class PacketHandler
 		CreatureController cc = go.GetComponent<CreatureController>();
 		if (cc != null)
 		{
+			Debug.Log($"use skill packet {skillPacket.Info.SkillId}");
 			cc.UseSkill(skillPacket.Info);
 		}
 	}

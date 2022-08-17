@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7732478884137943889}
   - component: {fileID: 7732478884137943886}
   m_Layer: 0
-  m_Name: Flash_16
+  m_Name: ArrowEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7732478884137943884}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0, z: -0.012740385, w: -0.9999189}
   m_LocalPosition: {x: -3.02, y: -4.93, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 7732478885309929687}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 361.46}
 --- !u!212 &7732478884137943889
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -182,7 +182,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1002
   m_Sprite: {fileID: -2638448577930978061, guid: 64a8c0bd3abc33b49b620eaf7d8219d6,
     type: 3}
   m_Color: {r: 0.21960784, g: 0.94509804, b: 1, a: 1}
@@ -288,7 +288,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 1003
   m_Sprite: {fileID: -8404974315803336180, guid: fa9bbc87529c15d449b0ebe61a408d11,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -394,7 +394,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 1001
   m_Sprite: {fileID: -3190493697452657124, guid: dfa012dd48eaebd4a967ee990765bf5a,
     type: 3}
   m_Color: {r: 0.16470589, g: 0.84705883, b: 0.7372549, a: 1}

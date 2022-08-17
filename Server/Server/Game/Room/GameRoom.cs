@@ -83,7 +83,14 @@ namespace Server.Game
 
             if (type == RoomType.Boss)
             {
-				Boss boss = ObjectManager.Instance.Add<Boss>();
+                for (int i = 0; i < Map.RespawnList.Count(); i++)
+                {
+                    Monster monster = ObjectManager.Instance.Add<Monster>();
+                    monster.Init(1);
+                    EnterGame(monster, randomPos: true);
+                }
+
+                Boss boss = ObjectManager.Instance.Add<Boss>();
 				boss.Init(0);
 				// TODO 보스 시작 위치 하드 코딩되어 있음
 				boss.CellPos = new Vector2Int(6, 12);

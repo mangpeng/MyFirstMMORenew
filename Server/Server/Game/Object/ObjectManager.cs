@@ -32,7 +32,8 @@ namespace Server.Game
 			return gameObject;
 		}
 
-		int GenerateId(GameObjectType type)
+
+        int GenerateId(GameObjectType type)
 		{
 			lock (_lock)
 			{

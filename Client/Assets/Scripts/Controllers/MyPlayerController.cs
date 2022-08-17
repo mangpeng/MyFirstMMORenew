@@ -47,12 +47,11 @@ public class MyPlayerController : PlayerController
 			return;
 		}
 
-		if (_coSkillCooltime == null && Input.GetKey(KeyCode.Space))
+        if (Managers.Chat.IsChat)
+            return;
+
+        if (_coSkillCooltime == null && Input.GetKey(KeyCode.Space))
 		{
-            if (Managers.Chat.IsChat)
-                return;
-
-
 			C_Skill skill = new C_Skill() { Info = new SkillInfo() };
 			skill.Info.SkillId = 2;
 			Managers.Network.Send(skill);
@@ -137,19 +136,19 @@ public class MyPlayerController : PlayerController
 
         _moveKeyPressed = true;
 
-		if (Input.GetKey(KeyCode.W))
+		if (Input.GetKey(KeyCode.UpArrow))
 		{
 			Dir = MoveDir.Up;
 		}
-		else if (Input.GetKey(KeyCode.S))
+		else if (Input.GetKey(KeyCode.DownArrow))
 		{
 			Dir = MoveDir.Down;
 		}
-		else if (Input.GetKey(KeyCode.A))
+		else if (Input.GetKey(KeyCode.LeftArrow))
 		{
 			Dir = MoveDir.Left;
 		}
-		else if (Input.GetKey(KeyCode.D))
+		else if (Input.GetKey(KeyCode.RightArrow))
 		{
 			Dir = MoveDir.Right;
 		}

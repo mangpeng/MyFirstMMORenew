@@ -115,7 +115,34 @@ public class PlayerController : CreatureController
 		{
 			_coSkill = StartCoroutine("CoStartShootArrow");
 		}
-	}
+        else if (info.SkillId == 7)
+        {
+			GameObject go = Managers.Resource.Instantiate("Effect/ArrowEffect");
+
+			go.transform.position = transform.position;
+			Vector3 temp = go.transform.localEulerAngles;
+			if (Dir == MoveDir.Up)
+            {
+				temp.z = -90;
+            }
+            else if (Dir == MoveDir.Down)
+            {
+				temp.z = 90;
+			}
+            else if (Dir == MoveDir.Right)
+            {
+                temp.z = 180;
+            }
+            else if (Dir == MoveDir.Left)
+            {
+                temp.z = 0;
+            }
+            go.transform.localEulerAngles = temp;
+
+            Managers.Resource.DestroyAfter(go, 0.5f);	
+            _coSkill = StartCoroutine("CoStartShootArrow");
+        }
+    }
 
 	protected virtual void CheckUpdatedFlag()
 	{

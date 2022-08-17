@@ -38,15 +38,15 @@ public class UI_Skill : UI_Base
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F1))
+        if(Input.GetKeyDown(KeyCode.Q))
         {
             OnClickSKillActive(null);
         }
-        else if (Input.GetKeyDown(KeyCode.F2))
+        else if (Input.GetKeyDown(KeyCode.W))
         {
             OnClickSKillBuff(null);
         }
-        else if (Input.GetKeyDown(KeyCode.F3))
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             OnClickSKillPotion(null);
         }
@@ -58,10 +58,15 @@ public class UI_Skill : UI_Base
         UI_Skill_Item skillItem = GetImage((int)Images.SkillActive).GetComponent<UI_Skill_Item>();
         if (!skillItem.IsCool)
         {
-            skillItem.SetCool(POTION_COOL_TIME);
+            Skill _skillData = null;
+            Managers.Data.SkillDict.TryGetValue(7, out _skillData);
+
+            skillItem.SetCool(_skillData.cooldown);
 
 
-            //Managers.Network.Send(usePacket);
+            C_Skill skill = new C_Skill() { Info = new SkillInfo() };
+            skill.Info.SkillId = 7;
+            Managers.Network.Send(skill);
         }
         else
         {
@@ -74,10 +79,10 @@ public class UI_Skill : UI_Base
         UI_Skill_Item skillItem = GetImage((int)Images.SkillBuff).GetComponent<UI_Skill_Item>();
         if (!skillItem.IsCool)
         {
-            skillItem.SetCool(POTION_COOL_TIME);
+            Skill _skillData = null;
+            Managers.Data.SkillDict.TryGetValue(8, out _skillData);
 
-            
-            //Managers.Network.Send(usePacket);
+            skillItem.SetCool(_skillData.cooldown);
         }
         else
         {

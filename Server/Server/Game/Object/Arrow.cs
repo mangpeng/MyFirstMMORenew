@@ -8,6 +8,7 @@ namespace Server.Game
 	public class Arrow : Projectile
 	{
 		public GameObject Owner { get; set; }
+		public bool Penetration = false;
 
 
         public override void Update()
@@ -19,24 +20,48 @@ namespace Server.Game
 			Room.PushAfter(tick, Update);
 
 			Vector2Int destPos = GetFrontCellPos();
-			if (Room.Map.ApplyMove(this, destPos, collision: false))
-			{
-				S_Move movePacket = new S_Move();
-				movePacket.ObjectId = Id;
-				movePacket.PosInfo = PosInfo;
-				Room.BroadCastVision(CellPos, movePacket);
-			}
-			else
-			{
-				GameObject target = Room.Map.Find(destPos);
-				if (target != null)
-				{
-					target.OnDamaged(this, Data.damage + Owner.TotalAttack);
-				}
 
-				// 소멸
-				Room.Push(Room.LeaveGame, Id);
-			}
+			if(Penetration)
+            {
+                if (Room.Map.ApplyMove(this, destPos, checkObjects: false, collision: false))
+                {
+                    S_Move movePacket = new S_Move();
+                    movePacket.ObjectId = Id;
+                    movePacket.PosInfo = PosInfo;
+                    Room.BroadCastVision(CellPos, movePacket);
+
+                    GameObject target = Room.Map.Find(destPos);
+                    if (target != null)
+                    {
+                        target.OnDamaged(this, Data.damage + Owner.TotalAttack);
+                    }
+                }
+                else
+                {
+                    Room.Push(Room.LeaveGame, Id);
+                }
+            }
+			else
+            {
+                if (Room.Map.ApplyMove(this, destPos, checkObjects: true, collision: false))
+                {
+                    S_Move movePacket = new S_Move();
+                    movePacket.ObjectId = Id;
+                    movePacket.PosInfo = PosInfo;
+                    Room.BroadCastVision(CellPos, movePacket);
+                }
+                else
+                {
+                    GameObject target = Room.Map.Find(destPos);
+                    if (target != null)
+                    {
+                        target.OnDamaged(this, Data.damage + Owner.TotalAttack);
+                    }
+
+                    // 소멸
+                    Room.Push(Room.LeaveGame, Id);
+                }
+            }
 		}
 
 		public override GameObject GetOwner()

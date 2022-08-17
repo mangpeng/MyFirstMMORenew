@@ -77,6 +77,7 @@ public class ObjectManager
         else if (objectType == GameObjectType.Projectile)
 		{
 			GameObject go = Managers.Resource.Instantiate("Creature/Arrow");
+
 			go.name = "Arrow";
 			_objects.Add(info.ObjectId, go);
 

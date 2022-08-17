@@ -133,9 +133,17 @@ namespace Server.Game
 					break;
 				case SkillType.SkillProjectile:
 					{
-						Arrow arrow = ObjectManager.Instance.Add<Arrow>();
+						Arrow arrow = null;
+						arrow = ObjectManager.Instance.Add<Arrow>();
+
 						if (arrow == null)
 							return;
+
+						if (skillData.id == 7) // 관통화살
+							arrow.Penetration = true;
+						else
+							arrow.Penetration = false;
+
 
 						arrow.Owner = player;
 						arrow.Data = skillData;
