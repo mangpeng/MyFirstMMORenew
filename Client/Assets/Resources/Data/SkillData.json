@@ -5,7 +5,8 @@
             "name": "평타",
             "cooldown": "0.5",
             "damage": "10",
-            "skillType": "SkillAuto"
+            "skillType": "SkillAuto",
+			"skillIcon": "",
         },
         {
             "id": "2",
@@ -13,11 +14,12 @@
             "cooldown": "0.5",
             "damage": "5",
             "skillType": "SkillProjectile",
+			"skillIcon": "",
             "projectile": {
                 "name": "화살",
                 "speed": "20.0",
                 "range": "10",
-                "prefab": "Creature/Arrow"
+                "prefab": "Creature/PowerArrow"
             }
         },
 		{
@@ -26,6 +28,7 @@
             "cooldown": "2",
             "damage": "10",
             "skillType": "SkillSplash",
+			"skillIcon": "",
             "splash": {
                 "name": "기본 범위",			
                 "warningDelay": "1.0",
@@ -39,6 +42,7 @@
             "cooldown": "2",
             "damage": "10",
             "skillType": "SkillSplash",
+			"skillIcon": "",
             "splash": {
                 "name": "십자가 범위",			
                 "warningDelay": "1.2",
@@ -52,6 +56,7 @@
             "cooldown": "2",
             "damage": "10",
             "skillType": "SkillSplash",
+			"skillIcon": "",
             "splash": {
                 "name": "대각 범위",			
                 "warningDelay": "1.2",
@@ -65,6 +70,7 @@
             "cooldown": "5",
             "damage": "10",
             "skillType": "SkillSplash",
+			"skillIcon": "",
             "splash": {
                 "name": "사각 범위",			
                 "warningDelay": "1.2",
@@ -72,6 +78,33 @@
 				"hitInterval": "0.2",                 
             }
         },	
-		
+		{
+            "id": "7",
+            "name": "관통 화살",
+            "cooldown": "0.5",
+            "damage": "5",
+            "skillType": "SkillProjectile",
+			"skillIcon": "Textures/Skill/archer_skill_penetration",
+            "projectile": {
+                "name": "화살",
+                "speed": "20.0",
+                "range": "10",
+                "prefab": "Creature/Arrow"
+            }
+        },
+		{
+            "id": "8",
+            "name": "매의 눈",
+            "cooldown": "0.5",
+            "damage": "5",
+            "skillType": "SkillProjectile",
+			"skillIcon": "Textures/Skill/archer_skill_attackSpeedUp",
+            "projectile": {
+                "name": "화살",
+                "speed": "20.0",
+                "range": "10",
+                "prefab": "Creature/Arrow"
+            }
+        },
     ]
 } 

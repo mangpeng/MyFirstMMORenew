@@ -1,3 +1,4 @@
+using Data;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,11 +11,34 @@ public class UI_Skill_Item : MonoBehaviour
 
     [SerializeField] Image _cover;
     [SerializeField] TextMeshProUGUI _countText;
+
+    Image _skillIcon;
+    Skill _skillData;
+
     Coroutine _cPlayCoolDown;
+
+    private void Awake()
+    {
+        _skillIcon = GetComponent<Image>();
+    }
 
     public void Init()
     {
         _cover.fillAmount = 0;
+        
+    }
+
+    public void InitData(Skill skillData)
+    {
+        if (skillData == null)
+            return;
+
+        if (_skillIcon == null)
+            _skillIcon = GetComponent<Image>();
+
+        _skillData = skillData;
+        if(!string.IsNullOrEmpty(_skillData.skillIcon))
+            _skillIcon.sprite = Managers.Resource.Load<Sprite>(_skillData.skillIcon);
     }
 
     public void ResetSkill()

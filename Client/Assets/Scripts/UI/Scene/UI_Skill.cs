@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Data;
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,15 +19,21 @@ public class UI_Skill : UI_Base
         SkillPotion
     }
 
+
     public override void Init()
 	{
         Bind<Image>(typeof(Images));
 
         GetImage((int)Images.SkillActive).gameObject.BindEvent(OnClickSKillActive);
+        GetImage((int)Images.SkillActive).gameObject.GetComponent<UI_Skill_Item>().Init();
+
         GetImage((int)Images.SkillBuff).gameObject.BindEvent(OnClickSKillBuff);
+        GetImage((int)Images.SkillBuff).gameObject.GetComponent<UI_Skill_Item>().Init();
+
         GetImage((int)Images.SkillPotion).gameObject.BindEvent(OnClickSKillPotion);
         GetImage((int)Images.SkillPotion).gameObject.GetComponent<UI_Skill_Item>().Init();
-        
+
+        InitSkillItem();
     }
 
     private void Update()
@@ -48,12 +55,34 @@ public class UI_Skill : UI_Base
 
     private void OnClickSKillActive(PointerEventData obj)
     {
+        UI_Skill_Item skillItem = GetImage((int)Images.SkillActive).GetComponent<UI_Skill_Item>();
+        if (!skillItem.IsCool)
+        {
+            skillItem.SetCool(POTION_COOL_TIME);
 
+
+            //Managers.Network.Send(usePacket);
+        }
+        else
+        {
+            Debug.Log("OnClickSKillActive is cool time");
+        }
     }
 
     private void OnClickSKillBuff(PointerEventData obj)
     {
+        UI_Skill_Item skillItem = GetImage((int)Images.SkillBuff).GetComponent<UI_Skill_Item>();
+        if (!skillItem.IsCool)
+        {
+            skillItem.SetCool(POTION_COOL_TIME);
 
+            
+            //Managers.Network.Send(usePacket);
+        }
+        else
+        {
+            Debug.Log("OnClickSKillBuff is cool time");
+        }
     }
 
     private void OnClickSKillPotion(PointerEventData obj)
@@ -94,6 +123,19 @@ public class UI_Skill : UI_Base
         }
     }
 
+
+    public void InitSkillItem()
+    {
+        Skill _skillData = null;
+        Managers.Data.SkillDict.TryGetValue(7, out _skillData);
+        GetImage((int)Images.SkillActive).GetComponent<UI_Skill_Item>().InitData(_skillData);
+
+        Managers.Data.SkillDict.TryGetValue(8, out _skillData);
+        GetImage((int)Images.SkillBuff).GetComponent<UI_Skill_Item>().InitData(_skillData);
+
+        _skillData = null;
+        GetImage((int)Images.SkillPotion).GetComponent<UI_Skill_Item>().InitData(_skillData);
+    }
 
     public void RefreshUI()
     {
