@@ -55,7 +55,10 @@ namespace Server
 								MaxHp = playerDb.MaxHp,
 								Attack = playerDb.Attack,
 								Speed = playerDb.Speed,
-								TotalExp = playerDb.TotalExp
+								TotalExp = playerDb.TotalExp,
+								DamageRange = playerDb.DamageRange,
+								CriticalRatio = playerDb.CriticalRatio,
+								Critical = playerDb.Critical,
 							}
 						};
 
@@ -186,7 +189,10 @@ namespace Server
 						Attack = stat.Attack,
 						Speed = stat.Speed,
 						TotalExp = 0,
-						AccountDbId = AccountDbId
+						AccountDbId = AccountDbId,
+						DamageRange = stat.DamageRange,
+						CriticalRatio = stat.CriticalRatio,
+						Critical = stat.Critical,
 					};
 
 					db.Players.Add(newPlayerDb);
@@ -206,8 +212,11 @@ namespace Server
 							MaxHp = stat.MaxHp,
 							Attack = stat.Attack,
 							Speed = stat.Speed,
-							TotalExp = 0
-						}
+							TotalExp = 0,
+                            DamageRange = stat.DamageRange,
+                            CriticalRatio = stat.CriticalRatio,
+                            Critical = stat.Critical,
+                        }
 					};
 
 					// 메모리에도 들고 있다

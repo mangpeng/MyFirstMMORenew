@@ -51,4 +51,11 @@ public static class Extension
         }
     }
 
+	public static Vector2 GetRanndomPosInArea(this BoxCollider2D collider)
+    {
+        float x = UnityEngine.Random.Range(-collider.size.x / 2, collider.size.x / 2);
+        float y = UnityEngine.Random.Range(-collider.size.y / 2, collider.size.y / 2);
+
+        return new Vector2(x, y);
+    }
 }

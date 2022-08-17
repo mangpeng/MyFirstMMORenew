@@ -227,7 +227,8 @@ namespace Server.Game
             S_ChangeHp changePacket = new S_ChangeHp();
             changePacket.ObjectId = player.Id;
             changePacket.Hp = player.Stat.Hp;
-            BroadCastVision(player.CellPos, changePacket);
+			changePacket.IsCritical = false;
+			BroadCastVision(player.CellPos, changePacket);
 
         }
     }

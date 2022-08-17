@@ -8,7 +8,11 @@
             "maxHp": "2000",
             "attack": "10",
             "speed": "3.0",
-            "totalExp": "10"
+            "totalExp": "10",
+			"damageRange": "10",
+			"criticalRatio": "10",
+			"critical": "1.2",
+			
         },
         "rewards": [
             {
@@ -46,7 +50,10 @@
             "maxHp": "20",
             "attack": "5",
             "speed": "5.0",
-            "totalExp": "10"
+            "totalExp": "10",
+			"damageRange": "10",
+			"criticalRatio": "10",
+			"critical": "1.2",
         },
         "rewards": [
             {

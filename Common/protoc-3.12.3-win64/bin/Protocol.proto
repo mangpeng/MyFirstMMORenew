@@ -132,6 +132,7 @@ message S_Skill {
 message S_ChangeHp {
   int32 objectId = 1;
   int32 hp = 2;
+  bool isCritical = 3;
 }
 
 message S_Die {
@@ -244,6 +245,9 @@ message StatInfo {
   int32 attack = 4;
   float speed = 5;
   int32 totalExp = 6;
+  int32 damageRange = 7;
+  int32 criticalRatio = 8;
+  float critical = 9;
 }
 
 message SkillInfo {

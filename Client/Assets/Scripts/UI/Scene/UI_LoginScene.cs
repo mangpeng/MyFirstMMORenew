@@ -64,7 +64,6 @@ public class UI_LoginScene : UI_Scene
 
 		Managers.Web.SendPostRequest<LoginAccountPacketRes>("account/login", packet, (res) =>
 		{
-			Debug.Log(res.LoginOk);
 			Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text = "";
 			Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text = "";
 

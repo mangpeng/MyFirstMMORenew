@@ -1,25 +1,34 @@
 {
   "stats": [
     {
-      "level": "1",
-      "maxHp": "200",
-        "attack": "20",
-        "speed":  "10.0",
-      "totalExp": "0"
+		"level": "1",
+		"maxHp": "200",
+		"attack": "20",
+		"speed":  "10.0",
+		"totalExp": "0",
+		"damageRange": "10",
+		"criticalRatio": "50",
+		"critical": "2.5",
     },
     {
         "level": "2",
         "maxHp": "250",
         "attack": "25",
         "speed": "10.0",
-        "totalExp": "10"
+        "totalExp": "10",
+		"damageRange": "10",
+		"criticalRatio": "10",
+		"critical": "3.0",
     },
     {
         "level": "3",
         "maxHp": "300",
         "attack": "30",
         "speed": "10.0",
-        "totalExp": "20"
+        "totalExp": "20",
+		"damageRange": "10",
+		"criticalRatio": "10",
+		"critical": "5.0",
     }
   ]
 } 

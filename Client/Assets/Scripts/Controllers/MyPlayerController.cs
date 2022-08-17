@@ -52,7 +52,6 @@ public class MyPlayerController : PlayerController
             if (Managers.Chat.IsChat)
                 return;
 
-            Debug.Log("Skill !");
 
 			C_Skill skill = new C_Skill() { Info = new SkillInfo() };
 			skill.Info.SkillId = 2;

@@ -125,19 +125,23 @@ namespace Server.Game
 			if (Room == null)
 				return;
 
-			
-			damage = Math.Max(damage - TotalDefence, 0);
+			Random rnd = new Random();
+			int totalDamage;
+			int minDamage = (int)(damage * (1 - Stat.DamageRange / 100f));
+			int maxDamage = (int)(damage * (1 + Stat.DamageRange / 100f));
 
-			// todo 보스가 입는 데미지 임시로 임의값 세팅
-            if (ObjectType == GameObjectType.Boss)
+			totalDamage = rnd.Next(minDamage, maxDamage);
+
+			bool isCiritical = rnd.Next(0, 100) < Stat.CriticalRatio;
+			if(isCiritical)
             {
-                if (damage < 50)
-                {
-					Random rnd = new Random();
-					damage = rnd.Next(95, 105);
-                }
+                Console.WriteLine("ciritical!");
+				totalDamage = (int)(totalDamage * Stat.Critical);
             }
 
+            Console.WriteLine($"{Stat.DamageRange} {Stat.CriticalRatio} {Stat.Critical}");
+			damage = totalDamage;
+			damage = Math.Max(damage - TotalDefence, 0);
 
             Stat.Hp = Math.Max(Stat.Hp - damage, 0);
 
@@ -145,6 +149,7 @@ namespace Server.Game
 			S_ChangeHp changePacket = new S_ChangeHp();
 			changePacket.ObjectId = Id;
 			changePacket.Hp = Stat.Hp;
+			changePacket.IsCritical = isCiritical;
 			Room.BroadCastVision(CellPos, changePacket);
 
 			if (Stat.Hp <= 0)

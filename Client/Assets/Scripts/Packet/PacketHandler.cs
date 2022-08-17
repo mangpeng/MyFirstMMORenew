@@ -14,12 +14,6 @@ class PacketHandler
 	{
 		S_EnterGame enterGamePacket = packet as S_EnterGame;
 
-        Debug.Log($"Map 이동 {Managers.Map.Id} => {enterGamePacket.MapId}");
-
-		if (enterGamePacket.MapId > Managers.Map.Id) Debug.Log("다음 방으로 이동");
-		if (enterGamePacket.MapId < Managers.Map.Id) Debug.Log("이전 방으로 이동");
-
-
         if (enterGamePacket.MapId != Managers.Map.Id)
         {
 			Managers.Map.Id = enterGamePacket.MapId;
@@ -101,9 +95,23 @@ class PacketHandler
 
 		CreatureController cc = go.GetComponent<CreatureController>();
 		if (cc != null)
-		{
+        {
+			GameObjectType type = ObjectManager.GetObjectTypeById(cc.Id);
+			if (changePacket.Hp < cc.Hp) // 피격
+            {
+				int damage = cc.Hp - changePacket.Hp;
+				cc.PlayDamageTextEffect(damage, changePacket.IsCritical, type);
+            }
+			else if(changePacket.Hp > cc.Hp) // 회복
+            {
+				int recovery = changePacket.Hp - cc.Hp;
+                cc.PlayRecoverTextEffect(recovery, changePacket.IsCritical, type);
+            }
+
 			cc.Hp = changePacket.Hp;
-			if(ObjectManager.GetObjectTypeById(cc.Id) == GameObjectType.Boss)
+
+
+			if(type == GameObjectType.Boss)
             {
                 UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
                 gameSceneUI.bossUI.ChangeHp(changePacket.Hp);
@@ -118,8 +126,6 @@ class PacketHandler
                     };
 			}
 		}
-
-		Debug.Log("defeat");
 	}
 
 	public static void S_DieHandler(PacketSession session, IMessage packet)
@@ -172,7 +178,7 @@ class PacketHandler
 			enterGamePacket.IsTest = false;
 
             Managers.Map.Id = loginPacket.MapId;
-            Managers.Scene.LoadScene(Define.Scene.Game_1);
+            Managers.Scene.LoadScene(Define.Scene.Game);
             Managers.Network.Send(enterGamePacket);
         }
 	}

@@ -5,17 +5,23 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class DamageEffector : MonoBehaviour
 {
-    public GameObject normalPrefab;
-    public GameObject ciriticalPrefab;
-    public BoxCollider2D collider;
+    [SerializeField] private GameObject _normalPrefab;
+    [SerializeField] private GameObject _ciriticalPrefab;
+    private BoxCollider2D _collider;
 
     private Coroutine _cPlayLoopDamageEffect = null;
 
+    private void Awake()
+    {
+        _collider = GetComponent<BoxCollider2D>();
+    }
+
     void Start()
     {
-        PlayLoopDamageEffect();       
+        //PlayLoopDamageEffect();       
     }
 
     private void PlayLoopDamageEffect()
@@ -27,26 +33,28 @@ public class DamageEffector : MonoBehaviour
     {
         while(true)
         {
-            Vector3 ranPos = GetRanPos();
+          
 
             int ranDamage = UnityEngine.Random.Range(20, 100);
 
             float ranCritical = UnityEngine.Random.Range(0f, 1f);
             if(ranCritical < 0.2f)
             {
-                GenerateCriticalText(ranDamage, Color.red, new Vector3(0, 0.5f, 0), 0.1f);
+                GenerateCriticalText(ranDamage, Color.red, 0.1f);
             }
             else 
-                GenerateText(ranDamage, Color.red, ranPos, 1f, 1f);
+                GenerateText(ranDamage, Color.red, 1f, 1f);
 
             float ranInterval = UnityEngine.Random.Range(0.1f, 0.3f);
             yield return new WaitForSeconds(ranInterval);
         }
     }
 
-    private void GenerateText(int value, Color color, Vector3 ranPos, float moveDistance, float duration)
+    public void GenerateText(int value, Color color, float moveDistance, float duration)
     {
-        GameObject box = GameObject.Instantiate(normalPrefab, transform);
+        Vector3 ranPos = _collider.GetRanndomPosInArea();
+
+        GameObject box = GameObject.Instantiate(_normalPrefab, transform);
         box.transform.localPosition = ranPos;
 
         TextMeshProUGUI textBox = box.GetComponentInChildren<TextMeshProUGUI>();
@@ -64,30 +72,22 @@ public class DamageEffector : MonoBehaviour
         textBox.DOFade(0, duration);
     }
 
-    private void GenerateCriticalText(int value, Color color, Vector3 ranPos, float duration)
+    public void GenerateCriticalText(int value, Color color, float duration)
     {
-        GameObject box = GameObject.Instantiate(ciriticalPrefab, transform);
+        Vector3 ranPos = new Vector3(0, 0.5f, 0);
+        GameObject box = GameObject.Instantiate(_ciriticalPrefab, transform);
         box.transform.localPosition = ranPos;
 
         TextMeshProUGUI textBox = box.GetComponentInChildren<TextMeshProUGUI>();
         textBox.text = value.ToString();
         textBox.color = color;
 
-        Vector3 dest = transform.localScale * 0.02f;
+        Vector3 dest = box.transform.localScale * 1.2f;
         box.transform.DOScale(dest, duration)
             .SetEase(Ease.OutSine)
             .onComplete += () =>
             {
-                GameObject.Destroy(box, 0.3f);
+                GameObject.Destroy(box, 0.2f);
             };
-    }
-
-    private Vector3 GetRanPos()
-    {
-        float x = UnityEngine.Random.Range(-collider.size.x / 2, collider.size.x / 2);
-        float y = UnityEngine.Random.Range(-collider.size.y / 2, collider.size.y / 2);
-
-        Debug.Log($"{x}, {y}");
-        return new Vector3(x, y, 0);
     }
 }

@@ -8,6 +8,7 @@ using static Define;
 public class CreatureController : BaseController
 {
 	HpBar _hpBar;
+	DamageEffector _damageTextEffector;
 
 	public override StatInfo Stat
 	{
@@ -30,7 +31,23 @@ public class CreatureController : BaseController
 		UpdateHpBar();
 	}
 
-	void UpdateHpBar()
+    protected void AddDamageEffector()
+    {
+        GameObject go = Managers.Resource.Instantiate("DamageEffector", transform);
+		go.transform.localPosition = Vector3.zero;
+        go.name = "DamageEffector";
+        _damageTextEffector = go.GetComponent<DamageEffector>();
+
+		//boss 캐릭터의 경우 스케일이 0.001이기 때문에 보정(일반 캐릭터는 스케일이 1이다)
+		GameObjectType type = ObjectManager.GetObjectTypeById(Id);
+		if(type == GameObjectType.Boss)
+        {
+			float adjustScale = 1f / transform.localScale.x * 3f;
+			_damageTextEffector.transform.localScale = _damageTextEffector.transform.localScale * adjustScale;
+        }
+    }
+
+    void UpdateHpBar()
 	{
 		if (_hpBar == null)
 			return;
@@ -46,6 +63,7 @@ public class CreatureController : BaseController
 	{
 		base.Init();
 		AddHpBar();
+		AddDamageEffector();
 	}
 
 	public virtual void OnDamaged()
@@ -53,7 +71,37 @@ public class CreatureController : BaseController
 
 	}
 
-	public virtual void OnDead()
+	public  void PlayDamageTextEffect(int damage, bool isCritical, GameObjectType objectType)
+    {
+		if (_damageTextEffector == null)
+			return;
+
+        if (isCritical)
+        {
+			Debug.Log("ciritical!");
+            _damageTextEffector.GenerateCriticalText(damage, Color.red, 0.1f);
+        }
+        else
+			_damageTextEffector.GenerateText(damage, Color.red, 1f, 1f);
+    }
+
+    public void PlayRecoverTextEffect(int recover, bool isCritical, GameObjectType objectType)
+    {
+        if (_damageTextEffector == null)
+            return;
+
+        if (isCritical)
+        {
+            _damageTextEffector.GenerateCriticalText(recover, Color.blue, 0.1f);
+        }
+        else
+        {
+			Debug.Log("recover!!");
+            _damageTextEffector.GenerateText(recover, Color.blue, 1f, 1f);
+        }
+    }
+
+    public virtual void OnDead()
 	{
 		State = CreatureState.Dead;
 

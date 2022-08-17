@@ -31,6 +31,9 @@ namespace Server.DB
 		public int Attack { get; set; }
 		public float Speed { get; set; }
 		public int TotalExp { get; set; }
+		public int DamageRange { get; set; }
+		public int CriticalRatio { get; set; }
+		public float Critical { get; set; }
 	}
 
 	[Table("Item")]
