@@ -141,9 +141,9 @@ namespace Server.Data
 	{
 		public int id;
 		public string name;
+		public string path;
 		public StatInfo stat;
 		public List<RewardData> rewards;
-		//public string prefabPath;
 	}
 
 	[Serializable]

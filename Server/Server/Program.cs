@@ -107,8 +107,8 @@ namespace Server
 			DataManager.LoadData();
 		
 			GameLogic.Instance.Push(() => { 
-				GameLogic.Instance.Add(1, RoomType.Normal, 7);
-				GameLogic.Instance.Add(2, RoomType.Normal, 7);
+				GameLogic.Instance.Add(1, RoomType.Stage1, 7);
+				GameLogic.Instance.Add(2, RoomType.Stage2, 7);
 
 				// TODO
 				// 보스전에서 vision 영역 작을 경우 스킬 쓰는 보스몹이 vision out 되면서 despawn 되면 

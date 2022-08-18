@@ -80,6 +80,9 @@ namespace Server.Migrations
                     b.Property<int>("Attack")
                         .HasColumnType("int");
 
+                    b.Property<int>("ClassType")
+                        .HasColumnType("int");
+
                     b.Property<float>("Critical")
                         .HasColumnType("real");
 

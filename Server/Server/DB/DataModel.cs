@@ -25,6 +25,8 @@ namespace Server.DB
 
 		public ICollection<ItemDb> Items { get; set; }
 
+		public int ClassType { get; set; }
+
 		public int Level { get; set; }
 		public int Hp { get; set; }
 		public int MaxHp { get; set; }

@@ -27,11 +27,17 @@ public class GameInfoManager : MonoBehaviour
 
     public void SetPingText(int pingMs)
     {
+        if (GameSceneUI == null)
+            return;
+
         GameSceneUI.gameInfo.SetPingText(pingMs);
     }
 
     public void SetCoordText(Vector2Int coord)
     {
+        if (GameSceneUI == null)
+            return;
+
         GameSceneUI.gameInfo.SetCoordText(coord);
     }
 

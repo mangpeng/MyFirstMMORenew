@@ -121,8 +121,8 @@ namespace Data
 	{
 		public int id;
 		public string name;
+		public string path;
 		public StatInfo stat;
-		public string prefabPath;
 	}
 
 	[Serializable]

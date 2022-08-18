@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Data;
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,32 +28,72 @@ public class ObjectManager
 		{
 			if (myPlayer)
 			{
-				GameObject go = Managers.Resource.Instantiate("Creature/MyPlayer");
-				go.name = info.Name;
-				_objects.Add(info.ObjectId, go);
+				if((ClassType)info.ClassType == ClassType.Archer)
+                {
+                    GameObject go = Managers.Resource.Instantiate("Creature/MyPlayer_Archer");
+                    go.name = info.Name;
+                    _objects.Add(info.ObjectId, go);
 
-				MyPlayer = go.GetComponent<MyPlayerController>();
-				MyPlayer.Id = info.ObjectId;
-				MyPlayer.PosInfo = info.PosInfo;
-				MyPlayer.Stat.MergeFrom(info.StatInfo);
-				MyPlayer.SyncPos();
+                    MyPlayer = go.GetComponent<MyPlayerController>();
+					MyPlayer.ClassType = (ClassType)info.ClassType;
+                    MyPlayer.Id = info.ObjectId;
+                    MyPlayer.PosInfo = info.PosInfo;
+                    MyPlayer.Stat.MergeFrom(info.StatInfo);
+                    MyPlayer.SyncPos();
+                }
+                else if ((ClassType)info.ClassType == ClassType.Knight)
+                {
+                    GameObject go = Managers.Resource.Instantiate("Creature/MyPlayer_Knight");
+                    go.name = info.Name;
+                    _objects.Add(info.ObjectId, go);
+
+                    MyPlayer = go.GetComponent<MyPlayerController>();
+					MyPlayer.ClassType = (ClassType)info.ClassType;
+					MyPlayer.Id = info.ObjectId;
+                    MyPlayer.PosInfo = info.PosInfo;
+                    MyPlayer.Stat.MergeFrom(info.StatInfo);
+                    MyPlayer.SyncPos();
+                }
 			}
 			else
 			{
-				GameObject go = Managers.Resource.Instantiate("Creature/Player");
-				go.name = info.Name;
-				_objects.Add(info.ObjectId, go);
+                if ((ClassType)info.ClassType == ClassType.Archer)
+                {
 
-				PlayerController pc = go.GetComponent<PlayerController>();
-				pc.Id = info.ObjectId;
-				pc.PosInfo = info.PosInfo;
-				pc.Stat.MergeFrom(info.StatInfo);
-				pc.SyncPos();
+                    GameObject go = Managers.Resource.Instantiate("Creature/Player_Archer");
+                    go.name = info.Name;
+                    _objects.Add(info.ObjectId, go);
+
+                    PlayerController pc = go.GetComponent<PlayerController>();
+					pc.ClassType = (ClassType)info.ClassType;
+					pc.Id = info.ObjectId;
+                    pc.PosInfo = info.PosInfo;
+                    pc.Stat.MergeFrom(info.StatInfo);
+                    pc.SyncPos();
+                }
+                else if ((ClassType)info.ClassType == ClassType.Knight)
+                {
+                    GameObject go = Managers.Resource.Instantiate("Creature/Player_Knight");
+                    go.name = info.Name;
+                    _objects.Add(info.ObjectId, go);
+
+                    PlayerController pc = go.GetComponent<PlayerController>();
+                    pc.ClassType = (ClassType)info.ClassType;
+                    pc.Id = info.ObjectId;
+                    pc.PosInfo = info.PosInfo;
+                    pc.Stat.MergeFrom(info.StatInfo);
+                    pc.SyncPos();
+                }
 			}
 		}
 		else if (objectType == GameObjectType.Monster)
 		{
-			GameObject go = Managers.Resource.Instantiate("Creature/Monster");
+			MonsterData monsterData;
+			Managers.Data.MonsterDict.TryGetValue(info.MonsterTemplateId, out monsterData);
+
+			Debug.Assert(monsterData != null, $"유효하지 않은 몬스터 데이터 입니다. {info.MonsterTemplateId}");
+
+			GameObject go = Managers.Resource.Instantiate(monsterData.path);
 			go.name = info.Name;
 			_objects.Add(info.ObjectId, go);
 

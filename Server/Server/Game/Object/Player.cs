@@ -24,11 +24,15 @@ namespace Server.Game
 
 		public Player()
 		{
-			ObjectType = GameObjectType.Player;
 			Vision = new VisionCube(this);
 		}
 
-		public override void OnDamaged(GameObject attacker, int damage)
+        public override void SetType()
+        {
+			ObjectType = GameObjectType.Player;
+		}
+
+        public override void OnDamaged(GameObject attacker, int damage)
 		{
 			base.OnDamaged(attacker, damage);
 		}

@@ -268,6 +268,9 @@ public class BaseController : MonoBehaviour
 	// 스르륵 이동하는 것을 처리
 	protected virtual void UpdateMoving()
 	{
+		if (Managers.Map.CurrentGrid == null)
+			return;
+
 		Vector3 destPos = Managers.Map.CurrentGrid.CellToWorld(CellPos) + new Vector3(0.5f, 0.5f);
 		Vector3 moveDir = destPos - transform.position;
 

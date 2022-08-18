@@ -48,6 +48,7 @@ namespace Server
 						{
 							PlayerDbId = playerDb.PlayerDbId,
 							Name = playerDb.PlayerName,
+							ClassType = playerDb.ClassType,
 							StatInfo = new StatInfo()
 							{
 								Level = playerDb.Level,
@@ -59,6 +60,7 @@ namespace Server
 								DamageRange = playerDb.DamageRange,
 								CriticalRatio = playerDb.CriticalRatio,
 								Critical = playerDb.Critical,
+						
 							}
 						};
 
@@ -112,6 +114,7 @@ namespace Server
 				MyPlayer.Info.PosInfo.MoveDir = MoveDir.Down;
 				MyPlayer.Info.PosInfo.PosX = 0;
 				MyPlayer.Info.PosInfo.PosY = 0;
+				MyPlayer.Info.ClassType = playerInfo.ClassType;
 				MyPlayer.Stat.MergeFrom(playerInfo.StatInfo);
 				MyPlayer.Session = this;
 
@@ -193,6 +196,7 @@ namespace Server
 						DamageRange = stat.DamageRange,
 						CriticalRatio = stat.CriticalRatio,
 						Critical = stat.Critical,
+						ClassType = createPacket.ClassType,
 					};
 
 					db.Players.Add(newPlayerDb);
@@ -205,6 +209,7 @@ namespace Server
 					{
 						PlayerDbId = newPlayerDb.PlayerDbId,
 						Name = createPacket.Name,
+						ClassType = createPacket.ClassType,
 						StatInfo = new StatInfo()
 						{
 							Level = stat.Level,
@@ -216,7 +221,7 @@ namespace Server
                             DamageRange = stat.DamageRange,
                             CriticalRatio = stat.CriticalRatio,
                             Critical = stat.Critical,
-                        }
+						}
 					};
 
 					// 메모리에도 들고 있다

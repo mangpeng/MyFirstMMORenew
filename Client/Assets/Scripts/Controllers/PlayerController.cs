@@ -13,6 +13,8 @@ public class PlayerController : CreatureController
 	protected UI_ChatPopup _chatPopup;
 	protected IdBar _idBar;
 
+	public ClassType ClassType = ClassType.None;
+
 	protected override void Init()
 	{
 		base.Init();
@@ -77,19 +79,19 @@ public class PlayerController : CreatureController
 			switch (Dir)
 			{
 				case MoveDir.Up:
-					_animator.Play(_rangedSkill ? "ATTACK_WEAPON_BACK" : "ATTACK_BACK");
+					_animator.Play((_rangedSkill && ClassType == ClassType.Archer) ? "ATTACK_WEAPON_BACK" : "ATTACK_BACK");
 					_sprite.flipX = false;
 					break;
 				case MoveDir.Down:
-					_animator.Play(_rangedSkill ? "ATTACK_WEAPON_FRONT" : "ATTACK_FRONT");
+					_animator.Play((_rangedSkill && ClassType == ClassType.Archer) ? "ATTACK_WEAPON_FRONT" : "ATTACK_FRONT");
 					_sprite.flipX = false;
 					break;
 				case MoveDir.Left:
-					_animator.Play(_rangedSkill ? "ATTACK_WEAPON_RIGHT" : "ATTACK_RIGHT");
+					_animator.Play((_rangedSkill && ClassType == ClassType.Archer) ? "ATTACK_WEAPON_RIGHT" : "ATTACK_RIGHT");
 					_sprite.flipX = true;
 					break;
 				case MoveDir.Right:
-					_animator.Play(_rangedSkill ? "ATTACK_WEAPON_RIGHT" : "ATTACK_RIGHT");
+					_animator.Play((_rangedSkill && ClassType == ClassType.Archer) ? "ATTACK_WEAPON_RIGHT" : "ATTACK_RIGHT");
 					_sprite.flipX = false;
 					break;
 			}

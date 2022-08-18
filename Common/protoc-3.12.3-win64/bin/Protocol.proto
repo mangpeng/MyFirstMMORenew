@@ -94,6 +94,12 @@ enum ConsumableType {
    CONSUMABLE_TYPE_POTION = 1;
 }
 
+enum ClassType {
+	CLASS_TYPE_NONE = 0;
+	CLASS_TYPE_ARCHER = 1;
+	CLASS_TYPE_KNIGHT = 2;
+}
+
 
 message S_EnterGame {
   ObjectInfo player = 1;
@@ -155,6 +161,7 @@ message S_Login {
 
 message C_CreatePlayer {
   string name = 1;
+  int32 classType = 2;
 }
 
 message S_CreatePlayer {
@@ -221,14 +228,17 @@ message C_UsePotion {
 message LobbyPlayerInfo {
   int32 playerDbId = 1;
   string name = 2;
-  StatInfo statInfo = 3;
+  int32 classType = 3;
+  StatInfo statInfo = 4;
 }
 
 message ObjectInfo {
   int32 objectId = 1;
   string name = 2;
-  PositionInfo posInfo = 3;
-  StatInfo statInfo = 4;
+  int32 classType = 3;
+  int32 monsterTemplateId = 4;
+  PositionInfo posInfo = 5;
+  StatInfo statInfo = 6;
 }
 
 message PositionInfo {

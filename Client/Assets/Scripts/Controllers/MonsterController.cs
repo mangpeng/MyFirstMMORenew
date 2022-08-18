@@ -7,11 +7,13 @@ using static Define;
 public class MonsterController : CreatureController
 {
 	Coroutine _coSkill;
+    AnimatorByParts _monsterAnimator;
 
 	protected override void Init()
 	{
 		base.Init();
-	}
+        _monsterAnimator = GetComponent<AnimatorByParts>();
+    }
 
 	protected override void UpdateIdle()
 	{
@@ -31,4 +33,24 @@ public class MonsterController : CreatureController
 			State = CreatureState.Skill;
 		}
 	}
+
+    
+    protected override void UpdateAnimation()
+    {
+        if (_monsterAnimator == null)
+            return;
+
+        if (State == CreatureState.Idle)
+        {
+            _monsterAnimator.SetSate(AnimatorByParts.State.IDLE, Dir);
+        }
+        else if (State == CreatureState.Moving)
+        {
+            _monsterAnimator.SetSate(AnimatorByParts.State.WALK, Dir);
+        }
+        else if (State == CreatureState.Skill)
+        {
+            _monsterAnimator.SetSate(AnimatorByParts.State.ATTACK, Dir);
+        }
+    }
 }

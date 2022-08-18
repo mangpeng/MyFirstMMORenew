@@ -17,7 +17,7 @@ public class ChatManager
             if (_chatScroll == null)
                 _chatScroll = GameObject.FindObjectOfType<ChatScroll>();
 
-            return _chatScroll.IsChat;
+            return _chatScroll == null ? false : _chatScroll.IsChat;
         }
     }
 

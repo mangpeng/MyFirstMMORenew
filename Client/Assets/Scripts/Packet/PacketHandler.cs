@@ -5,6 +5,7 @@ using Google.Protobuf.Protocol;
 using ServerCore;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -55,6 +56,7 @@ class PacketHandler
 		GameObject go = Managers.Object.FindById(movePacket.ObjectId);
 		if (go == null)
 			return;
+
 
 		if (Managers.Object.MyPlayer.Id == movePacket.ObjectId)
         {
@@ -149,10 +151,14 @@ class PacketHandler
 	
 	public static void S_ConnectedHandler(PacketSession session, IMessage packet)
 	{
-		Debug.Log("S_ConnectedHandler");
+		Debug.Log("S=>C S_ConnectedHandler");
+		Debug.Log("C=>S C_Login");
 		C_Login loginPacket = new C_Login();
 
 		string path = Application.dataPath;
+		if(!string.IsNullOrEmpty(Managers.Network.InputAccountId))
+			path = Managers.Network.InputAccountId;
+
 		loginPacket.UniqueId = path.GetHashCode().ToString();
 		Managers.Network.Send(loginPacket);
 	}
@@ -163,43 +169,56 @@ class PacketHandler
 		S_Login loginPacket = (S_Login)packet;
 		Debug.Log($"LoginOk({loginPacket.LoginOk})");
 
-		// 해당 계정의 캐릭터가 없으면 캐릭터 생성 요청을 보낸다.
-		if (loginPacket.Players == null || loginPacket.Players.Count == 0)
-		{
-			C_CreatePlayer createPacket = new C_CreatePlayer();
-			createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
-			Managers.Network.Send(createPacket);
-		}
-		else // 해당 계정의 캐릭터가 있으면 첫번째 캐릭터로 게임입장 시도 한다.
-		{
-			// 무조건 첫번째 로그인
-			LobbyPlayerInfo info = loginPacket.Players[0];
-			C_EnterGame enterGamePacket = new C_EnterGame();
-			enterGamePacket.Name = info.Name;
-			enterGamePacket.IsTest = false;
+        GameObject go = Managers.Resource.Instantiate("UI/Popup/UI_SelectCharacter");
+        UI_SelectCharacterPopup selectCharacterPopup = go.GetOrAddComponent<UI_SelectCharacterPopup>();
+		selectCharacterPopup.Refresh(loginPacket.Players.ToList());
 
-            Managers.Map.Id = loginPacket.MapId;
-            Managers.Scene.LoadScene(Define.Scene.Game);
-            Managers.Network.Send(enterGamePacket);
-        }
-	}
+        Managers.Map.Id = loginPacket.MapId;
+        
 
-	public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)
+        //// 해당 계정의 캐릭터가 없으면 캐릭터 생성 요청을 보낸다.
+        //if (loginPacket.Players == null || loginPacket.Players.Count == 0)
+        //{
+        //	C_CreatePlayer createPacket = new C_CreatePlayer();
+        //	createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
+        //	Managers.Network.Send(createPacket);
+        //}
+        //else // 해당 계정의 캐릭터가 있으면 첫번째 캐릭터로 게임입장 시도 한다.
+        //{
+        //	// 무조건 첫번째 로그인
+        //	LobbyPlayerInfo info = loginPacket.Players[0];
+        //	C_EnterGame enterGamePacket = new C_EnterGame();
+        //	enterGamePacket.Name = info.Name;
+        //	enterGamePacket.IsTest = false;
+
+        //          Managers.Map.Id = loginPacket.MapId;
+        //          Managers.Scene.LoadScene(Define.Scene.Game);
+        //          Managers.Network.Send(enterGamePacket);
+        //      }
+    }
+
+    public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)
 	{
 		S_CreatePlayer createOkPacket = (S_CreatePlayer)packet;
 
-		if (createOkPacket.Player == null)
-		{
-			C_CreatePlayer createPacket = new C_CreatePlayer();
-			createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
-			Managers.Network.Send(createPacket);
-		}
-		else
-		{
-			C_EnterGame enterGamePacket = new C_EnterGame();
-			enterGamePacket.Name = createOkPacket.Player.Name;
-			Managers.Network.Send(enterGamePacket);
-		}
+		Managers.Scene.LoadScene(Define.Scene.Game);
+
+		C_EnterGame enterGamePacket = new C_EnterGame();
+        enterGamePacket.Name = createOkPacket.Player.Name;
+        Managers.Network.Send(enterGamePacket);
+
+  //      if (createOkPacket.Player == null)
+		//{
+		//	C_CreatePlayer createPacket = new C_CreatePlayer();
+		//	createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
+		//	Managers.Network.Send(createPacket);
+		//}
+		//else
+		//{
+		//	C_EnterGame enterGamePacket = new C_EnterGame();
+		//	enterGamePacket.Name = createOkPacket.Player.Name;
+		//	Managers.Network.Send(enterGamePacket);
+		//}
 	}
 
 	public static void S_ItemListHandler(PacketSession session, IMessage packet)
@@ -217,7 +236,8 @@ class PacketHandler
 		}
 
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-        gameSceneUI.SkillUI.RefreshUI();
+		if(gameSceneUI != null)
+			gameSceneUI.SkillUI.RefreshUI();
 
         if (Managers.Object.MyPlayer != null)
 			Managers.Object.MyPlayer.RefreshAdditionalStat();

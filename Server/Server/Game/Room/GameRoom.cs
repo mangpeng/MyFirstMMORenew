@@ -8,7 +8,8 @@ namespace Server.Game
 {
     public enum RoomType
     {
-		Normal,
+		Stage1,
+		Stage2,
 		Boss
     }
 
@@ -70,9 +71,8 @@ namespace Server.Game
 				}
 			}
 
-			if(type == RoomType.Normal)
+			if(type == RoomType.Stage1)
             {
-                // TEMP
                 for (int i = 0; i < Map.RespawnList.Count(); i++)
                 {
                     Monster monster = ObjectManager.Instance.Add<Monster>();
@@ -80,18 +80,21 @@ namespace Server.Game
                     EnterGame(monster, randomPos: true);
                 }
             }
-
-            if (type == RoomType.Boss)
+            else if (type == RoomType.Stage2)
             {
                 for (int i = 0; i < Map.RespawnList.Count(); i++)
                 {
                     Monster monster = ObjectManager.Instance.Add<Monster>();
-                    monster.Init(1);
+                    monster.Init(2);
                     EnterGame(monster, randomPos: true);
                 }
+            }
+            else if (type == RoomType.Boss)
+            {
 
                 Boss boss = ObjectManager.Instance.Add<Boss>();
 				boss.Init(0);
+
 				// TODO 보스 시작 위치 하드 코딩되어 있음
 				boss.CellPos = new Vector2Int(6, 12);
 				EnterGame(boss, false);
@@ -163,6 +166,9 @@ namespace Server.Game
 				Monster monster = gameObject as Monster;
 				_monsters.Add(gameObject.Id, monster);
 				monster.Room = this;
+
+				gameObject.Info.MonsterTemplateId = monster.TemplateId;
+                Console.WriteLine(gameObject.Info.MonsterTemplateId);
 
 				GetZone(monster.CellPos).Monsters.Add(monster);
 				Map.ApplyMove(monster, new Vector2Int(monster.CellPos.x, monster.CellPos.y));

@@ -3,6 +3,7 @@
    {
         "id": "0",
         "name": "불의정령",
+		"path": "Creature/Boss",
         "stat": {
             "level": "99",
             "maxHp": "2000",
@@ -44,7 +45,50 @@
     },
     {
         "id": "1",
-        "name": "도플갱어",
+        "name": "스클레톤-소드",
+		"path": "Creature/Monster_Skel_Sword",
+        "stat": {
+            "level": "1",
+            "maxHp": "100",
+            "attack": "3",
+            "speed": "3.0",
+            "totalExp": "10",
+			"damageRange": "10",
+			"criticalRatio": "10",
+			"critical": "1.2",
+        },
+        "rewards": [
+            {
+                "probability": "10",
+                "itemId": "1",
+                "count": "1"
+            },
+            {
+                "probability": "10",
+                "itemId": "2",
+                "count": "1"
+            },
+            {
+                "probability": "10",
+                "itemId": "100",
+                "count": "1"
+            },
+            {
+                "probability": "10",
+                "itemId": "101",
+                "count": "1"
+            },
+            {
+                "probability": "50",
+                "itemId": "200",
+                "count": "5"
+            }
+        ]
+    },
+	    {
+        "id": "2",
+        "name": "스켈레톤-해머",
+		"path": "Creature/Monster_Skel_Hammer",
         "stat": {
             "level": "1",
             "maxHp": "20",
@@ -53,7 +97,7 @@
             "totalExp": "10",
 			"damageRange": "10",
 			"criticalRatio": "10",
-			"critical": "1.2",
+			"critical": "2",
         },
         "rewards": [
             {

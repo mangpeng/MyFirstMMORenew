@@ -134,12 +134,8 @@ namespace Server.Game
 
 			bool isCiritical = rnd.Next(0, 100) < Stat.CriticalRatio;
 			if(isCiritical)
-            {
-                Console.WriteLine("ciritical!");
 				totalDamage = (int)(totalDamage * Stat.Critical);
-            }
 
-            Console.WriteLine($"{Stat.DamageRange} {Stat.CriticalRatio} {Stat.Critical}");
 			damage = totalDamage;
 			damage = Math.Max(damage - TotalDefence, 0);
 
