@@ -23,6 +23,8 @@ public class Define
     {
         Click,
         Drag,
+        Enter,
+        Exit
     }
 
     public enum MAP

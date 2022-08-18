@@ -31,7 +31,11 @@ public class MyPlayerController : PlayerController
 				GetDirInput();
 				break;
 			case CreatureState.Moving:
-				GetDirInput();
+
+                UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+                gameSceneUI.SkillUI.HideGuid();
+
+                GetDirInput();
 				break;
 		}
 
@@ -134,7 +138,7 @@ public class MyPlayerController : PlayerController
         if (Managers.Chat.IsChat)
             return;
 
-        _moveKeyPressed = true;
+		_moveKeyPressed = true;
 
 		if (Input.GetKey(KeyCode.UpArrow))
 		{
@@ -208,7 +212,19 @@ public class MyPlayerController : PlayerController
 		}
 	}
 
-	public void RefreshAdditionalStat()
+    protected override void AddHpMpBar()
+    {
+        base.AddHpMpBar();
+
+        {
+            GameObject go = Managers.Resource.Instantiate("UI/MpBar", transform);
+            go.transform.localPosition = new Vector3(0, -0.6f, 0);
+            go.name = "MpBar";
+            MpBar = go.GetComponent<HpMpBar>();
+        }
+    }
+
+    public void RefreshAdditionalStat()
 	{
 		WeaponDamage = 0;
 		ArmorDefence = 0;

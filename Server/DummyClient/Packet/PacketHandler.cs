@@ -70,6 +70,14 @@ class PacketHandler
 		{
 			C_CreatePlayer createPacket = new C_CreatePlayer();
 			createPacket.Name = $"Player_{serverSession.DummyId.ToString("0000")}";
+
+			Random random = new Random();
+			int ran = random.Next(0, 2);
+			if(ran == 0)
+				createPacket.ClassType = (int)ClassType.Archer;
+			else
+				createPacket.ClassType = (int)ClassType.Knight;
+
 			serverSession.Send(createPacket);
 		}
 		else

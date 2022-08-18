@@ -26,10 +26,15 @@ public class PlayerController : CreatureController
 		_chatPopup = GetComponentInChildren<UI_ChatPopup>();
 		_idBar = GetComponentInChildren<IdBar>();
 
-		_idBar.SetText(name);
+		SetIdText(name);
 	}
 
-	protected override void UpdateAnimation()
+    public virtual void SetIdText(string id)
+    {
+		_idBar.SetText($"<color=yellow>{id}</color>");
+	}
+
+    protected override void UpdateAnimation()
 	{
 		if (_animator == null || _sprite == null)
 			return;
@@ -163,12 +168,12 @@ public class PlayerController : CreatureController
 
 	private void PlaySkillNormalFist(SkillInfo info)
     {
-		_coSkill = StartCoroutine("CoStartPunch");
+		_coSkill = StartCoroutine(CoStartPunch(NormalSkillData.cooldown));
 	}
 
 	private void PlaySkillNormalArrow(SkillInfo info)
     {
-		_coSkill = StartCoroutine("CoStartShootArrow");
+		_coSkill = StartCoroutine(CoStartShootArrow(NormalSkillData.cooldown));
 	}
 
     private void PlaySkillArcherActive(SkillInfo info)
@@ -196,7 +201,7 @@ public class PlayerController : CreatureController
         go.transform.localEulerAngles = temp;
 
         Managers.Resource.DestroyAfter(go, 0.5f);
-        _coSkill = StartCoroutine("CoStartShootArrow");
+        _coSkill = StartCoroutine(CoStartShootArrow(ActiveSkillData.cooldown));
     }
 
 	private void PlaySkillArcherBuff(SkillInfo info)
@@ -209,27 +214,35 @@ public class PlayerController : CreatureController
         GameObject go = Managers.Resource.Instantiate("Effect/SwordSlashEffect");
 
         go.transform.position = transform.position;
-        Vector3 temp = go.transform.localEulerAngles;
+        Vector3 tempAngle = go.transform.localEulerAngles;
+		Vector3 tempSacle = Vector3.one;
         if (Dir == MoveDir.Up)
         {
-            temp.z = -180;
-        }
+            tempAngle.z = -180;
+			tempSacle.x = 1;
+		}
         else if (Dir == MoveDir.Down)
         {
-            temp.z = 0;
-        }
+            tempAngle.z = 0;
+			tempSacle.x = 1;
+		}
         else if (Dir == MoveDir.Right)
         {
-            temp.z = 90;
-        }
+            tempAngle.z = 0;
+			tempSacle.x = -1;
+			tempSacle.y = 1;
+		}
         else if (Dir == MoveDir.Left)
         {
-            temp.z = -90;
+			tempAngle.z = 0;
+            tempSacle.x = 1;
+            tempSacle.y = -1;
         }
-        go.transform.localEulerAngles = temp;
+        go.transform.localEulerAngles = tempAngle;
+		go.transform.localScale = tempSacle;
 
         Managers.Resource.DestroyAfter(go, 0.5f);
-        _coSkill = StartCoroutine("CoStartPunch");
+        _coSkill = StartCoroutine(CoStartPunch(ActiveSkillData.cooldown));
 	}
 
     private void PlaySkillKnightBuff(SkillInfo info)
@@ -238,25 +251,27 @@ public class PlayerController : CreatureController
     }
 
 
-    IEnumerator CoStartPunch()
+    IEnumerator CoStartPunch(float duration)
     {
         // 대기 시간
         _rangedSkill = false;
         State = CreatureState.Skill;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(duration);
         State = CreatureState.Idle;
         _coSkill = null;
         CheckUpdatedFlag();
     }
 
-    IEnumerator CoStartShootArrow()
+    IEnumerator CoStartShootArrow(float duration)
     {
         // 대기 시간
         _rangedSkill = true;
         State = CreatureState.Skill;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(duration);
         State = CreatureState.Idle;
         _coSkill = null;
         CheckUpdatedFlag();
     }
+
+
 }

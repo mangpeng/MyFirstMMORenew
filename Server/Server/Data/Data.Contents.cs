@@ -30,6 +30,7 @@ namespace Server.Data
 	{
 		public int id;
 		public string name;
+		public string description;
 		public float cooldown;
 		public int damage;
 		public string skillIcon;

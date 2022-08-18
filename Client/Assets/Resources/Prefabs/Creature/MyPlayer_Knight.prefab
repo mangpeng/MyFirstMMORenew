@@ -121,6 +121,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClassType: 0
+  NormalSkillData:
+    id: 0
+    name: 
+    description: 
+    cooldown: 0
+    damage: 0
+    skillIcon: 
+    skillType: 0
+  ActiveSkillData:
+    id: 0
+    name: 
+    description: 
+    cooldown: 0
+    damage: 0
+    skillIcon: 
+    skillType: 0
+  BuffSkillData:
+    id: 0
+    name: 
+    description: 
+    cooldown: 0
+    damage: 0
+    skillIcon: 
+    skillType: 0
 --- !u!1001 &6320386623110843720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -381,7 +405,7 @@ PrefabInstance:
     - target: {fileID: 1502586023929294277, guid: 9443b7e583616b649a055bce2edf4848,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.5
+      value: 0.457
       objectReference: {fileID: 0}
     - target: {fileID: 1502586023929294277, guid: 9443b7e583616b649a055bce2edf4848,
         type: 3}

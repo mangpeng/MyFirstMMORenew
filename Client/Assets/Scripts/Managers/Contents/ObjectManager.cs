@@ -155,7 +155,6 @@ public class ObjectManager
         MyPlayer = go.GetComponent<MyPlayerController>();
         MyPlayer.ClassType = (ClassType)info.ClassType;
         MyPlayer.Id = info.ObjectId;
-
         MyPlayer.PosInfo = info.PosInfo;
         MyPlayer.Stat.MergeFrom(info.StatInfo);
         MyPlayer.SyncPos();
@@ -172,14 +171,6 @@ public class ObjectManager
         PlayerController pc = go.GetComponent<PlayerController>();
         pc.ClassType = (ClassType)info.ClassType;
         pc.Id = info.ObjectId;
-
-
-        Skill skillData = null;
-        Managers.Data.SkillDict.TryGetValue(3, out skillData);
-        pc.ActiveSkillData = skillData;
-        Managers.Data.SkillDict.TryGetValue(4, out skillData);
-        pc.BuffSkillData = skillData;
-
         pc.PosInfo = info.PosInfo;
         pc.Stat.MergeFrom(info.StatInfo);
         pc.SyncPos();

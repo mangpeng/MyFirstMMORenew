@@ -12,6 +12,7 @@ namespace Data
 	{
 		public int id;
 		public string name;
+		public string description;
 		public float cooldown;
 		public int damage;
 		public string skillIcon;
@@ -68,6 +69,7 @@ namespace Data
 	{
 		public int id;
 		public string name;
+		public string description;
 		public ItemType itemType;
 		public string iconPath;
 	}

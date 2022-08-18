@@ -2,7 +2,8 @@
     "skills": [
         {
             "id": "1",
-            "name": "��Ÿ",
+            "name": "기본 주먹 공격",
+			"description": "주먹을 이용하여 전방 적을 공격 합니다.",
             "cooldown": "0.5",
             "damage": "10",
             "skillType": "SkillAuto",
@@ -10,13 +11,14 @@
         },
         {
             "id": "2",
-            "name": "ȭ�� ����",
+            "name": "기본 활 공격",
+			"description": "전방 직선의 적을 공격 합니다.",
             "cooldown": "0.5",
             "damage": "5",
             "skillType": "SkillProjectile",
 			"skillIcon": "",
             "projectile": {
-                "name": "ȭ��",
+                "name": "-",
                 "speed": "20.0",
                 "range": "10",
                 "prefab": "Creature/PowerArrow"
@@ -24,13 +26,14 @@
         },
 		{
             "id": "3",
-            "name": "���� ȭ��",
+            "name": "관통 화살 공격",
+			"description": "전방 직선의 모든 적을 공격 합니다.",
             "cooldown": "0.3",
             "damage": "20",
             "skillType": "SkillProjectile",
 			"skillIcon": "Textures/Skill/archer_skill_penetration",
             "projectile": {
-                "name": "ȭ��",
+                "name": "-",
                 "speed": "20.0",
                 "range": "10",
                 "prefab": "Creature/Arrow"
@@ -38,7 +41,8 @@
         },
 		{
             "id": "4",
-            "name": "���� ��",
+            "name": "매의 눈",
+			"description": "매의 눈을 사용하여 궁수의 기민하게 이동 합니다.",
             "cooldown": "30",
             "damage": "5",
             "skillType": "SkillBuff",
@@ -49,8 +53,9 @@
         },
 		{
             "id": "5",
-            "name": "�ߵ�",
-            "cooldown": "0.3",
+            "name": "발도",
+			"description": "재빠르게 검을 휘둘러 사방의 적을 공격합니다. 후방의 적에게는 공격이 닿지 않습니다.",
+            "cooldown": "0.5",
             "damage": "20",
             "skillType": "SkillSmash",
 			"skillIcon": "Textures/Skill/knight_skill_smash",
@@ -60,7 +65,8 @@
         },
 		{
             "id": "6",
-            "name": "����Ŀ",
+            "name": "버서커",
+			"description": "버서커 모드에 돌입합니다. 전사의 모든 능력치가 대폭 상승합니다.",
             "cooldown": "30",
             "damage": "5",
             "skillType": "SkillBuff",
@@ -71,13 +77,14 @@
         },
 		{
             "id": "7",
-            "name": "���� ����",
+            "name": "화염 공격",
+			"description": "적에게 화염 공격을 입힙니다.",
             "cooldown": "2",
             "damage": "10",
             "skillType": "SkillSplash",
 			"skillIcon": "",
             "splash": {
-                "name": "�⺻ ����",			
+                "name": "",
                 "warningDelay": "1.0",
 				"hitCount": "0",
 				"hitInterval": "0.0",                                    
@@ -85,13 +92,14 @@
         },		
 		{
             "id": "8",
-            "name": "���� ����",
+            "name": "화염 공격",
+			"description": "십자가 방향으로 화염 공격을 입힙니다.",
             "cooldown": "2",
             "damage": "10",
             "skillType": "SkillSplash",
 			"skillIcon": "",
             "splash": {
-                "name": "���ڰ� ����",			
+                "name": "-",			
                 "warningDelay": "1.2",
 				"hitCount": "6",
 				"hitInterval": "0.2",                 
@@ -99,13 +107,14 @@
         },		
 		{
             "id": "9",
-            "name": "���� ����",
+            "name": "화염 공격",
+			"description": "대각선 방향으로 화염 공격을 입힙니다.",
             "cooldown": "2",
             "damage": "10",
             "skillType": "SkillSplash",
 			"skillIcon": "",
             "splash": {
-                "name": "�밢 ����",			
+                "name": "-",			
                 "warningDelay": "1.2",
 				"hitCount": "6",
 				"hitInterval": "0.2",                 
@@ -113,13 +122,14 @@
         },		
 		{
             "id": "10",
-            "name": "���� ����",
+            "name": "화염 공격",
+			"description": "사방의 적에게 화염 공격을 입힙니다.",
             "cooldown": "5",
             "damage": "10",
             "skillType": "SkillSplash",
 			"skillIcon": "",
             "splash": {
-                "name": "�簢 ����",			
+                "name": "-",			
                 "warningDelay": "1.2",
 				"hitCount": "3",
 				"hitInterval": "0.2",                 

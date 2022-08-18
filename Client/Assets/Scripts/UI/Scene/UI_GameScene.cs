@@ -11,6 +11,7 @@ public class UI_GameScene : UI_Scene
     public ChatScroll chatUI { get; private set; }
     public UI_GameInfo gameInfo{ get; private set; }
     public UI_Boss bossUI { get; private set; }
+    public Tooltip tooltip { get; private set; }
 
     public override void Init()
 	{
@@ -23,6 +24,7 @@ public class UI_GameScene : UI_Scene
         chatUI = GetComponentInChildren<ChatScroll>();
         gameInfo = GetComponentInChildren<UI_GameInfo>();
         bossUI = GetComponentInChildren<UI_Boss>();
+        tooltip = GetComponentInChildren<Tooltip>();
 
         StatUI.gameObject.SetActive(false);
         InvenUI.gameObject.SetActive(false);
@@ -31,5 +33,18 @@ public class UI_GameScene : UI_Scene
         chatUI.gameObject.SetActive(true);
         gameInfo.gameObject.SetActive(true);
         bossUI.gameObject.SetActive(false);
+        tooltip.gameObject.SetActive(false);
+    }
+
+    public void ShowTooltip(Vector3 pos, string text)
+    {
+        tooltip.gameObject.SetActive(true);
+        tooltip.transform.position = pos;
+        tooltip.SetText(text);
+    }
+
+    public void HideTooltip()
+    {
+        tooltip.gameObject.SetActive(false);
     }
 }
