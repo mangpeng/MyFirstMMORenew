@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: KNIGHT_ATTACK_BACK_KNIGHT
+  m_Name: KNIGHT_ATTACK_BACK
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -21,9 +21,9 @@ AnimationClip:
   - curve:
     - time: 0
       value: {fileID: 21300000, guid: 5bf27358e18444d21bcd39f2d94e70fc, type: 3}
-    - time: 0.083333336
-      value: {fileID: 21300000, guid: c5e89b89cb79f4da3a7fa470eeaf9cf4, type: 3}
     - time: 0.16666667
+      value: {fileID: 21300000, guid: c5e89b89cb79f4da3a7fa470eeaf9cf4, type: 3}
+    - time: 0.33333334
       value: {fileID: 21300000, guid: c413865570f3e45969d9a4dfdc42afd1, type: 3}
     attribute: m_Sprite
     path: 
@@ -52,7 +52,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.25
+    m_StopTime: 0.4166667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

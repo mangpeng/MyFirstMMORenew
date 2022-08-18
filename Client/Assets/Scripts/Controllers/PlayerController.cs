@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Data;
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,13 +8,16 @@ using static Define;
 
 public class PlayerController : CreatureController
 {
-	protected Coroutine _coSkill;
+    protected Coroutine _coSkill;
 	protected bool _rangedSkill = false;
 
 	protected UI_ChatPopup _chatPopup;
 	protected IdBar _idBar;
 
 	public ClassType ClassType = ClassType.None;
+	public Skill NormalSkillData = null;
+	public Skill ActiveSkillData = null;
+	public Skill BuffSkillData = null;
 
 	protected override void Init()
 	{
@@ -109,68 +113,36 @@ public class PlayerController : CreatureController
 
 	public override void UseSkill(SkillInfo info)
 	{
-		if (info.SkillId == 1)
-		{
-			_coSkill = StartCoroutine("CoStartPunch");
-		}
-		else if (info.SkillId == 2)
-		{
-			_coSkill = StartCoroutine("CoStartShootArrow");
-		}
-        else if (info.SkillId == 7)
+		switch(info.SkillId)
         {
-			GameObject go = Managers.Resource.Instantiate("Effect/ArrowEffect");
+			// normal
+			case Const.SKILL_FIST:
+				PlaySkillNormalFist(info);
+				break;
+            case Const.SKILL_ARROW:
+				PlaySkillNormalArrow(info);
+				break;
+            // archer
+            case Const.SKILL_ARCHER_ACTIVE:
+				PlaySkillArcherActive(info);
+                break;
+            case Const.SKILL_ARCHER_BUFF:
+				PlaySkillArcherBuff(info);
+                break;
+            // knight
+            case Const.SKILL_KNIGHT_ACTIVE:
+                PlaySkillKnightActive(info);
+                break;
+            case Const.SKILL_KNIGHT_BUFF:
+                PlaySkillKnightBuff(info);
+                break;
 
-			go.transform.position = transform.position;
-			Vector3 temp = go.transform.localEulerAngles;
-			if (Dir == MoveDir.Up)
-            {
-				temp.z = -90;
-            }
-            else if (Dir == MoveDir.Down)
-            {
-				temp.z = 90;
-			}
-            else if (Dir == MoveDir.Right)
-            {
-                temp.z = 180;
-            }
-            else if (Dir == MoveDir.Left)
-            {
-                temp.z = 0;
-            }
-            go.transform.localEulerAngles = temp;
-
-            Managers.Resource.DestroyAfter(go, 0.5f);	
-            _coSkill = StartCoroutine("CoStartShootArrow");
         }
-    }
+	}
 
 	protected virtual void CheckUpdatedFlag()
 	{
 
-	}
-
-	IEnumerator CoStartPunch()
-	{
-		// 대기 시간
-		_rangedSkill = false;
-		State = CreatureState.Skill;
-		yield return new WaitForSeconds(0.5f);
-		State = CreatureState.Idle;
-		_coSkill = null;
-		CheckUpdatedFlag();
-	}
-
-	IEnumerator CoStartShootArrow()
-	{
-		// 대기 시간
-		_rangedSkill = true;
-		State = CreatureState.Skill;
-		yield return new WaitForSeconds(0.3f);
-		State = CreatureState.Idle;
-		_coSkill = null;
-		CheckUpdatedFlag();
 	}
 
 	public override void OnDamaged()
@@ -187,5 +159,104 @@ public class PlayerController : CreatureController
     {
 		GameObject effect = Managers.Resource.Instantiate("Particle/RecoverEffect", transform);
 		effect.transform.localPosition = new Vector3(0, -0.3f, 0);
+    }
+
+	private void PlaySkillNormalFist(SkillInfo info)
+    {
+		_coSkill = StartCoroutine("CoStartPunch");
+	}
+
+	private void PlaySkillNormalArrow(SkillInfo info)
+    {
+		_coSkill = StartCoroutine("CoStartShootArrow");
+	}
+
+    private void PlaySkillArcherActive(SkillInfo info)
+    {
+        GameObject go = Managers.Resource.Instantiate("Effect/ArrowEffect");
+
+        go.transform.position = transform.position;
+        Vector3 temp = go.transform.localEulerAngles;
+        if (Dir == MoveDir.Up)
+        {
+            temp.z = -90;
+        }
+        else if (Dir == MoveDir.Down)
+        {
+            temp.z = 90;
+        }
+        else if (Dir == MoveDir.Right)
+        {
+            temp.z = 180;
+        }
+        else if (Dir == MoveDir.Left)
+        {
+            temp.z = 0;
+        }
+        go.transform.localEulerAngles = temp;
+
+        Managers.Resource.DestroyAfter(go, 0.5f);
+        _coSkill = StartCoroutine("CoStartShootArrow");
+    }
+
+	private void PlaySkillArcherBuff(SkillInfo info)
+    {
+		
+	}
+
+    private void PlaySkillKnightActive(SkillInfo info)
+    {
+        GameObject go = Managers.Resource.Instantiate("Effect/SwordSlashEffect");
+
+        go.transform.position = transform.position;
+        Vector3 temp = go.transform.localEulerAngles;
+        if (Dir == MoveDir.Up)
+        {
+            temp.z = -180;
+        }
+        else if (Dir == MoveDir.Down)
+        {
+            temp.z = 0;
+        }
+        else if (Dir == MoveDir.Right)
+        {
+            temp.z = 90;
+        }
+        else if (Dir == MoveDir.Left)
+        {
+            temp.z = -90;
+        }
+        go.transform.localEulerAngles = temp;
+
+        Managers.Resource.DestroyAfter(go, 0.5f);
+        _coSkill = StartCoroutine("CoStartPunch");
+	}
+
+    private void PlaySkillKnightBuff(SkillInfo info)
+    {
+        Debug.LogWarning($"아직 구현되지 않은 스킬 id {info.SkillId}");
+    }
+
+
+    IEnumerator CoStartPunch()
+    {
+        // 대기 시간
+        _rangedSkill = false;
+        State = CreatureState.Skill;
+        yield return new WaitForSeconds(0.5f);
+        State = CreatureState.Idle;
+        _coSkill = null;
+        CheckUpdatedFlag();
+    }
+
+    IEnumerator CoStartShootArrow()
+    {
+        // 대기 시간
+        _rangedSkill = true;
+        State = CreatureState.Skill;
+        yield return new WaitForSeconds(0.3f);
+        State = CreatureState.Idle;
+        _coSkill = null;
+        CheckUpdatedFlag();
     }
 }

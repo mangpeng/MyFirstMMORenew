@@ -17,7 +17,8 @@ namespace Data
 		public string skillIcon;
 		public SkillType skillType;
 		public ProjectileInfo projectile;
-		public SplashInfo splash;
+		public SmashInfo smash;
+		public BuffInfo buff;
 	}
 
 	public class ProjectileInfo
@@ -35,7 +36,16 @@ namespace Data
         public int hitCount;
         public float hitInterval;
     }
- 
+
+    public class SmashInfo
+    {
+        public string prefab;
+    }
+
+    public class BuffInfo
+    {
+        public string prefab;
+    }
 
     [Serializable]
 	public class SkillData : ILoader<int, Skill>

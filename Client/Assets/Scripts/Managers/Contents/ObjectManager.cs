@@ -30,59 +30,62 @@ public class ObjectManager
 			{
 				if((ClassType)info.ClassType == ClassType.Archer)
                 {
-                    GameObject go = Managers.Resource.Instantiate("Creature/MyPlayer_Archer");
-                    go.name = info.Name;
-                    _objects.Add(info.ObjectId, go);
+					MyPlayerController pc = AddMyPlayer(info, "Creature/MyPlayer_Archer");
 
-                    MyPlayer = go.GetComponent<MyPlayerController>();
-					MyPlayer.ClassType = (ClassType)info.ClassType;
-                    MyPlayer.Id = info.ObjectId;
-                    MyPlayer.PosInfo = info.PosInfo;
-                    MyPlayer.Stat.MergeFrom(info.StatInfo);
-                    MyPlayer.SyncPos();
+                    Skill skillData = null;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_ARROW, out skillData);
+                    pc.NormalSkillData = skillData;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_ARCHER_ACTIVE, out skillData);
+                    pc.ActiveSkillData = skillData;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_ARCHER_BUFF, out skillData);
+                    pc.BuffSkillData = skillData;
                 }
                 else if ((ClassType)info.ClassType == ClassType.Knight)
                 {
-                    GameObject go = Managers.Resource.Instantiate("Creature/MyPlayer_Knight");
-                    go.name = info.Name;
-                    _objects.Add(info.ObjectId, go);
+                    MyPlayerController pc = AddMyPlayer(info, "Creature/MyPlayer_Knight");
 
-                    MyPlayer = go.GetComponent<MyPlayerController>();
-					MyPlayer.ClassType = (ClassType)info.ClassType;
-					MyPlayer.Id = info.ObjectId;
-                    MyPlayer.PosInfo = info.PosInfo;
-                    MyPlayer.Stat.MergeFrom(info.StatInfo);
-                    MyPlayer.SyncPos();
+
+                    Skill skillData = null;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_FIST, out skillData);
+                    pc.NormalSkillData = skillData;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_KNIGHT_ACTIVE, out skillData);
+                    pc.ActiveSkillData = skillData;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_KNIGHT_BUFF, out skillData);
+                    pc.BuffSkillData = skillData;
                 }
-			}
+
+                UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+                if (gameSceneUI != null)
+                {
+					gameSceneUI.SkillUI.InitSkillItem();
+					gameSceneUI.SkillUI.RefreshUI();
+                }
+            }
 			else
 			{
                 if ((ClassType)info.ClassType == ClassType.Archer)
                 {
+					PlayerController pc = AddPlayer(info, "Creature/Player_Archer");
 
-                    GameObject go = Managers.Resource.Instantiate("Creature/Player_Archer");
-                    go.name = info.Name;
-                    _objects.Add(info.ObjectId, go);
-
-                    PlayerController pc = go.GetComponent<PlayerController>();
-					pc.ClassType = (ClassType)info.ClassType;
-					pc.Id = info.ObjectId;
-                    pc.PosInfo = info.PosInfo;
-                    pc.Stat.MergeFrom(info.StatInfo);
-                    pc.SyncPos();
+                    Skill skillData = null;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_ARROW, out skillData);
+                    pc.NormalSkillData = skillData;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_ARCHER_ACTIVE, out skillData);
+                    pc.ActiveSkillData = skillData;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_ARCHER_BUFF, out skillData);
+                    pc.BuffSkillData = skillData;
                 }
                 else if ((ClassType)info.ClassType == ClassType.Knight)
                 {
-                    GameObject go = Managers.Resource.Instantiate("Creature/Player_Knight");
-                    go.name = info.Name;
-                    _objects.Add(info.ObjectId, go);
+					PlayerController pc = AddPlayer(info, "Creature/Player_Knight");
 
-                    PlayerController pc = go.GetComponent<PlayerController>();
-                    pc.ClassType = (ClassType)info.ClassType;
-                    pc.Id = info.ObjectId;
-                    pc.PosInfo = info.PosInfo;
-                    pc.Stat.MergeFrom(info.StatInfo);
-                    pc.SyncPos();
+					Skill skillData = null;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_FIST, out skillData);
+                    pc.NormalSkillData = skillData;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_KNIGHT_ACTIVE, out skillData);
+					pc.ActiveSkillData = skillData;
+                    Managers.Data.SkillDict.TryGetValue(Const.SKILL_KNIGHT_BUFF	, out skillData);
+					pc.BuffSkillData = skillData;
                 }
 			}
 		}
@@ -102,7 +105,11 @@ public class ObjectManager
 			mc.PosInfo = info.PosInfo;
 			mc.Stat = info.StatInfo;
 			mc.SyncPos();
-		}
+
+            Skill skillData = null;
+            Managers.Data.SkillDict.TryGetValue(Const.SKILL_FIST, out skillData);
+            mc.NormalSkillData = skillData;
+        }
         else if (objectType == GameObjectType.Boss)
         {
             GameObject go = Managers.Resource.Instantiate("Creature/Boss");
@@ -114,6 +121,16 @@ public class ObjectManager
             bc.PosInfo = info.PosInfo;
             bc.Stat = info.StatInfo;
             bc.SyncPos();
+
+            Skill skillData = null;
+            Managers.Data.SkillDict.TryGetValue(Const.SKILL_BOSS_NORMAL, out skillData);
+            bc.NormalSkillData = skillData;
+            Managers.Data.SkillDict.TryGetValue(Const.SKILL_BOSS_CROSS, out skillData);
+            bc.CrossSkillData = skillData;
+            Managers.Data.SkillDict.TryGetValue(Const.SKILL_BOSS_DIAGNAL, out skillData);
+            bc.DiagnalSkillData = skillData;
+            Managers.Data.SkillDict.TryGetValue(Const.SKILL_BOSS_RECT, out skillData);
+            bc.RectSkillData = skillData;
         }
         else if (objectType == GameObjectType.Projectile)
 		{
@@ -129,7 +146,48 @@ public class ObjectManager
 		}
 	}
 
-	public void Remove(int id)
+	private MyPlayerController AddMyPlayer(ObjectInfo info, string prefabPath)
+    {
+        GameObject go = Managers.Resource.Instantiate(prefabPath);
+        go.name = info.Name;
+        _objects.Add(info.ObjectId, go);
+
+        MyPlayer = go.GetComponent<MyPlayerController>();
+        MyPlayer.ClassType = (ClassType)info.ClassType;
+        MyPlayer.Id = info.ObjectId;
+
+        MyPlayer.PosInfo = info.PosInfo;
+        MyPlayer.Stat.MergeFrom(info.StatInfo);
+        MyPlayer.SyncPos();
+
+		return MyPlayer;
+    }
+
+    private PlayerController AddPlayer(ObjectInfo info, string prefabPath)
+	{
+        GameObject go = Managers.Resource.Instantiate(prefabPath);
+        go.name = info.Name;
+        _objects.Add(info.ObjectId, go);
+
+        PlayerController pc = go.GetComponent<PlayerController>();
+        pc.ClassType = (ClassType)info.ClassType;
+        pc.Id = info.ObjectId;
+
+
+        Skill skillData = null;
+        Managers.Data.SkillDict.TryGetValue(3, out skillData);
+        pc.ActiveSkillData = skillData;
+        Managers.Data.SkillDict.TryGetValue(4, out skillData);
+        pc.BuffSkillData = skillData;
+
+        pc.PosInfo = info.PosInfo;
+        pc.Stat.MergeFrom(info.StatInfo);
+        pc.SyncPos();
+
+		return pc;
+    }
+
+    public void Remove(int id)
 	{
 		if (MyPlayer != null && MyPlayer.Id == id)
 			return;

@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Data;
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,9 @@ public class MonsterController : CreatureController
 	Coroutine _coSkill;
     AnimatorByParts _monsterAnimator;
 
-	protected override void Init()
+    public Skill NormalSkillData = null;
+
+    protected override void Init()
 	{
 		base.Init();
         _monsterAnimator = GetComponent<AnimatorByParts>();
@@ -28,7 +31,7 @@ public class MonsterController : CreatureController
 
 	public override void UseSkill(SkillInfo info)
 	{
-		if (info.SkillId == 1)
+		if (info.SkillId == NormalSkillData.id)
 		{
 			State = CreatureState.Skill;
 		}

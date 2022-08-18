@@ -168,7 +168,6 @@ namespace Server.Game
 				monster.Room = this;
 
 				gameObject.Info.MonsterTemplateId = monster.TemplateId;
-                Console.WriteLine(gameObject.Info.MonsterTemplateId);
 
 				GetZone(monster.CellPos).Monsters.Add(monster);
 				Map.ApplyMove(monster, new Vector2Int(monster.CellPos.x, monster.CellPos.y));

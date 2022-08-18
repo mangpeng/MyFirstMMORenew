@@ -24,62 +24,6 @@
         },
 		{
             "id": "3",
-            "name": "범위 공격",
-            "cooldown": "2",
-            "damage": "10",
-            "skillType": "SkillSplash",
-			"skillIcon": "",
-            "splash": {
-                "name": "기본 범위",			
-                "warningDelay": "1.0",
-				"hitCount": "0",
-				"hitInterval": "0.0",                                    
-            }
-        },		
-		{
-            "id": "4",
-            "name": "범위 공격",
-            "cooldown": "2",
-            "damage": "10",
-            "skillType": "SkillSplash",
-			"skillIcon": "",
-            "splash": {
-                "name": "십자가 범위",			
-                "warningDelay": "1.2",
-				"hitCount": "6",
-				"hitInterval": "0.2",                 
-            }
-        },		
-		{
-            "id": "5",
-            "name": "범위 공격",
-            "cooldown": "2",
-            "damage": "10",
-            "skillType": "SkillSplash",
-			"skillIcon": "",
-            "splash": {
-                "name": "대각 범위",			
-                "warningDelay": "1.2",
-				"hitCount": "6",
-				"hitInterval": "0.2",                 
-            }
-        },		
-		{
-            "id": "6",
-            "name": "범위 공격",
-            "cooldown": "5",
-            "damage": "10",
-            "skillType": "SkillSplash",
-			"skillIcon": "",
-            "splash": {
-                "name": "사각 범위",			
-                "warningDelay": "1.2",
-				"hitCount": "3",
-				"hitInterval": "0.2",                 
-            }
-        },	
-		{
-            "id": "7",
             "name": "관통 화살",
             "cooldown": "0.3",
             "damage": "20",
@@ -93,18 +37,94 @@
             }
         },
 		{
-            "id": "8",
+            "id": "4",
             "name": "매의 눈",
             "cooldown": "30",
             "damage": "5",
-            "skillType": "SkillProjectile",
-			"skillIcon": "Textures/Skill/archer_skill_attackSpeedUp",
-            "projectile": {
-                "name": "화살",
-                "speed": "20.0",
-                "range": "10",
+            "skillType": "SkillBuff",
+			"skillIcon": "Textures/Skill/archer_skill_attackSpeedUp",            
+			"buff": {               
+                "prefab": ""
+            }
+        },
+		{
+            "id": "5",
+            "name": "발도",
+            "cooldown": "0.3",
+            "damage": "20",
+            "skillType": "SkillSmash",
+			"skillIcon": "Textures/Skill/knight_skill_smash",
+            "smash": {               
                 "prefab": "Creature/Arrow"
             }
         },
+		{
+            "id": "6",
+            "name": "버서커",
+            "cooldown": "30",
+            "damage": "5",
+            "skillType": "SkillBuff",
+			"skillIcon": "Textures/Skill/knight_skill_berserker",
+			"buff": {               
+                "prefab": ""
+            }
+        },
+		{
+            "id": "7",
+            "name": "범위 공격",
+            "cooldown": "2",
+            "damage": "10",
+            "skillType": "SkillSplash",
+			"skillIcon": "",
+            "splash": {
+                "name": "기본 범위",			
+                "warningDelay": "1.0",
+				"hitCount": "0",
+				"hitInterval": "0.0",                                    
+            }
+        },		
+		{
+            "id": "8",
+            "name": "범위 공격",
+            "cooldown": "2",
+            "damage": "10",
+            "skillType": "SkillSplash",
+			"skillIcon": "",
+            "splash": {
+                "name": "십자가 범위",			
+                "warningDelay": "1.2",
+				"hitCount": "6",
+				"hitInterval": "0.2",                 
+            }
+        },		
+		{
+            "id": "9",
+            "name": "범위 공격",
+            "cooldown": "2",
+            "damage": "10",
+            "skillType": "SkillSplash",
+			"skillIcon": "",
+            "splash": {
+                "name": "대각 범위",			
+                "warningDelay": "1.2",
+				"hitCount": "6",
+				"hitInterval": "0.2",                 
+            }
+        },		
+		{
+            "id": "10",
+            "name": "범위 공격",
+            "cooldown": "5",
+            "damage": "10",
+            "skillType": "SkillSplash",
+			"skillIcon": "",
+            "splash": {
+                "name": "사각 범위",			
+                "warningDelay": "1.2",
+				"hitCount": "3",
+				"hitInterval": "0.2",                 
+            }
+        },	
+
     ]
 } 

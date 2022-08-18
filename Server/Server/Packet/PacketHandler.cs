@@ -40,6 +40,7 @@ class PacketHandler
 		if (room == null)
 			return;
 
+        Console.WriteLine(skillPacket.Info.SkillId);
 		room.Push(room.HandleSkill, player, skillPacket);
 	}
 

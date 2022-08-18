@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.Protocol;
 using Server.Data;
+using Server.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -36,7 +37,7 @@ namespace Server.Game
         int _searchCellDist = 10;
         int _chaseCellDist = 20;
 
-        SplashSkillType _splashType = SplashSkillType.None;
+        int _splashType = -1;
 
         long _nextSearchTick = 0;
         protected override void UpdateIdle()
@@ -63,7 +64,7 @@ namespace Server.Game
             if (path.Count < 2 || path.Count > _chaseCellDist)
             {
                 State = CreatureState.Idle;
-                BroadcastMove();
+                BroadCastVisionMove();
                 return;
             }
 
@@ -79,7 +80,7 @@ namespace Server.Game
             // 이동
             Dir = GetDirFromVec(path[1] - CellPos);
             Room.Map.ApplyMove(this, path[1]);
-            BroadcastMove();
+            BroadCastVisionMove();
         }
 
         long _coolTick = 0;
@@ -88,20 +89,20 @@ namespace Server.Game
         Vector2Int _targetCellPos;
         protected override void UpdateSkill()
         {
-            if(_splashType != SplashSkillType.None)
+            if(_splashType != -1)
             {
                 switch (_splashType)
                 {
-                    case SplashSkillType.Normal:
+                    case Const.SKILL_BOSS_NORMAL:
                         PlayNormal();
                         break;
-                    case SplashSkillType.Splash_Cross:
+                    case Const.SKILL_BOSS_CROSS:
                         PlayCross();
                         break;
-                    case SplashSkillType.Splash_Diagnal:
+                    case Const.SKILL_BOSS_DIAGNAL:
                         PlayDiagnal();
                         break;
-                    case SplashSkillType.Splash_Area:
+                    case Const.SKILL_BOSS_RECT:
                         PlayArea();
                         break;
                 }
@@ -116,7 +117,7 @@ namespace Server.Game
                 {
                     _target = null;
                     State = CreatureState.Idle;
-                    BroadcastMove();
+                    BroadCastVisionMove();
                     return;
                 }
 
@@ -124,7 +125,7 @@ namespace Server.Game
 
                 // TODO random 스킬 사용
                 Random rnd = new Random();
-                int ranSkillIdx = rnd.Next(3, 7);
+                int ranSkillIdx = rnd.Next(Const.SKILL_BOSS_NORMAL, Const.SKILL_BOSS_RECT + 1);
                 DataManager.SkillDict.TryGetValue(ranSkillIdx, out _skillData);
 
                 // 스킬이 아직 사용 가능한지
@@ -136,7 +137,7 @@ namespace Server.Game
                 if (canUseSkill == false)
                 {
                     State = CreatureState.Idle;
-                    BroadcastMove();
+                    BroadCastVisionMove();
                     return;
                 }
 
@@ -149,7 +150,7 @@ namespace Server.Game
 
                 Room.BroadCastVision(CellPos, skill);
 
-                _splashType = (SplashSkillType)(_skillData.id - 2);
+                _splashType = _skillData.id;
                 _targetCellPos = _target.CellPos;
 
                 // 스킬 쿨타임 적용
@@ -209,7 +210,7 @@ namespace Server.Game
             isStartWarningWait = false;
             isStartIntervalWait = false;
             elapsedCount = 0;
-            _splashType = SplashSkillType.None;
+            _splashType = -1;
         }
 
         private void PlayCross()
@@ -264,7 +265,7 @@ namespace Server.Game
                 isStartWarningWait = false;
                 isStartIntervalWait = false;
                 elapsedCount = 0;
-                _splashType = SplashSkillType.None;
+                _splashType = -1;
             }
         }
 
@@ -322,7 +323,7 @@ namespace Server.Game
                 isStartWarningWait = false;
                 isStartIntervalWait = false;
                 elapsedCount = 0;
-                _splashType = SplashSkillType.None;
+                _splashType = -1;
             }
         }
 
@@ -380,7 +381,7 @@ namespace Server.Game
                 isStartWarningWait = false;
                 isStartIntervalWait = false;
                 elapsedCount = 0;
-                _splashType = SplashSkillType.None;
+                _splashType = -1;
             }
         }
 

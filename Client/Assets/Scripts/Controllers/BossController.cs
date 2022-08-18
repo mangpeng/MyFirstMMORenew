@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Data;
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,13 +26,17 @@ public class BossController : CreatureController
     const float ATTACK_SUMMON_SPEED_SCALE = 3f;
 
     private Coroutine _coSkill;
-    private SplashSkillType _nextSkillType = SplashSkillType.None;
+    private int _nextSkillType;
 
     private SpriteRenderer _warningSrr;
     private GameObject _skillParticle;
 
     private Vector2Int _skillCellPos;
 
+    public Skill NormalSkillData = null;
+    public Skill CrossSkillData = null;
+    public Skill DiagnalSkillData = null;
+    public Skill RectSkillData = null;
 
     public override CreatureState State
     {
@@ -95,40 +100,43 @@ public class BossController : CreatureController
 
 	public override void UseSkill(SkillInfo info)
 	{
-		if (info.SkillId >= 3 && info.SkillId <=6 )
-		{
-            _nextSkillType = (SplashSkillType)(info.SkillId - 2);
-            _skillCellPos = new Vector2Int(info.CellPosX, info.CellPosY);
-			State = CreatureState.Skill;
-            Debug.Log($"use skill! {info.SkillId}");
-		}
-		else
+        switch(info.SkillId)
         {
-			Debug.Log($"유효하지 않은 스킬 id {info.SkillId}");
-            State = CreatureState.Idle;
+            case Const.SKILL_BOSS_NORMAL:
+            case Const.SKILL_BOSS_CROSS:
+            case Const.SKILL_BOSS_DIAGNAL:
+            case Const.SKILL_BOSS_RECT:
+                _nextSkillType = info.SkillId;
+                _skillCellPos = new Vector2Int(info.CellPosX, info.CellPosY);
+                State = CreatureState.Skill;
+                Debug.Log($"use skill! {info.SkillId}");
+                break;
+            default:
+                Debug.Log($"유효하지 않은 스킬 id {info.SkillId}");
+                State = CreatureState.Idle;
+                break;
         }
 	}
 
 
-    private void PlaySkill(SplashSkillType nextSkillType)
+    private void PlaySkill(int nextSkillType)
     {
         switch (nextSkillType)
         {
-            case SplashSkillType.Normal:
+            case Const.SKILL_BOSS_NORMAL:
                 UseSkillNormal();
                 break;
-            case SplashSkillType.Splash_Cross:
+            case Const.SKILL_BOSS_CROSS:
                 UseSkillCross();
                 break;
-            case SplashSkillType.Splash_Diagnal:
+            case Const.SKILL_BOSS_DIAGNAL:
                 UseSkillDiagnal();
                 break;
-            case SplashSkillType.Splash_Area:
+            case Const.SKILL_BOSS_RECT:
                 UseSkillArea();
-                //Util.RandomAction(UseSkillNormal, UseSkillCross, UseSkillDiagnal, UseSkillArea);
                 break;
             default:
-                Debug.Log("유요하지 않은 스킬 타입");
+                Debug.Log($"유요하지 않은 스킬 타입 {nextSkillType}");
                 break;
         }
 

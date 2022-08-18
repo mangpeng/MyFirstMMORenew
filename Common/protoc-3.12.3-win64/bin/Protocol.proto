@@ -61,6 +61,8 @@ enum SkillType {
   SKILL_AUTO = 1;
   SKILL_PROJECTILE = 2;
   SKILL_SPLASH = 3;
+  SKILL_SMASH = 4;
+  SKILL_BUFF = 5;
 }
 
 enum PlayerServerState {

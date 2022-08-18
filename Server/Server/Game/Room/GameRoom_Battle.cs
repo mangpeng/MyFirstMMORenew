@@ -2,6 +2,7 @@
 using Google.Protobuf.Protocol;
 using Server.Data;
 using Server.DB;
+using Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -119,43 +120,33 @@ namespace Server.Game
 			if (DataManager.SkillDict.TryGetValue(skillPacket.Info.SkillId, out skillData) == false)
 				return;
 
-			switch (skillData.skillType)
+            //TODO 캐릭터별 스킬 id 데이터 시트르 정리 필요
+
+
+            switch (skillData.id)
 			{
-				case SkillType.SkillAuto:
-					{
-						Vector2Int skillPos = player.GetFrontCellPos(info.PosInfo.MoveDir);
-						GameObject target = Map.Find(skillPos);
-						if (target != null)
-						{
-							Console.WriteLine("Hit GameObject !");
-						}
-					}
-					break;
-				case SkillType.SkillProjectile:
-					{
-						Arrow arrow = null;
-						arrow = ObjectManager.Instance.Add<Arrow>();
-
-						if (arrow == null)
-							return;
-
-						if (skillData.id == 7) // 관통화살
-							arrow.Penetration = true;
-						else
-							arrow.Penetration = false;
-
-
-						arrow.Owner = player;
-						arrow.Data = skillData;
-						arrow.PosInfo.State = CreatureState.Moving;
-						arrow.PosInfo.MoveDir = player.PosInfo.MoveDir;
-						arrow.PosInfo.PosX = player.PosInfo.PosX;
-						arrow.PosInfo.PosY = player.PosInfo.PosY;
-						arrow.Speed = skillData.projectile.speed;
-						Push(EnterGame, arrow, false);
-					}
-					break;
-			}
+                // normal
+				case Const.SKILL_FIST:
+                    PlaySkillNormalFist(info, player, skillData);
+                    break;
+				case Const.SKILL_ARROW:
+                    PlaySkillNormalArrow(info, player, skillData);
+                    break;
+                // archer
+                case Const.SKILL_ARCHER_ACTIVE:
+                    PlaySkillArcherActive(info, player, skillData);
+                    break;
+                case Const.SKILL_ARCHER_BUFF:
+                    PlaySkillArcherBuff(info, player, skillData);
+                    break;
+                // knight
+                case Const.SKILL_KNIGHT_ACTIVE:
+                    PlaySkillKnightActive(info, player, skillData);
+                    break;
+                case Const.SKILL_KNIGHT_BUFF:
+                    PlaySkillKnightBuff(info, player, skillData);
+                    break;
+            }
 		}
 
         public void HandleChat(Player player, C_Chat chatPacket)
@@ -238,6 +229,99 @@ namespace Server.Game
 			changePacket.IsCritical = false;
 			BroadCastVision(player.CellPos, changePacket);
 
+        }
+    
+
+		private void PlaySkillNormalFist(ObjectInfo info, Player player, Data.Skill skillData)
+        {
+            Vector2Int skillPos = player.GetFrontCellPos(info.PosInfo.MoveDir);
+            GameObject target = Map.Find(skillPos);
+
+            if (target != null)
+                target.OnDamaged(player, skillData.damage + player.TotalAttack);
+        }
+
+        private void PlaySkillNormalArrow(ObjectInfo info, Player player, Data.Skill skillData)
+        {
+            Arrow arrow = null;
+            arrow = ObjectManager.Instance.Add<Arrow>();
+
+            if (arrow == null)
+                return;
+            
+            arrow.Penetration = false;
+            arrow.Owner = player;
+            arrow.Data = skillData;
+            arrow.PosInfo.State = CreatureState.Moving;
+            arrow.PosInfo.MoveDir = player.PosInfo.MoveDir;
+            arrow.PosInfo.PosX = player.PosInfo.PosX;
+            arrow.PosInfo.PosY = player.PosInfo.PosY;
+            arrow.Speed = skillData.projectile.speed;
+            Push(EnterGame, arrow, false);
+        }
+
+        private void PlaySkillArcherActive(ObjectInfo info, Player player, Data.Skill skillData)
+        {
+            Arrow arrow = null;
+            arrow = ObjectManager.Instance.Add<Arrow>();
+
+            if (arrow == null)
+                return;
+
+            arrow.Penetration = true;
+            arrow.Owner = player;
+            arrow.Data = skillData;
+            arrow.PosInfo.State = CreatureState.Moving;
+            arrow.PosInfo.MoveDir = player.PosInfo.MoveDir;
+            arrow.PosInfo.PosX = player.PosInfo.PosX;
+            arrow.PosInfo.PosY = player.PosInfo.PosY;
+            arrow.Speed = skillData.projectile.speed;
+            Push(EnterGame, arrow, false);
+        }
+
+        private void PlaySkillArcherBuff(ObjectInfo info, Player player, Data.Skill skillData)
+        {
+            // TODO PlaySkillArcherBuff
+
+        }
+
+        private void PlaySkillKnightActive(ObjectInfo info, Player player, Data.Skill skillData)
+        {
+            MoveDir ignoreDir = info.PosInfo.MoveDir;
+            if(info.PosInfo.MoveDir == MoveDir.Up)
+                ignoreDir = MoveDir.Down;
+            else if (info.PosInfo.MoveDir == MoveDir.Down)
+                ignoreDir = MoveDir.Up;
+            else if (info.PosInfo.MoveDir == MoveDir.Right)
+                ignoreDir = MoveDir.Left;
+            else if (info.PosInfo.MoveDir == MoveDir.Left)
+                ignoreDir = MoveDir.Right;
+
+            Vector2Int ignorePos = player.GetFrontCellPos(ignoreDir);
+
+            int[] dx = { -1, 0, 1 };
+            int[] dy = { -1, 0, 1 };
+            foreach(int y in dy)
+            {
+                foreach (int x in dx)
+                {
+                    if (x == 0 && y == 0)
+                        continue;
+
+                    Vector2Int skillPos = new Vector2Int(info.PosInfo.PosX + x, info.PosInfo.PosY + y);
+                    if (skillPos == ignorePos)
+                        continue;
+
+                    GameObject target = Map.Find(skillPos);
+                    if (target != null)
+                        target.OnDamaged(player, skillData.damage + player.TotalAttack);
+                }
+            }
+        }
+
+        private void PlaySkillKnightBuff(ObjectInfo info, Player player, Data.Skill skillData)
+        {
+            // TODO PlaySkillKnightBuff
         }
     }
 }

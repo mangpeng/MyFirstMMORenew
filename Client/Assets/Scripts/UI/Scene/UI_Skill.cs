@@ -33,7 +33,7 @@ public class UI_Skill : UI_Base
         GetImage((int)Images.SkillPotion).gameObject.BindEvent(OnClickSKillPotion);
         GetImage((int)Images.SkillPotion).gameObject.GetComponent<UI_Skill_Item>().Init();
 
-        InitSkillItem();
+        //InitSkillItem();
     }
 
     private void Update()
@@ -58,14 +58,10 @@ public class UI_Skill : UI_Base
         UI_Skill_Item skillItem = GetImage((int)Images.SkillActive).GetComponent<UI_Skill_Item>();
         if (!skillItem.IsCool)
         {
-            Skill _skillData = null;
-            Managers.Data.SkillDict.TryGetValue(7, out _skillData);
-
-            skillItem.SetCool(_skillData.cooldown);
-
+            skillItem.SetCool(Managers.Object.MyPlayer.ActiveSkillData.cooldown);
 
             C_Skill skill = new C_Skill() { Info = new SkillInfo() };
-            skill.Info.SkillId = 7;
+            skill.Info.SkillId = Managers.Object.MyPlayer.ActiveSkillData.id;
             Managers.Network.Send(skill);
         }
         else
@@ -77,17 +73,11 @@ public class UI_Skill : UI_Base
     private void OnClickSKillBuff(PointerEventData obj)
     {
         UI_Skill_Item skillItem = GetImage((int)Images.SkillBuff).GetComponent<UI_Skill_Item>();
-        if (!skillItem.IsCool)
-        {
-            Skill _skillData = null;
-            Managers.Data.SkillDict.TryGetValue(8, out _skillData);
 
-            skillItem.SetCool(_skillData.cooldown);
-        }
+        if (!skillItem.IsCool)
+            skillItem.SetCool(Managers.Object.MyPlayer.BuffSkillData.cooldown);
         else
-        {
             Debug.Log("OnClickSKillBuff is cool time");
-        }
     }
 
     private void OnClickSKillPotion(PointerEventData obj)
@@ -132,10 +122,11 @@ public class UI_Skill : UI_Base
     public void InitSkillItem()
     {
         Skill _skillData = null;
-        Managers.Data.SkillDict.TryGetValue(7, out _skillData);
+
+        _skillData = Managers.Object.MyPlayer.ActiveSkillData;
         GetImage((int)Images.SkillActive).GetComponent<UI_Skill_Item>().InitData(_skillData);
 
-        Managers.Data.SkillDict.TryGetValue(8, out _skillData);
+        _skillData = Managers.Object.MyPlayer.BuffSkillData;
         GetImage((int)Images.SkillBuff).GetComponent<UI_Skill_Item>().InitData(_skillData);
 
         _skillData = null;

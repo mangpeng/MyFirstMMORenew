@@ -87,6 +87,10 @@ public class MapManager
 
         string mapName = "Map_" + Id.ToString("000");
         GameObject root = Managers.Resource.Instantiate($"Map/{mapName}");
+
+		if (root == null)
+			return;
+
         root.name = "Map";
 
         GameObject collision = Util.FindChild(root, "Tilemap_Collision", true);

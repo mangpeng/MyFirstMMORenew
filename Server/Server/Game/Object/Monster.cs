@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf.Protocol;
 using Server.Data;
 using Server.DB;
+using Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
@@ -92,7 +93,7 @@ namespace Server.Game
 			{
 				_target = null;
 				State = CreatureState.Idle;
-				BroadcastMove();
+				BroadCastVisionMove();
 				return;
 			}
 
@@ -102,7 +103,7 @@ namespace Server.Game
 			{
 				_target = null;
 				State = CreatureState.Idle;
-				BroadcastMove();
+				BroadCastVisionMove();
 				return;
 			}
 
@@ -111,7 +112,7 @@ namespace Server.Game
 			{
 				_target = null;
 				State = CreatureState.Idle;
-				BroadcastMove();
+				BroadCastVisionMove();
 				return;
 			}
 
@@ -126,10 +127,10 @@ namespace Server.Game
 			// 이동
 			Dir = GetDirFromVec(path[1] - CellPos);
 			Room.Map.ApplyMove(this, path[1]);
-			BroadcastMove();
+			BroadCastVisionMove();
 		}
 
-		protected void BroadcastMove()
+		protected void BroadCastVisionMove()
 		{
 			// 다른 플레이어한테도 알려준다
 			S_Move movePacket = new S_Move();
@@ -148,7 +149,7 @@ namespace Server.Game
 				{
 					_target = null;
 					State = CreatureState.Moving;
-					BroadcastMove();
+					BroadCastVisionMove();
 					return;
 				}
 
@@ -159,7 +160,7 @@ namespace Server.Game
 				if (canUseSkill == false)
 				{
 					State = CreatureState.Moving;
-					BroadcastMove();
+					BroadCastVisionMove();
 					return;
 				}
 
@@ -168,11 +169,11 @@ namespace Server.Game
 				if (Dir != lookDir)
 				{
 					Dir = lookDir;
-					BroadcastMove();
+					BroadCastVisionMove();
 				}
 
 				Skill skillData = null;
-				DataManager.SkillDict.TryGetValue(1, out skillData);
+				DataManager.SkillDict.TryGetValue(Const.SKILL_FIST, out skillData);
 
 				// 데미지 판정
 				_target.OnDamaged(this, skillData.damage + TotalAttack);
