@@ -168,12 +168,12 @@ public class PlayerController : CreatureController
 
 	private void PlaySkillNormalFist(SkillInfo info)
     {
-		_coSkill = StartCoroutine(CoStartPunch(NormalSkillData.cooldown));
+		_coSkill = StartCoroutine(CoStartPunch(0.5f));
 	}
 
 	private void PlaySkillNormalArrow(SkillInfo info)
     {
-		_coSkill = StartCoroutine(CoStartShootArrow(NormalSkillData.cooldown));
+		_coSkill = StartCoroutine(CoStartShootArrow(0.3f));
 	}
 
     private void PlaySkillArcherActive(SkillInfo info)
@@ -201,7 +201,7 @@ public class PlayerController : CreatureController
         go.transform.localEulerAngles = temp;
 
         Managers.Resource.DestroyAfter(go, 0.5f);
-        _coSkill = StartCoroutine(CoStartShootArrow(ActiveSkillData.cooldown));
+        _coSkill = StartCoroutine(CoStartShootArrow(0.3f));
     }
 
 	private void PlaySkillArcherBuff(SkillInfo info)
@@ -242,7 +242,7 @@ public class PlayerController : CreatureController
 		go.transform.localScale = tempSacle;
 
         Managers.Resource.DestroyAfter(go, 0.5f);
-        _coSkill = StartCoroutine(CoStartPunch(ActiveSkillData.cooldown));
+        _coSkill = StartCoroutine(CoStartPunch(0.5f));
 	}
 
     private void PlaySkillKnightBuff(SkillInfo info)

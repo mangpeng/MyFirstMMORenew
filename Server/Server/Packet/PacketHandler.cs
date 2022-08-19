@@ -57,7 +57,6 @@ class PacketHandler
 		ClientSession clientSession = (ClientSession)session;
 
 		clientSession.HandleEnterGame(enterGamePacket);
-		
 	}
 
 	public static void C_CreatePlayerHandler(PacketSession session, IMessage packet)

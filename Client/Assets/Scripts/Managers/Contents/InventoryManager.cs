@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-	const int POTION_TEMPLATE_ID = 200;
+	const int POTION_TEMPLATE_ID = 1000;
 
 	public Dictionary<int, Item> Items { get; } = new Dictionary<int, Item>();
 

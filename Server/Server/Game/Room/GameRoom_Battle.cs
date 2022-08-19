@@ -107,7 +107,10 @@ namespace Server.Game
 
 			ObjectInfo info = player.Info;
 			if (info.PosInfo.State != CreatureState.Idle)
+            {
+                Console.WriteLine("Skipppeed");
 				return;
+            }
 
 			// TODO : 스킬 사용 가능 여부 체크
 			info.PosInfo.State = CreatureState.Skill;
@@ -121,8 +124,6 @@ namespace Server.Game
 				return;
 
             //TODO 캐릭터별 스킬 id 데이터 시트르 정리 필요
-
-
             switch (skillData.id)
 			{
                 // normal
@@ -221,11 +222,11 @@ namespace Server.Game
 			// 2. 캐릭터 hp 증가
 			// todo 임시로 체력 50회복
 			int recoveryAmoount = 50;
-			player.Stat.Hp = Math.Clamp(player.Stat.Hp + recoveryAmoount, 0, player.Stat.MaxHp);
+			player.Hp = Math.Clamp(player.Hp + recoveryAmoount, 0, player.MaxHp);
 
             S_ChangeHp changePacket = new S_ChangeHp();
             changePacket.ObjectId = player.Id;
-            changePacket.Hp = player.Stat.Hp;
+            changePacket.Hp = player.Hp;
 			changePacket.IsCritical = false;
 			BroadCastVision(player.CellPos, changePacket);
 
@@ -238,7 +239,11 @@ namespace Server.Game
             GameObject target = Map.Find(skillPos);
 
             if (target != null)
-                target.OnDamaged(player, skillData.damage + player.TotalAttack);
+            {
+                bool isCritical = false;
+                int totalDamage = skillData.damage + player.CalculateDamage(out isCritical);
+                target.OnDamaged(player, totalDamage, isCritical);
+            }
         }
 
         private void PlaySkillNormalArrow(ObjectInfo info, Player player, Data.Skill skillData)
@@ -256,7 +261,7 @@ namespace Server.Game
             arrow.PosInfo.MoveDir = player.PosInfo.MoveDir;
             arrow.PosInfo.PosX = player.PosInfo.PosX;
             arrow.PosInfo.PosY = player.PosInfo.PosY;
-            arrow.MoveSpeed = (int)skillData.projectile.speed;
+            arrow.Stat.MoveSpeed = (int)skillData.projectile.speed;
             Push(EnterGame, arrow, false);
         }
 
@@ -275,7 +280,7 @@ namespace Server.Game
             arrow.PosInfo.MoveDir = player.PosInfo.MoveDir;
             arrow.PosInfo.PosX = player.PosInfo.PosX;
             arrow.PosInfo.PosY = player.PosInfo.PosY;
-            arrow.MoveSpeed = (int)skillData.projectile.speed;
+            arrow.Stat.MoveSpeed = (int)skillData.projectile.speed;
             Push(EnterGame, arrow, false);
         }
 
@@ -314,7 +319,11 @@ namespace Server.Game
 
                     GameObject target = Map.Find(skillPos);
                     if (target != null)
-                        target.OnDamaged(player, skillData.damage + player.TotalAttack);
+                    {
+                        bool isCritical = false;
+                        int totalDamage = skillData.damage + player.CalculateDamage(out isCritical);
+                        target.OnDamaged(player, totalDamage, isCritical);
+                    }
                 }
             }
         }

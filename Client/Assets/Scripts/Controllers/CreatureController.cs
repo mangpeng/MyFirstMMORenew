@@ -20,7 +20,11 @@ public class CreatureController : BaseController
 	public override int Hp
 	{
 		get { return Stat.Hp; }
-		set { base.Hp = value; UpdateHpBar(); }
+		set 
+		{ 
+			Stat.Hp = value; 
+			UpdateHpBar(); 
+		}
 	}
 
 	protected virtual void AddHpMpBar()
@@ -51,14 +55,14 @@ public class CreatureController : BaseController
         }
     }
 
-    void UpdateHpBar()
+    public void UpdateHpBar()
 	{
 		if (HpBar == null)
 			return;
 
 		float ratio = 0.0f;
-		if (Stat.MaxHp > 0)
-			ratio = ((float)Hp) / Stat.MaxHp;
+		if (MaxHp > 0)
+			ratio = ((float)Hp) / MaxHp;
 
 		HpBar.SetHpMpBar(ratio);
 	}
@@ -81,10 +85,7 @@ public class CreatureController : BaseController
 			return;
 
         if (isCritical)
-        {
-			Debug.Log("ciritical!");
             _damageTextEffector.GenerateCriticalText(damage, Color.red, 0.1f);
-        }
         else
 			_damageTextEffector.GenerateText(damage, Color.red, 1f, 1f);
     }

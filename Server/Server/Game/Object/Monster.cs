@@ -174,9 +174,10 @@ namespace Server.Game
 
 				Skill skillData = null;
 				DataManager.SkillDict.TryGetValue(Const.SKILL_FIST, out skillData);
+				bool isCritical = false;
+				int totalDamage = skillData.damage + CalculateDamage(out isCritical);
 
-				// 데미지 판정
-				_target.OnDamaged(this, skillData.damage + TotalAttack);
+				_target.OnDamaged(this, totalDamage, isCritical);
 
 				// 스킬 사용 Broadcast
 				S_Skill skill = new S_Skill() { Info = new SkillInfo() };

@@ -15,7 +15,8 @@ public class MonsterController : CreatureController
     protected override void Init()
 	{
 		base.Init();
-        _monsterAnimator = GetComponent<AnimatorByParts>();
+        if(_monsterAnimator == null)
+            _monsterAnimator = GetComponent<AnimatorByParts>();
     }
 
 	protected override void UpdateIdle()
@@ -41,7 +42,7 @@ public class MonsterController : CreatureController
     protected override void UpdateAnimation()
     {
         if (_monsterAnimator == null)
-            return;
+            _monsterAnimator = GetComponent<AnimatorByParts>();
 
         if (State == CreatureState.Idle)
         {

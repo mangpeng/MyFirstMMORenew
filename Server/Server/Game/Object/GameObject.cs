@@ -21,22 +21,21 @@ namespace Server.Game
 		public PositionInfo PosInfo { get; private set; } = new PositionInfo();
 		public StatInfo Stat { get; private set; } = new StatInfo();
 
-		public virtual int TotalAttack { get { return Stat.Attack; } }
-		public virtual int TotalDefence { get { return 0; } }
+        public virtual int Hp
+        {
+            get { return Stat.Hp; }
+            set { Stat.Hp = Math.Clamp(value, 0, MaxHp); }
+        }
+        public virtual int MaxHp { get { return Stat.MaxHp; } }
+        public virtual int Attack { get { return Stat.Attack;  } }
+        public virtual int Defense { get { return Stat.Defense; } }
+        public virtual int MoveSpeed { get { return Stat.MoveSpeed; } }
+        public virtual int Critical { get { return Stat.Critical; } }
+        public virtual int CriticalDamage { get { return Stat.CriticalDamage; } }
+        public virtual int DamageRange { get { return Stat.DamageRange; } }
 
-		public int MoveSpeed
-		{
-			get { return Stat.MoveSpeed; }
-			set { Stat.MoveSpeed = value; }
-		}
 
-		public int Hp
-		{
-			get { return Stat.Hp; }
-			set { Stat.Hp = Math.Clamp(value, 0, Stat.MaxHp); }
-		}
-
-		public MoveDir Dir
+        public MoveDir Dir
 		{
 			get { return PosInfo.MoveDir; }
 			set { PosInfo.MoveDir = value; }
@@ -120,32 +119,23 @@ namespace Server.Game
 				return MoveDir.Down;
 		}
 
-		public virtual void OnDamaged(GameObject attacker, int damage)
+		public virtual void OnDamaged(GameObject attacker, int damage, bool isCritical)
 		{
 			if (Room == null)
 				return;
 
-			Random rnd = new Random();
-			int totalDamage;
-			int minDamage = (int)(damage * (1 - Stat.DamageRange / 100f));
-			int maxDamage = (int)(damage * (1 + Stat.DamageRange / 100f));
+			int totalDamage = damage - Defense;
 
-			totalDamage = rnd.Next(minDamage, maxDamage);
+			//Console.WriteLine($"defeat {attacker.ObjectType.ToString()} => {ObjectType.ToString()} {totalDamage}({Defense})");
 
-			bool isCiritical = rnd.Next(0, 100) < Stat.Critical;
-			if(isCiritical)
-				totalDamage = (int)(totalDamage * Stat.CriticalDamage);
-
-			damage = totalDamage;
-			damage = Math.Max(damage - TotalDefence, 0);
-
-            Stat.Hp = Math.Max(Stat.Hp - damage, 0);
+			totalDamage = Math.Max(totalDamage, 0);
+            Stat.Hp = Math.Max(Stat.Hp - totalDamage, 0);
 
 
 			S_ChangeHp changePacket = new S_ChangeHp();
 			changePacket.ObjectId = Id;
 			changePacket.Hp = Stat.Hp;
-			changePacket.IsCritical = isCiritical;
+			changePacket.IsCritical = isCritical;
 			Room.BroadCastVision(CellPos, changePacket);
 
 			if (Stat.Hp <= 0)
@@ -167,7 +157,7 @@ namespace Server.Game
 			GameRoom room = Room;
 			room.LeaveGame(Id);
 
-			Stat.Hp = Stat.MaxHp;
+			Hp = MaxHp;
 			PosInfo.State = CreatureState.Idle;
 			PosInfo.MoveDir = MoveDir.Down;
 
@@ -178,5 +168,28 @@ namespace Server.Game
 		{
 			return this;
 		}
-	}
+
+        public int CalculateDamage(out bool isCritical)
+        {
+			int totalDamage = Attack;
+
+			// 데미지 오차
+			Random rnd = new Random();
+			float added = (100 + rnd.Next(-DamageRange, DamageRange)) / 100f;
+			totalDamage = (int) (totalDamage* added);
+
+            // 크리티컬 확률
+            isCritical = rnd.Next(0, 100) < Critical;
+
+            if (isCritical)// 크리티컬 데미지
+            {
+                totalDamage = (int) (totalDamage* (1f + CriticalDamage / 100f));
+                return totalDamage;
+            }
+            else
+            {
+                return totalDamage;
+            }
+		}
+    }
 }

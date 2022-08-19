@@ -69,7 +69,7 @@ public class DamageEffector : MonoBehaviour
                 GameObject.Destroy(box);
             };
 
-        textBox.DOFade(0, duration);
+        //textBox.DOFade(0, duration);
     }
 
     public void GenerateCriticalText(int value, Color color, float duration)
@@ -82,7 +82,8 @@ public class DamageEffector : MonoBehaviour
         textBox.text = value.ToString();
         textBox.color = color;
 
-        Vector3 dest = box.transform.localScale * 1.2f;
+        //Vector3 dest = box.transform.localScale * 1.2f;
+        Vector3 dest = box.transform.localScale * 3f;
         box.transform.DOScale(dest, duration)
             .SetEase(Ease.OutSine)
             .onComplete += () =>

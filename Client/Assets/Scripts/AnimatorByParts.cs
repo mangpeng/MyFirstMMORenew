@@ -18,6 +18,7 @@ public class AnimatorByParts : MonoBehaviour
     Transform[] _roots;
 
     State _state;
+
     MoveDir _dir;
 
     Transform _curActiveRoot = null;
@@ -34,7 +35,7 @@ public class AnimatorByParts : MonoBehaviour
 
     private void Start()
     {
-        SetSate(State.IDLE, MoveDir.Down);
+        //SetSate(State.IDLE, MoveDir.Down);
     }
 
     public void SetSate(State state, MoveDir dir)

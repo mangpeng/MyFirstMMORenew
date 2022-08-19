@@ -52,14 +52,20 @@ namespace Server
 							StatInfo = new StatInfo()
 							{
 								Level = playerDb.Level,
+								TotalExp = playerDb.TotalExp,
+
 								Hp = playerDb.Hp,
 								MaxHp = playerDb.MaxHp,
+
 								Attack = playerDb.Attack,
+								Defense = playerDb.Defense,
+
 								MoveSpeed = playerDb.MoveSpeed,
-								TotalExp = playerDb.TotalExp,
+
 								Critical = playerDb.Critical,
 								CriticalDamage = playerDb.CriticalDamage,
-						
+
+								DamageRange = playerDb.DamageRange
 							}
 						};
 

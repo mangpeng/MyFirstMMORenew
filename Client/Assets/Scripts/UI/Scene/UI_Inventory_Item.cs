@@ -21,8 +21,6 @@ public class UI_Inventory_Item : UI_Base
 	{
 		_icon.gameObject.BindEvent((e) =>
 		{
-			Debug.Log("Click Item");
-
 			Data.ItemData itemData = null;
 			Managers.Data.ItemDict.TryGetValue(TemplateId, out itemData);
 			if (itemData == null)
@@ -35,6 +33,8 @@ public class UI_Inventory_Item : UI_Base
 			C_EquipItem equipPacket = new C_EquipItem();
 			equipPacket.ItemDbId = ItemDbId;
 			equipPacket.Equipped = !Equipped;
+
+			Debug.Log($"{itemData.itemType} {equipPacket.Equipped}");
 
 			Managers.Network.Send(equipPacket);
 		});

@@ -16,13 +16,23 @@ namespace Server.Game
 
 		public Inventory Inven { get; private set; } = new Inventory();
 
-		public int WeaponDamage { get; private set; }
-		public int ArmorDefence { get; private set; }
+        public override int MaxHp { get { return Stat.MaxHp + AddHp; } }
+        public override int Attack { get { return Stat.Attack + AddDamage; } }
+        public override int Defense { get { return Stat.Defense + AddDefence; } }
+        public override int MoveSpeed { get { return Stat.MoveSpeed + AddMoveSpeed; } }
+        public override int Critical { get { return Stat.Critical + AddCritical; } }
+        public override int CriticalDamage { get { return Stat.CriticalDamage + AddCriticalDamage; } }
+		public override int DamageRange { get { return Stat.DamageRange + AddDamageRange; } }
 
-		public override int TotalAttack { get { return Stat.Attack + WeaponDamage; } }
-		public override int TotalDefence { get { return ArmorDefence; } }
+		public int AddHp { get; private set; }
+        public int AddDamage { get; private set; }
+        public int AddDefence { get; private set; }
+        public int AddMoveSpeed { get; private set; }
+        public int AddCritical { get; private set; }
+        public int AddCriticalDamage { get; private set; }
+        public int AddDamageRange { get; private set; }
 
-		public Player()
+        public Player()
 		{
 			Vision = new VisionCube(this);
 		}
@@ -32,9 +42,9 @@ namespace Server.Game
 			ObjectType = GameObjectType.Player;
 		}
 
-        public override void OnDamaged(GameObject attacker, int damage)
+        public override void OnDamaged(GameObject attacker, int damage, bool isCritical)
 		{
-			base.OnDamaged(attacker, damage);
+			base.OnDamaged(attacker, damage, isCritical);
 		}
 
 		public override void OnDead(GameObject attacker)
@@ -83,10 +93,18 @@ namespace Server.Game
 						i => i.Equipped && i.ItemType == ItemType.Armor
 							&& ((Armor)i).ArmorType == armorType);
 				}
+                else if (item.ItemType == ItemType.Accessory)
+                {
+					AccessoryType accessoryType = ((Accessory)item).AccessoryType;
+                    unequipItem = Inven.Find(
+                        i => i.Equipped && i.ItemType == ItemType.Accessory
+                            && ((Accessory)i).AccessoryType == accessoryType);
+                }
 
-				if (unequipItem != null)
+                if (unequipItem != null)
 				{
-					// 메모리 선적용
+                    Console.WriteLine("착용해제");
+					// 메모리 선적용 
 					unequipItem.Equipped = false;
 
 					// DB에 Noti
@@ -101,6 +119,7 @@ namespace Server.Game
 			}
 
 			{
+                Console.WriteLine("착용");
 				// 메모리 선적용
 				item.Equipped = equipPacket.Equipped;
 
@@ -119,24 +138,37 @@ namespace Server.Game
 
 		public void RefreshAdditionalStat()
 		{
-			WeaponDamage = 0;
-			ArmorDefence = 0;
+            AddHp = 0;
 
-			foreach (Item item in Inven.Items.Values)
+            AddDamage = 0;
+            AddDefence = 0;
+
+            AddMoveSpeed = 0;
+
+            AddCritical = 0;
+            AddCriticalDamage = 0;
+
+            foreach (Item item in Inven.Items.Values)
 			{
 				if (item.Equipped == false)
 					continue;
 
-				switch (item.ItemType)
-				{
-					case ItemType.Weapon:
-						WeaponDamage += ((Weapon)item).Damage;
-						break;
-					case ItemType.Armor:
-						ArmorDefence += ((Armor)item).Defence;
-						break;
-				}
-			}
+                switch (item.ItemType)
+                {
+                    case ItemType.Weapon:
+                        AddDamage += ((Weapon)item).AddDamaged;
+                        break;
+                    case ItemType.Armor:
+                        AddDefence += ((Armor)item).AddDefence;
+                        AddHp += ((Armor)item).AddHp;
+                        AddMoveSpeed += ((Armor)item).AddMoveSpeed;
+                        break;
+                    case ItemType.Accessory:
+                        AddCritical += ((Accessory)item).AddCritical;
+                        AddCriticalDamage += ((Accessory)item).AddCriticalDamage;
+                        break;
+                }
+            }
 		}
-	}
+    }
 }

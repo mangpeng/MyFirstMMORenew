@@ -22,22 +22,19 @@ public class BaseController : MonoBehaviour
 		}
 	}
 
-	public int MoveSpeed
-	{
-		get { return Stat.MoveSpeed; }
-		set { Stat.MoveSpeed = value; }
-	}
-
-	public virtual int Hp
-	{
+    public virtual int Hp 
+	{ 
 		get { return Stat.Hp; }
-		set
-		{
-			Stat.Hp = value;
-		}
+		set { Stat.Hp = Mathf.Clamp(value, 0, MaxHp); }
 	}
+	public virtual int MaxHp { get { return Stat.MaxHp; } }
+    public virtual int Attack { get { return Stat.Attack; } }
+    public virtual int Defense { get { return Stat.Defense; } }
+    public virtual int MoveSpeed { get { return Stat.MoveSpeed; } }
+    public virtual int Critical { get { return Stat.Critical; } }
+    public virtual int CriticalDamage { get { return Stat.CriticalDamage; } }
 
-	protected bool _updated = false;
+    protected bool _updated = false;
 
 	PositionInfo _positionInfo = new PositionInfo();
 	public PositionInfo PosInfo

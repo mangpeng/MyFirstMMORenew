@@ -64,7 +64,10 @@ public class Item
 			case ItemType.Armor:
 				item = new Armor(itemInfo.TemplateId);
 				break;
-			case ItemType.Consumable:
+            case ItemType.Accessory:
+                item = new Accessory(itemInfo.TemplateId);
+                break;
+            case ItemType.Consumable:
 				item = new Consumable(itemInfo.TemplateId);
 				break;
 		}
@@ -84,7 +87,8 @@ public class Item
 public class Weapon : Item
 {
 	public WeaponType WeaponType { get; private set; }
-	public int Damage { get; private set; }
+	public ClassType ClassType { get; private set; }
+	public int AddDamaged { get; private set; }
 
 	public Weapon(int templateId) : base(ItemType.Weapon)
 	{
@@ -103,7 +107,8 @@ public class Weapon : Item
 			TemplateId = data.id;
 			Count = 1;
 			WeaponType = data.weaponType;
-			Damage = data.addAttack;
+			ClassType = data.classType;
+			AddDamaged = data.addAttack;
 			Stackable = false;
 		}
 	}
@@ -112,7 +117,10 @@ public class Weapon : Item
 public class Armor : Item
 {
 	public ArmorType ArmorType { get; private set; }
-	public int Defence { get; private set; }
+
+	public int AddHp { get; private set; }
+	public int AddDefence { get; private set; }
+	public int AddMoveSpeed { get; private set; }
 
 	public Armor(int templateId) : base(ItemType.Armor)
 	{
@@ -131,16 +139,51 @@ public class Armor : Item
 			TemplateId = data.id;
 			Count = 1;
 			ArmorType = data.armorType;
-			Defence = data.addDefense;
+			AddHp = data.addHp;
+			AddDefence = data.addDefense;
+			AddMoveSpeed = data.addMoveSpeed;
 			Stackable = false;
 		}
 	}
 }
 
+public class Accessory : Item
+{
+    public AccessoryType AccessoryType { get; private set; }
+
+    public int AddCritical { get; private set; }
+    public int AddCriticalDamage { get; private set; }
+
+    public Accessory(int templateId) : base(ItemType.Accessory)
+    {
+        Init(templateId);
+    }
+
+    void Init(int templateId)
+    {
+        ItemData itemData = null;
+        Managers.Data.ItemDict.TryGetValue(templateId, out itemData);
+        if (itemData.itemType != ItemType.Accessory)
+            return;
+
+		AccessoryData data = (AccessoryData)itemData;
+        {
+            TemplateId = data.id;
+            Count = 1;
+			AccessoryType = data.accessoryType;
+            AddCritical = data.addCritical;
+			AddCriticalDamage = data.addCriticalDamage;
+            Stackable = false;
+        }
+    }
+}
+
 public class Consumable : Item
 {
 	public ConsumableType ConsumableType { get; private set; }
-	public int MaxCount { get; set; }
+
+	public int AddHp { get; private set; }
+	public int AddMp { get; private set; }
 
 	public Consumable(int templateId) : base(ItemType.Consumable)
 	{
@@ -158,9 +201,12 @@ public class Consumable : Item
 		{
 			TemplateId = data.id;
 			Count = 1;
-			MaxCount = 100;
+
+			AddHp = data.addHp;
+			AddMp = data.addMp;
+
 			ConsumableType = data.consumableType;
-			Stackable = (100 > 1);
+			Stackable = false;
 		}
 	}
 }

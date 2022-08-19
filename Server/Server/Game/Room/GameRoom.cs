@@ -71,9 +71,9 @@ namespace Server.Game
 				}
 			}
 
-			if(type == RoomType.Stage1)
+            if (type == RoomType.Stage1)
             {
-                for (int i = 0; i < Map.RespawnList.Count(); i++)
+                for (int i = 0; i < (int)(Map.RespawnList.Count() / 2f); i++)
                 {
                     Monster monster = ObjectManager.Instance.Add<Monster>();
                     monster.Init(1);
@@ -82,7 +82,7 @@ namespace Server.Game
             }
             else if (type == RoomType.Stage2)
             {
-                for (int i = 0; i < Map.RespawnList.Count(); i++)
+                for (int i = 0; i < (int)(Map.RespawnList.Count() / 2f); i++)
                 {
                     Monster monster = ObjectManager.Instance.Add<Monster>();
                     monster.Init(2);
@@ -93,16 +93,16 @@ namespace Server.Game
             {
 
                 Boss boss = ObjectManager.Instance.Add<Boss>();
-				boss.Init(0);
+                boss.Init(0);
 
-				// TODO 보스 시작 위치 하드 코딩되어 있음
-				boss.CellPos = new Vector2Int(6, 12);
-				EnterGame(boss, false);
+                // TODO 보스 시작 위치 하드 코딩되어 있음
+                boss.CellPos = new Vector2Int(6, 12);
+                EnterGame(boss, false);
             }
         }
 
-		// 누군가 주기적으로 호출해줘야 한다
-		public void Update()
+        // 누군가 주기적으로 호출해줘야 한다
+        public void Update()
 		{
 			Flush();
 		}

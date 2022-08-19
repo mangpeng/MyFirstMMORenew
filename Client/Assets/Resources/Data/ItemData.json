@@ -46,7 +46,7 @@
 			"description": "효과에 비해.. 목에 부담이 가는 투구",			
             "armorType": "Helmet",
 			"addHp": "50",
-            "addDefense": "5",
+            "addDefense": "10",
             "iconPath": "Textures/Item/00Novice/Novice_Helmet"
         },
 		{
@@ -55,7 +55,7 @@
 			"description": "숲속 정령의 가호를 받아 물리방어력을 증가 시킵니다.",			
             "armorType": "Helmet",
 			"addHp": "100",
-            "addDefense": "10",
+            "addDefense": "20",
             "iconPath": "Textures/Item/01Forest/Forest_Helmet"
         },
     ],
@@ -65,7 +65,7 @@
             "name": "초보자의 아머",
 			"description": "무겁고 허름한 갑옷. 그래도 입는게 낫겠지?",
             "armorType": "Upper",
-			"addHp": "300",
+			"addHp": "200",
             "addDefense": "50",
             "iconPath": "Textures/Item/00Novice/Novice_Armor"
         },
@@ -74,8 +74,8 @@
             "name": "숲속의 가호가 깃든 아머",
 			"description": "숲속 정령의 가호를 받아 물리방어력을 증가 시킵니다.",
             "armorType": "Upper",
-			"addHp": "500",
-            "addDefense": "100",
+			"addHp": "300",
+            "addDefense": "70",
             "iconPath": "Textures/Item/01Forest/Forest_Armor"
         },
     ],
@@ -86,7 +86,7 @@
 			"description": "무겁고 허름한 신발. 안 신는게 나을지도..?",
             "armorType": "Boots",
 			"addDefnse" : "10",
-            "addMoveSpeed": "10",
+            "addMoveSpeed": "3",
             "iconPath": "Textures/Item/00Novice/Novice_Boots"
         },
 		{
@@ -95,7 +95,7 @@
 			"description": "숲속 정령의 가호를 받아 이동 속도를 향상 시킵니다.",
             "armorType": "Boots",
 			"addDefnse" : "20",
-            "addMoveSpeed": "15",
+            "addMoveSpeed": "5",
             "iconPath": "Textures/Item/01Forest/Forest_Boots"
         },
     ],
@@ -105,7 +105,7 @@
             "name": "초보자의 목걸이",
 			"description": "세트 효과를 위해서… 그냥?",
             "accessoryType": "Necklace",
-			"addCritical" : "10",
+			"addCritical" : "40",
             "iconPath": "Textures/Item/00Novice/Novice_Necklace"
         },
         {
@@ -113,7 +113,7 @@
             "name": "숲속의 가호가 깃든 목걸이",
 			"description": "숲속 정령의 가호를 받아 크리티컬 확률이 증가합니다.",
             "accessoryType": "Necklace",
-			"addCritical" : "50",
+			"addCritical" : "100",
             "iconPath": "Textures/Item/01Forest/Forest_Necklace"
         },
     ],
@@ -123,7 +123,7 @@
             "name": "초보자의 반지",
 			"description": "세트 효과를 위해서… 그냥?",
             "accessoryType": "Ring",
-			"addCriticalDamage" : "10",
+			"addCriticalDamage" : "100",
             "iconPath": "Textures/Item/00Novice/Novice_Ring"
         },
         {
@@ -131,7 +131,7 @@
             "name": "숲속의 가호가 깃든 반지",
 			"description": "숲속 정령의 가호를 받아 크리티컬 데미지가 증가합니다.",
             "accessoryType": "Ring",
-			"addCriticalDamage" : "50",
+			"addCriticalDamage" : "300",
             "iconPath": "Textures/Item/01Forest/Forest_Ring"
         },
     ],

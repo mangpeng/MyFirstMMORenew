@@ -34,7 +34,10 @@ class PacketHandler
 	{
         S_Spawn spawnPacket = packet as S_Spawn;
         foreach (ObjectInfo obj in spawnPacket.Objects)
+        {
+			Debug.Log(obj.PosInfo.MoveDir);
             Managers.Object.Add(obj, myPlayer: false);
+        }
     }
 
 	public static void S_DespawnHandler(PacketSession session, IMessage packet)
@@ -83,8 +86,8 @@ class PacketHandler
 		CreatureController cc = go.GetComponent<CreatureController>();
 		if (cc != null)
 		{
-			Debug.Log($"use skill packet {skillPacket.Info.SkillId}");
 			cc.UseSkill(skillPacket.Info);
+
 		}
 	}
 
@@ -201,11 +204,21 @@ class PacketHandler
 	{
 		S_CreatePlayer createOkPacket = (S_CreatePlayer)packet;
 
-		Managers.Scene.LoadScene(Define.Scene.Game);
+		
 
-		C_EnterGame enterGamePacket = new C_EnterGame();
-        enterGamePacket.Name = createOkPacket.Player.Name;
-        Managers.Network.Send(enterGamePacket);
+        if (createOkPacket.Player == null)
+        {
+			// TODO 아이디 겹쳐서 캐릭터 생성 실패 팝업 띄우기
+			Debug.Log("캐릭터 생성 실패.");
+        }
+        else
+        {
+			C_EnterGame enterGamePacket = new C_EnterGame();
+			enterGamePacket.Name = createOkPacket.Player.Name;
+			Managers.Network.Send(enterGamePacket);
+
+			Managers.Scene.LoadScene(Define.Scene.Game);
+		}
 
   //      if (createOkPacket.Player == null)
 		//{

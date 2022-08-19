@@ -10,8 +10,8 @@ using UnityEngine.UI;
 
 public class UI_Skill : UI_Base
 {
-    const float POTION_COOL_TIME = 0.5f;
-    const int POTION_ID = 200;
+    const float HP_POTION_COOL_TIME = 0.5f;
+    const int HP_POTION_ID = 1000;
 
     List<GameObject> _guidList;
 
@@ -27,18 +27,18 @@ public class UI_Skill : UI_Base
 	{
         Bind<Image>(typeof(Images));
 
-        GetImage((int)Images.SkillActive).gameObject.BindEvent(OnClickSKillActive, Define.UIEvent.Click);
+        //GetImage((int)Images.SkillActive).gameObject.BindEvent(OnClickSKillActive, Define.UIEvent.Click);
         GetImage((int)Images.SkillActive).gameObject.BindEvent(OnEnterSkillActive, Define.UIEvent.Enter);
         GetImage((int)Images.SkillActive).gameObject.BindEvent(OnExitSkillActive, Define.UIEvent.Exit);
         GetImage((int)Images.SkillActive).gameObject.GetComponent<UI_Skill_Item>().Init();
 
-        GetImage((int)Images.SkillBuff).gameObject.BindEvent(OnClickSKillBuff, Define.UIEvent.Click);
+        //GetImage((int)Images.SkillBuff).gameObject.BindEvent(OnClickSKillBuff, Define.UIEvent.Click);
         GetImage((int)Images.SkillBuff).gameObject.BindEvent(OnEnterSkillBuff, Define.UIEvent.Enter);
         GetImage((int)Images.SkillBuff).gameObject.BindEvent(OnExitSkillBuff, Define.UIEvent.Exit);
         GetImage((int)Images.SkillBuff).gameObject.GetComponent<UI_Skill_Item>().Init();
 
 
-        GetImage((int)Images.SkillPotion).gameObject.BindEvent(OnClickSKillPotion, Define.UIEvent.Click);
+        //GetImage((int)Images.SkillPotion).gameObject.BindEvent(OnClickSKillPotion, Define.UIEvent.Click);
         GetImage((int)Images.SkillPotion).gameObject.BindEvent(OnEnterSkillPotion, Define.UIEvent.Enter);
         GetImage((int)Images.SkillPotion).gameObject.BindEvent(OnExitSkillPotion, Define.UIEvent.Exit);
         GetImage((int)Images.SkillPotion).gameObject.GetComponent<UI_Skill_Item>().Init();
@@ -48,15 +48,20 @@ public class UI_Skill : UI_Base
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            OnClickSKillActive(null);
-        }
-        else if (Input.GetKeyDown(KeyCode.W))
-        {
-            OnClickSKillBuff(null);
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
+        //if(Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    OnClickSKillActive(null);
+        //}
+        //else if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    OnClickSKillBuff(null);
+        //}
+        //else if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    OnClickSKillPotion(null);
+        //}
+
+        if (Input.GetKeyDown(KeyCode.E))
         {
             OnClickSKillPotion(null);
         }
@@ -92,7 +97,7 @@ public class UI_Skill : UI_Base
     #region Event
 
 
-    private void OnClickSKillActive(PointerEventData evt)
+    public void OnClickSKillActive(PointerEventData evt)
     {
         UI_Skill_Item skillItem = GetImage((int)Images.SkillActive).GetComponent<UI_Skill_Item>();
         if (!skillItem.IsCool)
@@ -127,7 +132,7 @@ public class UI_Skill : UI_Base
         ShowGuild(skillData.id);
     }
 
-    private void OnExitSkillActive(PointerEventData evt)
+    public void OnExitSkillActive(PointerEventData evt)
     {
         Debug.Log("OnExitSkillActive");
 
@@ -137,8 +142,8 @@ public class UI_Skill : UI_Base
         HideGuid();
     }
 
-    
-    private void OnClickSKillBuff(PointerEventData evt)
+
+    public void OnClickSKillBuff(PointerEventData evt)
     {
         UI_Skill_Item skillItem = GetImage((int)Images.SkillBuff).GetComponent<UI_Skill_Item>();
 
@@ -173,7 +178,7 @@ public class UI_Skill : UI_Base
     }
 
 
-    private void OnClickSKillPotion(PointerEventData evt)
+    public void OnClickSKillPotion(PointerEventData evt)
     {
         UI_Skill_Item skillItem = GetImage((int)Images.SkillPotion).GetComponent<UI_Skill_Item>();
 
@@ -187,7 +192,7 @@ public class UI_Skill : UI_Base
             if (!skillItem.IsCool)
             {
                 // todo 임시로 포션 쿨타임 값 지정
-                skillItem.SetCool(POTION_COOL_TIME);
+                skillItem.SetCool(HP_POTION_COOL_TIME);
                 //// 임시로 서버 값쓰지 않고 줄임
                 //int nextCount = Int32.Parse(skillItem.GetText()) - 1;
                 //skillItem.SetText(nextCount.ToString());
@@ -218,7 +223,7 @@ public class UI_Skill : UI_Base
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
 
         Data.ItemData itemData;
-        Managers.Data.ItemDict.TryGetValue(POTION_ID, out itemData);
+        Managers.Data.ItemDict.TryGetValue(HP_POTION_ID, out itemData);
 
         string format =
 @"<color=yellow>{0} </color>

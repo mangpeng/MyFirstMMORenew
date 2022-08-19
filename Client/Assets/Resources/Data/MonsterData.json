@@ -50,23 +50,23 @@
         "stat": {
 			"level": "1",
 			"totalExp": "0",
-			"maxHp": "200",
-			"attack": "20",
-			"defense": "10",
-			"moveSpeed":  "2",
-			"critical": "30",
-			"criticalDamage": "25",	
-			"damageRange": "10",
+			"maxHp": "300",
+			"attack": "5",
+			"defense": "5",
+			"moveSpeed":  "3",
+			"critical": "10",
+			"criticalDamage": "10",	
+			"damageRange": "30",
         },
         "rewards": [
             {
                 "probability": "10",
-                "itemId": "1",
+                "itemId": "0",
                 "count": "1"
             },
             {
                 "probability": "10",
-                "itemId": "2",
+                "itemId": "1",
                 "count": "1"
             },
             {
@@ -76,14 +76,34 @@
             },
             {
                 "probability": "10",
-                "itemId": "101",
+                "itemId": "200",
                 "count": "1"
             },
             {
-                "probability": "50",
-                "itemId": "200",
-                "count": "5"
-            }
+                "probability": "10",
+                "itemId": "300",
+                "count": "1"
+            },
+			{
+                "probability": "10",
+                "itemId": "400",
+                "count": "1"
+            },
+			{
+                "probability": "10",
+                "itemId": "500",
+                "count": "1"
+            },
+			{
+                "probability": "100",
+                "itemId": "1000",
+                "count": "1"
+            },
+			{
+                "probability": "100",
+                "itemId": "1001",
+                "count": "1"
+            },
         ]
     },
 	    {
@@ -93,20 +113,15 @@
         "stat": {
 			"level": "1",
 			"totalExp": "0",
-			"maxHp": "200",
-			"attack": "20",
+			"maxHp": "500",
+			"attack": "15",
 			"defense": "10",
-			"moveSpeed":  "1",
-			"critical": "30",
-			"criticalDamage": "25",	
-			"damageRange": "10",
+			"moveSpeed":  "2",
+			"critical": "20",
+			"criticalDamage": "20",	
+			"damageRange": "30",
         },
         "rewards": [
-            {
-                "probability": "10",
-                "itemId": "1",
-                "count": "1"
-            },
             {
                 "probability": "10",
                 "itemId": "2",
@@ -114,7 +129,7 @@
             },
             {
                 "probability": "10",
-                "itemId": "100",
+                "itemId": "3",
                 "count": "1"
             },
             {
@@ -123,10 +138,35 @@
                 "count": "1"
             },
             {
-                "probability": "50",
-                "itemId": "200",
-                "count": "5"
-            }
+                "probability": "10",
+                "itemId": "201",
+                "count": "1"
+            },
+            {
+                "probability": "10",
+                "itemId": "301",
+                "count": "1"
+            },
+			{
+                "probability": "10",
+                "itemId": "401",
+                "count": "1"
+            },
+			{
+                "probability": "10",
+                "itemId": "501",
+                "count": "1"
+            },
+			{
+                "probability": "100",
+                "itemId": "1000",
+                "count": "1"
+            },
+			{
+                "probability": "100",
+                "itemId": "1001",
+                "count": "1"
+            },
         ]
     }
   ]

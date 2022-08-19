@@ -10,7 +10,6 @@ namespace Server.Game
 		public GameObject Owner { get; set; }
 		public bool Penetration = false;
 
-
         public override void Update()
 		{
 			if (Data == null || Data.projectile == null || Owner == null || Room == null)
@@ -31,9 +30,11 @@ namespace Server.Game
                     Room.BroadCastVision(CellPos, movePacket);
 
                     GameObject target = Room.Map.Find(destPos);
+                    bool isCritical = false;
+                    int totalDamage = Data.damage + Owner.CalculateDamage(out isCritical);
                     if (target != null)
                     {
-                        target.OnDamaged(this, Data.damage + Owner.TotalAttack);
+                        target.OnDamaged(this, totalDamage, isCritical);
                     }
                 }
                 else
@@ -53,9 +54,15 @@ namespace Server.Game
                 else
                 {
                     GameObject target = Room.Map.Find(destPos);
+
                     if (target != null)
                     {
-                        target.OnDamaged(this, Data.damage + Owner.TotalAttack);
+                        bool isCritical = false;
+                        int arrowDamage = Data.damage;
+                        int ownerDamage = Owner.CalculateDamage(out isCritical);
+                        int totalDamage = arrowDamage + ownerDamage;
+                        Console.WriteLine($"Arrow {totalDamage} ({arrowDamage})({totalDamage}({isCritical})");
+                        target.OnDamaged(this, totalDamage, isCritical);
                     }
 
                     // 소멸

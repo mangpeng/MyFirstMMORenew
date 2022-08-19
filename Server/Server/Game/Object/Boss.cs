@@ -200,7 +200,9 @@ namespace Server.Game
 
                     if(p != null)
                     {
-                        p.OnDamaged(this, _skillData.damage + TotalAttack);
+                        bool isCritical = false;
+                        int totalDamage = _skillData.damage + CalculateDamage(out isCritical);
+                        p.OnDamaged(this, totalDamage, isCritical);
                     }
                 }
             }
@@ -252,7 +254,9 @@ namespace Server.Game
 
                     if (p != null)
                     {
-                        p.OnDamaged(this, _skillData.damage + TotalAttack);
+                        bool isCritical = false;
+                        int totalDamage = _skillData.damage + CalculateDamage(out isCritical);
+                        p.OnDamaged(this, totalDamage, isCritical);
                     }
                 }
 
@@ -309,7 +313,9 @@ namespace Server.Game
 
                         if (p != null)
                         {
-                            p.OnDamaged(this, _skillData.damage + TotalAttack);
+                            bool isCritical = false;
+                            int totalDamage = _skillData.damage + CalculateDamage(out isCritical);
+                            p.OnDamaged(this, totalDamage, isCritical);
                         }
                     }
                 }
@@ -367,7 +373,9 @@ namespace Server.Game
 
                         if (p != null)
                         {
-                            p.OnDamaged(this, _skillData.damage + TotalAttack);
+                            bool isCritical = false;
+                            int totalDamage = _skillData.damage + CalculateDamage(out isCritical);
+                            p.OnDamaged(this, totalDamage, isCritical);
                         }
                     }
                 }

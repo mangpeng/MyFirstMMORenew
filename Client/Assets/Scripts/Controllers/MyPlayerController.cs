@@ -7,10 +7,21 @@ public class MyPlayerController : PlayerController
 {
 	bool _moveKeyPressed = false;
 
-	public int WeaponDamage { get; private set; }
-	public int ArmorDefence { get; private set; }
+    public override int MaxHp { get { return Stat.MaxHp + AddHp; } }
+    public override int Attack { get { return Stat.Attack + AddDamage; } }
+	public override int Defense { get { return Stat.Defense + AddDefence; } }
+	public override int MoveSpeed { get { return Stat.MoveSpeed + AddMoveSpeed; } }
+	public override int Critical { get { return Stat.Critical + AddCritical; } }
+	public override int CriticalDamage { get { return Stat.CriticalDamage + AddCriticalDamage; } }
 
-	const int visionRange = 3;
+	public int AddHp { get; private set; }
+	public int AddDamage { get; private set; }
+	public int AddDefence { get; private set; }
+	public int AddMoveSpeed { get; private set; }
+	public int AddCritical { get; private set; }
+	public int AddCriticalDamage { get; private set; }
+
+    const int visionRange = 3;
 	const int cameraSafeArea = 7;
 
 	protected override void Init()
@@ -54,14 +65,32 @@ public class MyPlayerController : PlayerController
         if (Managers.Chat.IsChat)
             return;
 
-        if (_coSkillCooltime == null && Input.GetKey(KeyCode.Space))
+        if (_coSkillCooltime == null)
 		{
-			C_Skill skill = new C_Skill() { Info = new SkillInfo() };
-			skill.Info.SkillId = NormalSkillData.id;
-			Managers.Network.Send(skill);
+			if(Input.GetKey(KeyCode.Space))
+            {
+                C_Skill skill = new C_Skill() { Info = new SkillInfo() };
+                skill.Info.SkillId = NormalSkillData.id;
+                Managers.Network.Send(skill);
 
-			_coSkillCooltime = StartCoroutine("CoInputCooltime", 0.2f);
-		}
+                _coSkillCooltime = StartCoroutine("CoInputCooltime", 0.2f);
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+				UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+				gameSceneUI.SkillUI.OnClickSKillActive(null);
+			}
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+                gameSceneUI.SkillUI.OnClickSKillBuff(null);
+            }
+            //else if (Input.GetKeyDown(KeyCode.E))
+            //{
+            //    UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+            //    gameSceneUI.SkillUI.OnClickSKillPotion(null);
+            //}
+        }
 	}
 
 	Coroutine _coSkillCooltime;
@@ -226,10 +255,17 @@ public class MyPlayerController : PlayerController
 
     public void RefreshAdditionalStat()
 	{
-		WeaponDamage = 0;
-		ArmorDefence = 0;
+		AddHp = 0;
 
-		foreach (Item item in Managers.Inven.Items.Values)
+		AddDamage = 0;
+		AddDefence = 0;
+
+		AddMoveSpeed = 0;
+
+		AddCritical = 0;
+		AddCriticalDamage = 0;
+
+        foreach (Item item in Managers.Inven.Items.Values)
 		{
 			if (item.Equipped == false)
 				continue;
@@ -237,13 +273,20 @@ public class MyPlayerController : PlayerController
 			switch (item.ItemType)
 			{
 				case ItemType.Weapon:
-					WeaponDamage += ((Weapon)item).Damage;
+					AddDamage += ((Weapon)item).AddDamaged;
 					break;
 				case ItemType.Armor:
-					ArmorDefence += ((Armor)item).Defence;
+					AddDefence += ((Armor)item).AddDefence;
+					AddHp += ((Armor)item).AddHp;
+					AddMoveSpeed += ((Armor)item).AddMoveSpeed;
 					break;
-			}
+                case ItemType.Accessory:
+                    AddCritical += ((Accessory)item).AddCritical;
+					AddCriticalDamage += ((Accessory)item).AddCriticalDamage;
+					break;
+            }
 		}
+		UpdateHpBar();
 	}
 
 	private void LoadPartialMap(int range)
