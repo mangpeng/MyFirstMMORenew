@@ -2,6 +2,7 @@
     "weapons": [
         {
             "id": "0",
+			"itemSetType": "Normal",
             "name": "초보자의 검",
 			"description": "낮은 공격력으로 적에게 간지러움을 줍니다.",
             "weaponType": "Sword",
@@ -12,6 +13,7 @@
         {
             "id": "1",
             "name": "초보자의 활",
+			"itemSetType": "Normal",
 			"description": "낮은 공격력으로 적에게 간지러움을 줍니다.",
             "weaponType": "Bow",
 			"classType" : "Archer",
@@ -20,6 +22,7 @@
         },
 		{
             "id": "2",
+			"itemSetType": "Forest",
             "name": "숲속의 가호가 깃든 검",
 			"description": "숲속 정령의 가호를 받아 기본 공격속도를 향상 시킵니다.",
             "weaponType": "Sword",
@@ -30,6 +33,7 @@
         },
         {
             "id": "3",
+			"itemSetType": "Forest",
             "name": "숲속의 가호가 깃든 활",
 			"description": "숲속 정령의 가호를 받아 기본 공격속도를 향상 시킵니다.",
             "weaponType": "Bow",
@@ -42,6 +46,7 @@
 	"helmets": [
         {
             "id": "100",
+			"itemSetType": "Normal",
             "name": "초보자의 투구",
 			"description": "효과에 비해.. 목에 부담이 가는 투구",			
             "armorType": "Helmet",
@@ -51,6 +56,7 @@
         },
 		{
             "id": "101",
+			"itemSetType": "Forest",
             "name": "숲속의 가호가 깃든 투구",
 			"description": "숲속 정령의 가호를 받아 물리방어력을 증가 시킵니다.",			
             "armorType": "Helmet",
@@ -62,6 +68,7 @@
     "uppers": [
         {
             "id": "200",
+			"itemSetType": "Normal",
             "name": "초보자의 아머",
 			"description": "무겁고 허름한 갑옷. 그래도 입는게 낫겠지?",
             "armorType": "Upper",
@@ -71,6 +78,7 @@
         },
 		{
             "id": "201",
+			"itemSetType": "Forest",
             "name": "숲속의 가호가 깃든 아머",
 			"description": "숲속 정령의 가호를 받아 물리방어력을 증가 시킵니다.",
             "armorType": "Upper",
@@ -82,6 +90,7 @@
 	"boots": [
         {
             "id": "300",
+			"itemSetType": "Normal",
             "name": "초보자의 신발",
 			"description": "무겁고 허름한 신발. 안 신는게 나을지도..?",
             "armorType": "Boots",
@@ -91,6 +100,7 @@
         },
 		{
             "id": "301",
+			"itemSetType": "Forest",
             "name": "숲속의 가호가 깃든 신발",
 			"description": "숲속 정령의 가호를 받아 이동 속도를 향상 시킵니다.",
             "armorType": "Boots",
@@ -102,6 +112,7 @@
 	"necklaces": [
         {
             "id": "400",
+			"itemSetType": "Normal",
             "name": "초보자의 목걸이",
 			"description": "세트 효과를 위해서… 그냥?",
             "accessoryType": "Necklace",
@@ -110,6 +121,7 @@
         },
         {
             "id": "401",
+			"itemSetType": "Forest",
             "name": "숲속의 가호가 깃든 목걸이",
 			"description": "숲속 정령의 가호를 받아 크리티컬 확률이 증가합니다.",
             "accessoryType": "Necklace",
@@ -120,6 +132,7 @@
 	"rings": [
         {
             "id": "500",
+			"itemSetType": "Normal",
             "name": "초보자의 반지",
 			"description": "세트 효과를 위해서… 그냥?",
             "accessoryType": "Ring",
@@ -128,6 +141,7 @@
         },
         {
             "id": "501",
+			"itemSetType": "Forest",
             "name": "숲속의 가호가 깃든 반지",
 			"description": "숲속 정령의 가호를 받아 크리티컬 데미지가 증가합니다.",
             "accessoryType": "Ring",

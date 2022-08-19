@@ -19,8 +19,8 @@ public class Item
 		get { return Info.TemplateId; }
 		set { Info.TemplateId = value; }
 	}
-
-	public int Count
+		
+    public int Count
 	{
 		get { return Info.Count; }
 		set { Info.Count = value; }
@@ -38,6 +38,7 @@ public class Item
 		set { Info.Equipped = value; }
 	}
 
+	public ItemSetType ItemSetType = ItemSetType.None;
 	public ItemType ItemType { get; private set; }
 	public bool Stackable { get; protected set; }
 
@@ -74,6 +75,7 @@ public class Item
 
 		if (item != null)
 		{
+			item.ItemSetType = itemData.itemSetType;
 			item.ItemDbId = itemInfo.ItemDbId;
 			item.Count = itemInfo.Count;
 			item.Slot = itemInfo.Slot;

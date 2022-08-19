@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.Protocol;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -23,6 +24,9 @@ public class MyPlayerController : PlayerController
 
     const int visionRange = 3;
 	const int cameraSafeArea = 7;
+
+	ItemSetType _activeSetsEffect = ItemSetType.None;
+	GameObject _setsEffect = null;
 
 	protected override void Init()
 	{
@@ -265,10 +269,18 @@ public class MyPlayerController : PlayerController
 		AddCritical = 0;
 		AddCriticalDamage = 0;
 
-        foreach (Item item in Managers.Inven.Items.Values)
+		int normalSetsCount = 0;
+		int forestSetsCount = 0;
+
+		foreach (Item item in Managers.Inven.Items.Values)
 		{
 			if (item.Equipped == false)
 				continue;
+
+			if (item.ItemSetType == ItemSetType.Normal)
+				++normalSetsCount;
+			else if (item.ItemSetType == ItemSetType.Forest)
+				++forestSetsCount;
 
 			switch (item.ItemType)
 			{
@@ -286,10 +298,45 @@ public class MyPlayerController : PlayerController
 					break;
             }
 		}
-		UpdateHpBar();
+
+		if(normalSetsCount == 6)
+			ActiveNoramlSetEffect();
+        else if (forestSetsCount == 6)
+            ActiveForestSetEffect();
+        else
+        {
+            if (_setsEffect != null)
+                Managers.Resource.Destroy(_setsEffect);
+        }
+
+        UpdateHpBar();
 	}
 
-	private void LoadPartialMap(int range)
+    private void ActiveNoramlSetEffect()
+    {
+		if(_activeSetsEffect != ItemSetType.Normal)
+        {
+			if (_setsEffect != null)
+				Managers.Resource.Destroy(_setsEffect);
+
+			_setsEffect = Managers.Resource.Instantiate("Particle/SetEffectNormal", transform);
+			_setsEffect.transform.localPosition = new Vector3(0, -0.5f, 0);
+        }
+    }
+
+    private void ActiveForestSetEffect()
+    {
+        if (_activeSetsEffect != ItemSetType.Forest)
+        {
+            if (_setsEffect != null)
+                Managers.Resource.Destroy(_setsEffect);
+
+            _setsEffect = Managers.Resource.Instantiate("Particle/SetEffectForest", transform);
+            _setsEffect.transform.localPosition = new Vector3(0, -0.5f, 0);
+        }
+    }
+
+    private void LoadPartialMap(int range)
     {
 		Managers.Map.ToggleDivision(CellPos, range);
     }

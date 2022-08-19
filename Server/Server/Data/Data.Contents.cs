@@ -87,6 +87,7 @@ namespace Server.Data
     public class ItemData
     {
         public int id;
+        public ItemSetType itemSetType;
         public string name;
         public string description;
         public ItemType itemType;

@@ -41,6 +41,7 @@ namespace Server.Game
             set { Info.Equipped = value; }
         }
 
+        public ItemSetType ItemSetType = ItemSetType.None;
         public ItemType ItemType { get; private set; }
         public bool Stackable { get; protected set; }
 
@@ -77,6 +78,7 @@ namespace Server.Game
 
             if (item != null)
             {
+                item.ItemSetType = itemData.itemSetType;
                 item.ItemDbId = itemDb.ItemDbId;
                 item.Count = itemDb.Count;
                 item.Slot = itemDb.Slot;

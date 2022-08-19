@@ -109,6 +109,12 @@ enum ClassType {
 	CLASS_TYPE_KNIGHT = 2;
 }
 
+enum ItemSetType {
+	ITEM_SET_TYPE_NONE = 0;
+	ITEM_SET_TYPE_NORMAL = 1;
+	ITEM_SET_TYPE_FOREST = 2;
+}
+
 
 message S_EnterGame {
   ObjectInfo player = 1;
