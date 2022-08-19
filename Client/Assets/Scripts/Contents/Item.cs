@@ -103,7 +103,7 @@ public class Weapon : Item
 			TemplateId = data.id;
 			Count = 1;
 			WeaponType = data.weaponType;
-			Damage = data.damage;
+			Damage = data.addAttack;
 			Stackable = false;
 		}
 	}
@@ -131,7 +131,7 @@ public class Armor : Item
 			TemplateId = data.id;
 			Count = 1;
 			ArmorType = data.armorType;
-			Defence = data.defence;
+			Defence = data.addDefense;
 			Stackable = false;
 		}
 	}
@@ -158,9 +158,9 @@ public class Consumable : Item
 		{
 			TemplateId = data.id;
 			Count = 1;
-			MaxCount = data.maxCount;
+			MaxCount = 100;
 			ConsumableType = data.consumableType;
-			Stackable = (data.maxCount > 1);
+			Stackable = (100 > 1);
 		}
 	}
 }

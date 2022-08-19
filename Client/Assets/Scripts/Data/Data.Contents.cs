@@ -78,21 +78,36 @@ namespace Data
 	public class WeaponData : ItemData
 	{
 		public WeaponType weaponType;
-		public int damage;
+		public ClassType classType;
+		public int addAttack;
 	}
 
-	[Serializable]
-	public class ArmorData : ItemData
-	{
-		public ArmorType armorType;
-		public int defence;
+    [Serializable]
+    public class ArmorData : ItemData
+    {
+        public ArmorType armorType;
+        public int addHp;
+        public int addDefense;
+		public int addMoveSpeed;
 	}
 
-	[Serializable]
+
+    [Serializable]
+    public class AccessoryData : ItemData
+    {
+        public AccessoryType accessoryType;
+        public int addCritical;
+		public int addCriticalDamage;
+	}
+
+
+
+    [Serializable]
 	public class ConsumableData : ItemData
 	{
 		public ConsumableType consumableType;
-		public int maxCount;
+		public int addHp;
+		public int addMp;
 	}
 
 
@@ -100,7 +115,14 @@ namespace Data
 	public class ItemLoader : ILoader<int, ItemData>
 	{
 		public List<WeaponData> weapons = new List<WeaponData>();
-		public List<ArmorData> armors = new List<ArmorData>();
+
+		public List<ArmorData> helmets = new List<ArmorData>();
+		public List<ArmorData> uppers = new List<ArmorData>();
+		public List<ArmorData> boots = new List<ArmorData>();
+
+		public List<AccessoryData> necklaces = new List<AccessoryData>();
+		public List<AccessoryData> rings = new List<AccessoryData>();
+
 		public List<ConsumableData> consumables = new List<ConsumableData>();
 
 		public Dictionary<int, ItemData> MakeDict()
@@ -111,12 +133,35 @@ namespace Data
 				item.itemType = ItemType.Weapon;
 				dict.Add(item.id, item);
 			}
-			foreach (ItemData item in armors)
+
+			foreach (ItemData item in helmets)
 			{
 				item.itemType = ItemType.Armor;
 				dict.Add(item.id, item);
 			}
-			foreach (ItemData item in consumables)
+            foreach (ItemData item in uppers)
+            {
+                item.itemType = ItemType.Armor;
+                dict.Add(item.id, item);
+            }
+            foreach (ItemData item in boots)
+            {
+                item.itemType = ItemType.Armor;
+                dict.Add(item.id, item);
+            }
+
+            foreach (ItemData item in necklaces)
+            {
+				item.itemType = ItemType.Accessory;
+                dict.Add(item.id, item);
+            }
+            foreach (ItemData item in rings)
+            {
+                item.itemType = ItemType.Accessory;
+                dict.Add(item.id, item);
+            }
+
+            foreach (ItemData item in consumables)
 			{
 				item.itemType = ItemType.Consumable;
 				dict.Add(item.id, item);

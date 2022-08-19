@@ -106,7 +106,7 @@ namespace Server.Game
 				TemplateId = data.id;
 				Count = 1;
 				WeaponType = data.weaponType;
-				Damage = data.damage;
+				Damage = data.addAttack;
 				Stackable = false;
 			}
 		}
@@ -134,7 +134,7 @@ namespace Server.Game
 				TemplateId = data.id;
 				Count = 1;
 				ArmorType = data.armorType;
-				Defence = data.defence;
+				Defence = data.addDefense;
 				Stackable = false;
 			}
 		}
@@ -157,14 +157,14 @@ namespace Server.Game
 			if (itemData.itemType != ItemType.Consumable)
 				return;
 
-			ConsumableData data = (ConsumableData)itemData;
-			{
-				TemplateId = data.id;
-				Count = 1;
-				MaxCount = data.maxCount;
-				ConsumableType = data.consumableType;
-				Stackable = (data.maxCount > 1);
-			}
-		}
+            ConsumableData data = (ConsumableData)itemData;
+            {
+                TemplateId = data.id;
+                Count = 1;
+                MaxCount = 100;
+                ConsumableType = data.consumableType;
+                Stackable = (100 > 1);
+            }
+        }
 	}
 }

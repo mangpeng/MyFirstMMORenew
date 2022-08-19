@@ -84,60 +84,110 @@ namespace Server.Data
 
 	#region Item
 	[Serializable]
-	public class ItemData
-	{
-		public int id;
-		public string name;
-		public ItemType itemType;
-	}
+    public class ItemData
+    {
+        public int id;
+        public string name;
+        public string description;
+        public ItemType itemType;
+        public string iconPath;
+    }
 
-	public class WeaponData : ItemData
-	{
-		public WeaponType weaponType;
-		public int damage;
-	}
+    [Serializable]
+    public class WeaponData : ItemData
+    {
+        public WeaponType weaponType;
+        public ClassType classType;
+        public int addAttack;
+    }
 
-	public class ArmorData : ItemData
-	{
-		public ArmorType armorType;
-		public int defence;
-	}
-
-	public class ConsumableData : ItemData
-	{
-		public ConsumableType consumableType;
-		public int maxCount;
-	}
+    [Serializable]
+    public class ArmorData : ItemData
+    {
+        public ArmorType armorType;
+        public int addHp;
+        public int addDefense;
+        public int addMoveSpeed;
+    }
 
 
-	[Serializable]
+    [Serializable]
+    public class AccessoryData : ItemData
+    {
+        public AccessoryType accessoryType;
+        public int addCritical;
+        public int addCriticalDamage;
+    }
+
+
+
+    [Serializable]
+    public class ConsumableData : ItemData
+    {
+        public ConsumableType consumableType;
+        public int addHp;
+        public int addMp;
+    }
+
+
+    [Serializable]
 	public class ItemLoader : ILoader<int, ItemData>
 	{
-		public List<WeaponData> weapons = new List<WeaponData>();
-		public List<ArmorData> armors = new List<ArmorData>();
-		public List<ConsumableData> consumables = new List<ConsumableData>();
+        public List<WeaponData> weapons = new List<WeaponData>();
 
-		public Dictionary<int, ItemData> MakeDict()
-		{
-			Dictionary<int, ItemData> dict = new Dictionary<int, ItemData>();
-			foreach (ItemData item in weapons)
-			{
-				item.itemType = ItemType.Weapon;
-				dict.Add(item.id, item);
-			}
-			foreach (ItemData item in armors)
-			{
-				item.itemType = ItemType.Armor;
-				dict.Add(item.id, item);
-			}
-			foreach (ItemData item in consumables)
-			{
-				item.itemType = ItemType.Consumable;
-				dict.Add(item.id, item);
-			}
-			return dict;
-		}
-	}
+        public List<ArmorData> helmets = new List<ArmorData>();
+        public List<ArmorData> uppers = new List<ArmorData>();
+        public List<ArmorData> boots = new List<ArmorData>();
+
+        public List<AccessoryData> necklaces = new List<AccessoryData>();
+        public List<AccessoryData> rings = new List<AccessoryData>();
+
+        public List<ConsumableData> consumables = new List<ConsumableData>();
+
+        public Dictionary<int, ItemData> MakeDict()
+        {
+            Dictionary<int, ItemData> dict = new Dictionary<int, ItemData>();
+            foreach (ItemData item in weapons)
+            {
+                item.itemType = ItemType.Weapon;
+                dict.Add(item.id, item);
+            }
+
+            foreach (ItemData item in helmets)
+            {
+                item.itemType = ItemType.Armor;
+                dict.Add(item.id, item);
+            }
+            foreach (ItemData item in uppers)
+            {
+                item.itemType = ItemType.Armor;
+                dict.Add(item.id, item);
+            }
+            foreach (ItemData item in boots)
+            {
+                item.itemType = ItemType.Armor;
+                dict.Add(item.id, item);
+            }
+
+            foreach (ItemData item in necklaces)
+            {
+                item.itemType = ItemType.Accessory;
+                dict.Add(item.id, item);
+            }
+            foreach (ItemData item in rings)
+            {
+                item.itemType = ItemType.Accessory;
+                dict.Add(item.id, item);
+            }
+
+            foreach (ItemData item in consumables)
+            {
+                item.itemType = ItemType.Consumable;
+                dict.Add(item.id, item);
+            }
+            return dict;
+        }
+    }
 	#endregion
 
 	#region Monster

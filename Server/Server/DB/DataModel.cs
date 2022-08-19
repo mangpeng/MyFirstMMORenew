@@ -16,26 +16,33 @@ namespace Server.DB
 	[Table("Player")]
 	public class PlayerDb
 	{
-		public int PlayerDbId { get; set; }
-		public string PlayerName { get; set; }
-
 		[ForeignKey("Account")]
 		public int AccountDbId { get; set; }
 		public AccountDb Account { get; set; }
 
 		public ICollection<ItemDb> Items { get; set; }
 
+		public int PlayerDbId { get; set; }
+		public string PlayerName { get; set; }
+
 		public int ClassType { get; set; }
 
+
 		public int Level { get; set; }
+		public int TotalExp { get; set; }
+
 		public int Hp { get; set; }
 		public int MaxHp { get; set; }
+
 		public int Attack { get; set; }
-		public float Speed { get; set; }
-		public int TotalExp { get; set; }
+		public int Defense { get; set; }
+
+        public int MoveSpeed { get; set; }
+
+		public int Critical { get; set; }
+		public int CriticalDamage { get; set; }
+
 		public int DamageRange { get; set; }
-		public int CriticalRatio { get; set; }
-		public float Critical { get; set; }
 	}
 
 	[Table("Item")]

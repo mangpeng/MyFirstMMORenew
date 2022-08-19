@@ -86,7 +86,7 @@ namespace Server.Game
 		{
 			if (_nextMoveTick > Environment.TickCount64)
 				return;
-			int moveTick = (int)(1000 / Speed);
+			int moveTick = (int)(1000f / MoveSpeed);
 			_nextMoveTick = Environment.TickCount64 + moveTick;
 
 			if (_target == null || _target.Room != Room)

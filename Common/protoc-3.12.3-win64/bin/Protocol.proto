@@ -75,7 +75,8 @@ enum ItemType {
   ITEM_TYPE_NONE = 0;
   ITEM_TYPE_WEAPON = 1;
   ITEM_TYPE_ARMOR = 2;
-  ITEM_TYPE_CONSUMABLE = 3;
+  ITEM_TYPE_ACCESSORY = 3;
+  ITEM_TYPE_CONSUMABLE = 4;
 }
 
 enum WeaponType {
@@ -87,8 +88,14 @@ enum WeaponType {
 enum ArmorType {
   ARMOR_TYPE_NONE = 0;
   ARMOR_TYPE_HELMET = 1;
-  ARMOR_TYPE_ARMOR = 2;
+  ARMOR_TYPE_UPPER = 2;
   ARMOR_TYPE_BOOTS = 3;
+}
+
+enum AccessoryType {
+  ACCESSORY_TYPE_NONE = 0;
+  ACCESSORY_TYPE_NECKLACE = 1;
+  ACCESSORY_TYPE_RING = 2;
 }
 
 enum ConsumableType {
@@ -252,14 +259,15 @@ message PositionInfo {
 
 message StatInfo {
   int32 level = 1;
-  int32 hp = 2;
-  int32 maxHp = 3;
-  int32 attack = 4;
-  float speed = 5;
-  int32 totalExp = 6;
-  int32 damageRange = 7;
-  int32 criticalRatio = 8;
-  float critical = 9;
+  int32 totalExp = 2;
+  int32 hp = 3;
+  int32 maxHp = 4;
+  int32 attack = 5;
+  int32 defense = 6;
+  int32 moveSpeed  = 7;
+  int32 critical = 8;
+  int32 criticalDamage = 9;
+  int32 damageRange = 10;
 }
 
 message SkillInfo {

@@ -22,10 +22,10 @@ public class BaseController : MonoBehaviour
 		}
 	}
 
-	public float Speed
+	public int MoveSpeed
 	{
-		get { return Stat.Speed; }
-		set { Stat.Speed = value; }
+		get { return Stat.MoveSpeed; }
+		set { Stat.MoveSpeed = value; }
 	}
 
 	public virtual int Hp
@@ -276,14 +276,14 @@ public class BaseController : MonoBehaviour
 
 		// 도착 여부 체크
 		float dist = moveDir.magnitude;
-		if (dist < Speed * Time.deltaTime)
+		if (dist < MoveSpeed * Time.deltaTime)
 		{
 			transform.position = destPos;
 			MoveToNextPos();
 		}
 		else
 		{
-			transform.position += moveDir.normalized * Speed * Time.deltaTime;
+			transform.position += moveDir.normalized * MoveSpeed * Time.deltaTime;
 			State = CreatureState.Moving;
 		}
 	}

@@ -256,7 +256,7 @@ namespace Server.Game
             arrow.PosInfo.MoveDir = player.PosInfo.MoveDir;
             arrow.PosInfo.PosX = player.PosInfo.PosX;
             arrow.PosInfo.PosY = player.PosInfo.PosY;
-            arrow.Speed = skillData.projectile.speed;
+            arrow.MoveSpeed = (int)skillData.projectile.speed;
             Push(EnterGame, arrow, false);
         }
 
@@ -275,7 +275,7 @@ namespace Server.Game
             arrow.PosInfo.MoveDir = player.PosInfo.MoveDir;
             arrow.PosInfo.PosX = player.PosInfo.PosX;
             arrow.PosInfo.PosY = player.PosInfo.PosY;
-            arrow.Speed = skillData.projectile.speed;
+            arrow.MoveSpeed = (int)skillData.projectile.speed;
             Push(EnterGame, arrow, false);
         }
 

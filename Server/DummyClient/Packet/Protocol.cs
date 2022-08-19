@@ -62,47 +62,50 @@ namespace Google.Protobuf.Protocol {
             "aW9uSW5mbxIkCghzdGF0SW5mbxgGIAEoCzISLlByb3RvY29sLlN0YXRJbmZv",
             "InYKDFBvc2l0aW9uSW5mbxImCgVzdGF0ZRgBIAEoDjIXLlByb3RvY29sLkNy",
             "ZWF0dXJlU3RhdGUSIgoHbW92ZURpchgCIAEoDjIRLlByb3RvY29sLk1vdmVE",
-            "aXISDAoEcG9zWBgDIAEoBRIMCgRwb3NZGAQgASgFIqMBCghTdGF0SW5mbxIN",
-            "CgVsZXZlbBgBIAEoBRIKCgJocBgCIAEoBRINCgVtYXhIcBgDIAEoBRIOCgZh",
-            "dHRhY2sYBCABKAUSDQoFc3BlZWQYBSABKAISEAoIdG90YWxFeHAYBiABKAUS",
-            "EwoLZGFtYWdlUmFuZ2UYByABKAUSFQoNY3JpdGljYWxSYXRpbxgIIAEoBRIQ",
-            "Cghjcml0aWNhbBgJIAEoAiJACglTa2lsbEluZm8SDwoHc2tpbGxJZBgBIAEo",
-            "BRIQCghjZWxsUG9zWBgCIAEoBRIQCghjZWxsUG9zWRgDIAEoBSJfCghJdGVt",
-            "SW5mbxIQCghpdGVtRGJJZBgBIAEoBRISCgp0ZW1wbGF0ZUlkGAIgASgFEg0K",
-            "BWNvdW50GAMgASgFEgwKBHNsb3QYBCABKAUSEAoIZXF1aXBwZWQYBSABKAgq",
-            "uwMKBU1zZ0lkEhAKDFNfRU5URVJfR0FNRRAAEhAKDFNfTEVBVkVfR0FNRRAB",
-            "EgsKB1NfU1BBV04QAhINCglTX0RFU1BBV04QAxIKCgZDX01PVkUQBBIKCgZT",
-            "X01PVkUQBRILCgdDX1NLSUxMEAYSCwoHU19TS0lMTBAHEg8KC1NfQ0hBTkdF",
-            "X0hQEAgSCQoFU19ESUUQCRIPCgtTX0NPTk5FQ1RFRBAKEgsKB0NfTE9HSU4Q",
-            "CxILCgdTX0xPR0lOEAwSEAoMQ19FTlRFUl9HQU1FEA0SEwoPQ19DUkVBVEVf",
-            "UExBWUVSEA4SEwoPU19DUkVBVEVfUExBWUVSEA8SDwoLU19JVEVNX0xJU1QQ",
-            "EBIOCgpTX0FERF9JVEVNEBESEQoNU19SRU1PVkVfSVRFTRASEhAKDENfRVFV",
-            "SVBfSVRFTRATEhAKDFNfRVFVSVBfSVRFTRAUEhEKDVNfQ0hBTkdFX1NUQVQQ",
-            "FRIKCgZTX1BJTkcQFhIKCgZDX1BPTkcQFxIKCgZTX0NIQVQQGBIKCgZDX0NI",
-            "QVQQGRIQCgxTX1VTRV9QT1RJT04QGhIQCgxDX1VTRV9QT1RJT04QGyo6Cg1D",
-            "cmVhdHVyZVN0YXRlEggKBElETEUQABIKCgZNT1ZJTkcQARIJCgVTS0lMTBAC",
-            "EggKBERFQUQQAyowCgdNb3ZlRGlyEgYKAlVQEAASCAoERE9XThABEggKBExF",
-            "RlQQAhIJCgVSSUdIVBADKk0KDkdhbWVPYmplY3RUeXBlEggKBE5PTkUQABIK",
-            "CgZQTEFZRVIQARILCgdNT05TVEVSEAISDgoKUFJPSkVDVElMRRADEggKBEJP",
-            "U1MQBCp0CglTa2lsbFR5cGUSDgoKU0tJTExfTk9ORRAAEg4KClNLSUxMX0FV",
-            "VE8QARIUChBTS0lMTF9QUk9KRUNUSUxFEAISEAoMU0tJTExfU1BMQVNIEAMS",
-            "DwoLU0tJTExfU01BU0gQBBIOCgpTS0lMTF9CVUZGEAUqWgoRUGxheWVyU2Vy",
-            "dmVyU3RhdGUSFgoSU0VSVkVSX1NUQVRFX0xPR0lOEAASFgoSU0VSVkVSX1NU",
-            "QVRFX0xPQkJZEAESFQoRU0VSVkVSX1NUQVRFX0dBTUUQAipjCghJdGVtVHlw",
-            "ZRISCg5JVEVNX1RZUEVfTk9ORRAAEhQKEElURU1fVFlQRV9XRUFQT04QARIT",
-            "Cg9JVEVNX1RZUEVfQVJNT1IQAhIYChRJVEVNX1RZUEVfQ09OU1VNQUJMRRAD",
-            "Kk4KCldlYXBvblR5cGUSFAoQV0VBUE9OX1RZUEVfTk9ORRAAEhUKEVdFQVBP",
-            "Tl9UWVBFX1NXT1JEEAESEwoPV0VBUE9OX1RZUEVfQk9XEAIqYwoJQXJtb3JU",
-            "eXBlEhMKD0FSTU9SX1RZUEVfTk9ORRAAEhUKEUFSTU9SX1RZUEVfSEVMTUVU",
-            "EAESFAoQQVJNT1JfVFlQRV9BUk1PUhACEhQKEEFSTU9SX1RZUEVfQk9PVFMQ",
-            "AypGCg5Db25zdW1hYmxlVHlwZRIYChRDT05TVU1BQkxFX1RZUEVfTk9ORRAA",
-            "EhoKFkNPTlNVTUFCTEVfVFlQRV9QT1RJT04QASpOCglDbGFzc1R5cGUSEwoP",
-            "Q0xBU1NfVFlQRV9OT05FEAASFQoRQ0xBU1NfVFlQRV9BUkNIRVIQARIVChFD",
-            "TEFTU19UWVBFX0tOSUdIVBACQhuqAhhHb29nbGUuUHJvdG9idWYuUHJvdG9j",
-            "b2xiBnByb3RvMw=="));
+            "aXISDAoEcG9zWBgDIAEoBRIMCgRwb3NZGAQgASgFIrkBCghTdGF0SW5mbxIN",
+            "CgVsZXZlbBgBIAEoBRIQCgh0b3RhbEV4cBgCIAEoBRIKCgJocBgDIAEoBRIN",
+            "CgVtYXhIcBgEIAEoBRIOCgZhdHRhY2sYBSABKAUSDwoHZGVmZW5zZRgGIAEo",
+            "BRIRCgltb3ZlU3BlZWQYByABKAUSEAoIY3JpdGljYWwYCCABKAUSFgoOY3Jp",
+            "dGljYWxEYW1hZ2UYCSABKAUSEwoLZGFtYWdlUmFuZ2UYCiABKAUiQAoJU2tp",
+            "bGxJbmZvEg8KB3NraWxsSWQYASABKAUSEAoIY2VsbFBvc1gYAiABKAUSEAoI",
+            "Y2VsbFBvc1kYAyABKAUiXwoISXRlbUluZm8SEAoIaXRlbURiSWQYASABKAUS",
+            "EgoKdGVtcGxhdGVJZBgCIAEoBRINCgVjb3VudBgDIAEoBRIMCgRzbG90GAQg",
+            "ASgFEhAKCGVxdWlwcGVkGAUgASgIKrsDCgVNc2dJZBIQCgxTX0VOVEVSX0dB",
+            "TUUQABIQCgxTX0xFQVZFX0dBTUUQARILCgdTX1NQQVdOEAISDQoJU19ERVNQ",
+            "QVdOEAMSCgoGQ19NT1ZFEAQSCgoGU19NT1ZFEAUSCwoHQ19TS0lMTBAGEgsK",
+            "B1NfU0tJTEwQBxIPCgtTX0NIQU5HRV9IUBAIEgkKBVNfRElFEAkSDwoLU19D",
+            "T05ORUNURUQQChILCgdDX0xPR0lOEAsSCwoHU19MT0dJThAMEhAKDENfRU5U",
+            "RVJfR0FNRRANEhMKD0NfQ1JFQVRFX1BMQVlFUhAOEhMKD1NfQ1JFQVRFX1BM",
+            "QVlFUhAPEg8KC1NfSVRFTV9MSVNUEBASDgoKU19BRERfSVRFTRAREhEKDVNf",
+            "UkVNT1ZFX0lURU0QEhIQCgxDX0VRVUlQX0lURU0QExIQCgxTX0VRVUlQX0lU",
+            "RU0QFBIRCg1TX0NIQU5HRV9TVEFUEBUSCgoGU19QSU5HEBYSCgoGQ19QT05H",
+            "EBcSCgoGU19DSEFUEBgSCgoGQ19DSEFUEBkSEAoMU19VU0VfUE9USU9OEBoS",
+            "EAoMQ19VU0VfUE9USU9OEBsqOgoNQ3JlYXR1cmVTdGF0ZRIICgRJRExFEAAS",
+            "CgoGTU9WSU5HEAESCQoFU0tJTEwQAhIICgRERUFEEAMqMAoHTW92ZURpchIG",
+            "CgJVUBAAEggKBERPV04QARIICgRMRUZUEAISCQoFUklHSFQQAypNCg5HYW1l",
+            "T2JqZWN0VHlwZRIICgROT05FEAASCgoGUExBWUVSEAESCwoHTU9OU1RFUhAC",
+            "Eg4KClBST0pFQ1RJTEUQAxIICgRCT1NTEAQqdAoJU2tpbGxUeXBlEg4KClNL",
+            "SUxMX05PTkUQABIOCgpTS0lMTF9BVVRPEAESFAoQU0tJTExfUFJPSkVDVElM",
+            "RRACEhAKDFNLSUxMX1NQTEFTSBADEg8KC1NLSUxMX1NNQVNIEAQSDgoKU0tJ",
+            "TExfQlVGRhAFKloKEVBsYXllclNlcnZlclN0YXRlEhYKElNFUlZFUl9TVEFU",
+            "RV9MT0dJThAAEhYKElNFUlZFUl9TVEFURV9MT0JCWRABEhUKEVNFUlZFUl9T",
+            "VEFURV9HQU1FEAIqfAoISXRlbVR5cGUSEgoOSVRFTV9UWVBFX05PTkUQABIU",
+            "ChBJVEVNX1RZUEVfV0VBUE9OEAESEwoPSVRFTV9UWVBFX0FSTU9SEAISFwoT",
+            "SVRFTV9UWVBFX0FDQ0VTU09SWRADEhgKFElURU1fVFlQRV9DT05TVU1BQkxF",
+            "EAQqTgoKV2VhcG9uVHlwZRIUChBXRUFQT05fVFlQRV9OT05FEAASFQoRV0VB",
+            "UE9OX1RZUEVfU1dPUkQQARITCg9XRUFQT05fVFlQRV9CT1cQAipjCglBcm1v",
+            "clR5cGUSEwoPQVJNT1JfVFlQRV9OT05FEAASFQoRQVJNT1JfVFlQRV9IRUxN",
+            "RVQQARIUChBBUk1PUl9UWVBFX1VQUEVSEAISFAoQQVJNT1JfVFlQRV9CT09U",
+            "UxADKl4KDUFjY2Vzc29yeVR5cGUSFwoTQUNDRVNTT1JZX1RZUEVfTk9ORRAA",
+            "EhsKF0FDQ0VTU09SWV9UWVBFX05FQ0tMQUNFEAESFwoTQUNDRVNTT1JZX1RZ",
+            "UEVfUklORxACKkYKDkNvbnN1bWFibGVUeXBlEhgKFENPTlNVTUFCTEVfVFlQ",
+            "RV9OT05FEAASGgoWQ09OU1VNQUJMRV9UWVBFX1BPVElPThABKk4KCUNsYXNz",
+            "VHlwZRITCg9DTEFTU19UWVBFX05PTkUQABIVChFDTEFTU19UWVBFX0FSQ0hF",
+            "UhABEhUKEUNMQVNTX1RZUEVfS05JR0hUEAJCG6oCGEdvb2dsZS5Qcm90b2J1",
+            "Zi5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.CreatureState), typeof(global::Google.Protobuf.Protocol.MoveDir), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.SkillType), typeof(global::Google.Protobuf.Protocol.PlayerServerState), typeof(global::Google.Protobuf.Protocol.ItemType), typeof(global::Google.Protobuf.Protocol.WeaponType), typeof(global::Google.Protobuf.Protocol.ArmorType), typeof(global::Google.Protobuf.Protocol.ConsumableType), typeof(global::Google.Protobuf.Protocol.ClassType), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.CreatureState), typeof(global::Google.Protobuf.Protocol.MoveDir), typeof(global::Google.Protobuf.Protocol.GameObjectType), typeof(global::Google.Protobuf.Protocol.SkillType), typeof(global::Google.Protobuf.Protocol.PlayerServerState), typeof(global::Google.Protobuf.Protocol.ItemType), typeof(global::Google.Protobuf.Protocol.WeaponType), typeof(global::Google.Protobuf.Protocol.ArmorType), typeof(global::Google.Protobuf.Protocol.AccessoryType), typeof(global::Google.Protobuf.Protocol.ConsumableType), typeof(global::Google.Protobuf.Protocol.ClassType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_EnterGame), global::Google.Protobuf.Protocol.S_EnterGame.Parser, new[]{ "Player", "MapId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_LeaveGame), global::Google.Protobuf.Protocol.S_LeaveGame.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Spawn), global::Google.Protobuf.Protocol.S_Spawn.Parser, new[]{ "Objects" }, null, null, null, null),
@@ -134,7 +137,7 @@ namespace Google.Protobuf.Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.LobbyPlayerInfo), global::Google.Protobuf.Protocol.LobbyPlayerInfo.Parser, new[]{ "PlayerDbId", "Name", "ClassType", "StatInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.ObjectInfo), global::Google.Protobuf.Protocol.ObjectInfo.Parser, new[]{ "ObjectId", "Name", "ClassType", "MonsterTemplateId", "PosInfo", "StatInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PositionInfo), global::Google.Protobuf.Protocol.PositionInfo.Parser, new[]{ "State", "MoveDir", "PosX", "PosY" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.StatInfo), global::Google.Protobuf.Protocol.StatInfo.Parser, new[]{ "Level", "Hp", "MaxHp", "Attack", "Speed", "TotalExp", "DamageRange", "CriticalRatio", "Critical" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.StatInfo), global::Google.Protobuf.Protocol.StatInfo.Parser, new[]{ "Level", "TotalExp", "Hp", "MaxHp", "Attack", "Defense", "MoveSpeed", "Critical", "CriticalDamage", "DamageRange" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.SkillInfo), global::Google.Protobuf.Protocol.SkillInfo.Parser, new[]{ "SkillId", "CellPosX", "CellPosY" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.ItemInfo), global::Google.Protobuf.Protocol.ItemInfo.Parser, new[]{ "ItemDbId", "TemplateId", "Count", "Slot", "Equipped" }, null, null, null, null)
           }));
@@ -215,7 +218,8 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("ITEM_TYPE_NONE")] None = 0,
     [pbr::OriginalName("ITEM_TYPE_WEAPON")] Weapon = 1,
     [pbr::OriginalName("ITEM_TYPE_ARMOR")] Armor = 2,
-    [pbr::OriginalName("ITEM_TYPE_CONSUMABLE")] Consumable = 3,
+    [pbr::OriginalName("ITEM_TYPE_ACCESSORY")] Accessory = 3,
+    [pbr::OriginalName("ITEM_TYPE_CONSUMABLE")] Consumable = 4,
   }
 
   public enum WeaponType {
@@ -227,8 +231,14 @@ namespace Google.Protobuf.Protocol {
   public enum ArmorType {
     [pbr::OriginalName("ARMOR_TYPE_NONE")] None = 0,
     [pbr::OriginalName("ARMOR_TYPE_HELMET")] Helmet = 1,
-    [pbr::OriginalName("ARMOR_TYPE_ARMOR")] Armor = 2,
+    [pbr::OriginalName("ARMOR_TYPE_UPPER")] Upper = 2,
     [pbr::OriginalName("ARMOR_TYPE_BOOTS")] Boots = 3,
+  }
+
+  public enum AccessoryType {
+    [pbr::OriginalName("ACCESSORY_TYPE_NONE")] None = 0,
+    [pbr::OriginalName("ACCESSORY_TYPE_NECKLACE")] Necklace = 1,
+    [pbr::OriginalName("ACCESSORY_TYPE_RING")] Ring = 2,
   }
 
   public enum ConsumableType {
@@ -4905,14 +4915,15 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public StatInfo(StatInfo other) : this() {
       level_ = other.level_;
+      totalExp_ = other.totalExp_;
       hp_ = other.hp_;
       maxHp_ = other.maxHp_;
       attack_ = other.attack_;
-      speed_ = other.speed_;
-      totalExp_ = other.totalExp_;
-      damageRange_ = other.damageRange_;
-      criticalRatio_ = other.criticalRatio_;
+      defense_ = other.defense_;
+      moveSpeed_ = other.moveSpeed_;
       critical_ = other.critical_;
+      criticalDamage_ = other.criticalDamage_;
+      damageRange_ = other.damageRange_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4932,8 +4943,19 @@ namespace Google.Protobuf.Protocol {
       }
     }
 
+    /// <summary>Field number for the "totalExp" field.</summary>
+    public const int TotalExpFieldNumber = 2;
+    private int totalExp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int TotalExp {
+      get { return totalExp_; }
+      set {
+        totalExp_ = value;
+      }
+    }
+
     /// <summary>Field number for the "hp" field.</summary>
-    public const int HpFieldNumber = 2;
+    public const int HpFieldNumber = 3;
     private int hp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Hp {
@@ -4944,7 +4966,7 @@ namespace Google.Protobuf.Protocol {
     }
 
     /// <summary>Field number for the "maxHp" field.</summary>
-    public const int MaxHpFieldNumber = 3;
+    public const int MaxHpFieldNumber = 4;
     private int maxHp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int MaxHp {
@@ -4955,7 +4977,7 @@ namespace Google.Protobuf.Protocol {
     }
 
     /// <summary>Field number for the "attack" field.</summary>
-    public const int AttackFieldNumber = 4;
+    public const int AttackFieldNumber = 5;
     private int attack_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Attack {
@@ -4965,58 +4987,58 @@ namespace Google.Protobuf.Protocol {
       }
     }
 
-    /// <summary>Field number for the "speed" field.</summary>
-    public const int SpeedFieldNumber = 5;
-    private float speed_;
+    /// <summary>Field number for the "defense" field.</summary>
+    public const int DefenseFieldNumber = 6;
+    private int defense_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public float Speed {
-      get { return speed_; }
+    public int Defense {
+      get { return defense_; }
       set {
-        speed_ = value;
+        defense_ = value;
       }
     }
 
-    /// <summary>Field number for the "totalExp" field.</summary>
-    public const int TotalExpFieldNumber = 6;
-    private int totalExp_;
+    /// <summary>Field number for the "moveSpeed" field.</summary>
+    public const int MoveSpeedFieldNumber = 7;
+    private int moveSpeed_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int TotalExp {
-      get { return totalExp_; }
+    public int MoveSpeed {
+      get { return moveSpeed_; }
       set {
-        totalExp_ = value;
+        moveSpeed_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "critical" field.</summary>
+    public const int CriticalFieldNumber = 8;
+    private int critical_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int Critical {
+      get { return critical_; }
+      set {
+        critical_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "criticalDamage" field.</summary>
+    public const int CriticalDamageFieldNumber = 9;
+    private int criticalDamage_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CriticalDamage {
+      get { return criticalDamage_; }
+      set {
+        criticalDamage_ = value;
       }
     }
 
     /// <summary>Field number for the "damageRange" field.</summary>
-    public const int DamageRangeFieldNumber = 7;
+    public const int DamageRangeFieldNumber = 10;
     private int damageRange_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int DamageRange {
       get { return damageRange_; }
       set {
         damageRange_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "criticalRatio" field.</summary>
-    public const int CriticalRatioFieldNumber = 8;
-    private int criticalRatio_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CriticalRatio {
-      get { return criticalRatio_; }
-      set {
-        criticalRatio_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "critical" field.</summary>
-    public const int CriticalFieldNumber = 9;
-    private float critical_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public float Critical {
-      get { return critical_; }
-      set {
-        critical_ = value;
       }
     }
 
@@ -5034,14 +5056,15 @@ namespace Google.Protobuf.Protocol {
         return true;
       }
       if (Level != other.Level) return false;
+      if (TotalExp != other.TotalExp) return false;
       if (Hp != other.Hp) return false;
       if (MaxHp != other.MaxHp) return false;
       if (Attack != other.Attack) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Speed, other.Speed)) return false;
-      if (TotalExp != other.TotalExp) return false;
+      if (Defense != other.Defense) return false;
+      if (MoveSpeed != other.MoveSpeed) return false;
+      if (Critical != other.Critical) return false;
+      if (CriticalDamage != other.CriticalDamage) return false;
       if (DamageRange != other.DamageRange) return false;
-      if (CriticalRatio != other.CriticalRatio) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Critical, other.Critical)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -5049,14 +5072,15 @@ namespace Google.Protobuf.Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (Level != 0) hash ^= Level.GetHashCode();
+      if (TotalExp != 0) hash ^= TotalExp.GetHashCode();
       if (Hp != 0) hash ^= Hp.GetHashCode();
       if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (Attack != 0) hash ^= Attack.GetHashCode();
-      if (Speed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Speed);
-      if (TotalExp != 0) hash ^= TotalExp.GetHashCode();
+      if (Defense != 0) hash ^= Defense.GetHashCode();
+      if (MoveSpeed != 0) hash ^= MoveSpeed.GetHashCode();
+      if (Critical != 0) hash ^= Critical.GetHashCode();
+      if (CriticalDamage != 0) hash ^= CriticalDamage.GetHashCode();
       if (DamageRange != 0) hash ^= DamageRange.GetHashCode();
-      if (CriticalRatio != 0) hash ^= CriticalRatio.GetHashCode();
-      if (Critical != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Critical);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -5074,37 +5098,41 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(Level);
       }
-      if (Hp != 0) {
+      if (TotalExp != 0) {
         output.WriteRawTag(16);
+        output.WriteInt32(TotalExp);
+      }
+      if (Hp != 0) {
+        output.WriteRawTag(24);
         output.WriteInt32(Hp);
       }
       if (MaxHp != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteInt32(MaxHp);
       }
       if (Attack != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteInt32(Attack);
       }
-      if (Speed != 0F) {
-        output.WriteRawTag(45);
-        output.WriteFloat(Speed);
-      }
-      if (TotalExp != 0) {
+      if (Defense != 0) {
         output.WriteRawTag(48);
-        output.WriteInt32(TotalExp);
+        output.WriteInt32(Defense);
+      }
+      if (MoveSpeed != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(MoveSpeed);
+      }
+      if (Critical != 0) {
+        output.WriteRawTag(64);
+        output.WriteInt32(Critical);
+      }
+      if (CriticalDamage != 0) {
+        output.WriteRawTag(72);
+        output.WriteInt32(CriticalDamage);
       }
       if (DamageRange != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(80);
         output.WriteInt32(DamageRange);
-      }
-      if (CriticalRatio != 0) {
-        output.WriteRawTag(64);
-        output.WriteInt32(CriticalRatio);
-      }
-      if (Critical != 0F) {
-        output.WriteRawTag(77);
-        output.WriteFloat(Critical);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -5117,6 +5145,9 @@ namespace Google.Protobuf.Protocol {
       if (Level != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Level);
       }
+      if (TotalExp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TotalExp);
+      }
       if (Hp != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hp);
       }
@@ -5126,20 +5157,20 @@ namespace Google.Protobuf.Protocol {
       if (Attack != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Attack);
       }
-      if (Speed != 0F) {
-        size += 1 + 4;
+      if (Defense != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Defense);
       }
-      if (TotalExp != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TotalExp);
+      if (MoveSpeed != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MoveSpeed);
+      }
+      if (Critical != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Critical);
+      }
+      if (CriticalDamage != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(CriticalDamage);
       }
       if (DamageRange != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(DamageRange);
-      }
-      if (CriticalRatio != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(CriticalRatio);
-      }
-      if (Critical != 0F) {
-        size += 1 + 4;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -5155,6 +5186,9 @@ namespace Google.Protobuf.Protocol {
       if (other.Level != 0) {
         Level = other.Level;
       }
+      if (other.TotalExp != 0) {
+        TotalExp = other.TotalExp;
+      }
       if (other.Hp != 0) {
         Hp = other.Hp;
       }
@@ -5164,20 +5198,20 @@ namespace Google.Protobuf.Protocol {
       if (other.Attack != 0) {
         Attack = other.Attack;
       }
-      if (other.Speed != 0F) {
-        Speed = other.Speed;
+      if (other.Defense != 0) {
+        Defense = other.Defense;
       }
-      if (other.TotalExp != 0) {
-        TotalExp = other.TotalExp;
+      if (other.MoveSpeed != 0) {
+        MoveSpeed = other.MoveSpeed;
+      }
+      if (other.Critical != 0) {
+        Critical = other.Critical;
+      }
+      if (other.CriticalDamage != 0) {
+        CriticalDamage = other.CriticalDamage;
       }
       if (other.DamageRange != 0) {
         DamageRange = other.DamageRange;
-      }
-      if (other.CriticalRatio != 0) {
-        CriticalRatio = other.CriticalRatio;
-      }
-      if (other.Critical != 0F) {
-        Critical = other.Critical;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -5195,35 +5229,39 @@ namespace Google.Protobuf.Protocol {
             break;
           }
           case 16: {
-            Hp = input.ReadInt32();
-            break;
-          }
-          case 24: {
-            MaxHp = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            Attack = input.ReadInt32();
-            break;
-          }
-          case 45: {
-            Speed = input.ReadFloat();
-            break;
-          }
-          case 48: {
             TotalExp = input.ReadInt32();
             break;
           }
+          case 24: {
+            Hp = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            MaxHp = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            Attack = input.ReadInt32();
+            break;
+          }
+          case 48: {
+            Defense = input.ReadInt32();
+            break;
+          }
           case 56: {
-            DamageRange = input.ReadInt32();
+            MoveSpeed = input.ReadInt32();
             break;
           }
           case 64: {
-            CriticalRatio = input.ReadInt32();
+            Critical = input.ReadInt32();
             break;
           }
-          case 77: {
-            Critical = input.ReadFloat();
+          case 72: {
+            CriticalDamage = input.ReadInt32();
+            break;
+          }
+          case 80: {
+            DamageRange = input.ReadInt32();
             break;
           }
         }

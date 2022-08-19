@@ -24,10 +24,10 @@ namespace Server.Game
 		public virtual int TotalAttack { get { return Stat.Attack; } }
 		public virtual int TotalDefence { get { return 0; } }
 
-		public float Speed
+		public int MoveSpeed
 		{
-			get { return Stat.Speed; }
-			set { Stat.Speed = value; }
+			get { return Stat.MoveSpeed; }
+			set { Stat.MoveSpeed = value; }
 		}
 
 		public int Hp
@@ -132,9 +132,9 @@ namespace Server.Game
 
 			totalDamage = rnd.Next(minDamage, maxDamage);
 
-			bool isCiritical = rnd.Next(0, 100) < Stat.CriticalRatio;
+			bool isCiritical = rnd.Next(0, 100) < Stat.Critical;
 			if(isCiritical)
-				totalDamage = (int)(totalDamage * Stat.Critical);
+				totalDamage = (int)(totalDamage * Stat.CriticalDamage);
 
 			damage = totalDamage;
 			damage = Math.Max(damage - TotalDefence, 0);

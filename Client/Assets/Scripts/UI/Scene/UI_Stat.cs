@@ -67,7 +67,7 @@ public class UI_Stat : UI_Base
 						Get<Image>((int)Images.Slot_Helmet).enabled = true;
 						Get<Image>((int)Images.Slot_Helmet).sprite = icon;
 						break;
-					case ArmorType.Armor:
+					case ArmorType.Upper:
 						Get<Image>((int)Images.Slot_Armor).enabled = true;
 						Get<Image>((int)Images.Slot_Armor).sprite = icon;
 						break;

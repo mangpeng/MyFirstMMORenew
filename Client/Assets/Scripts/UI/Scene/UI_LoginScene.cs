@@ -23,7 +23,7 @@ public class UI_LoginScene : UI_Scene
 	{
         base.Init();
 
-        Info.IpAddress = "192.168.0.16";
+        Info.IpAddress = "172.30.1.5";
         Info.Port = 7777;
 
         Bind<GameObject>(typeof(GameObjects));

@@ -55,11 +55,10 @@ namespace Server
 								Hp = playerDb.Hp,
 								MaxHp = playerDb.MaxHp,
 								Attack = playerDb.Attack,
-								Speed = playerDb.Speed,
+								MoveSpeed = playerDb.MoveSpeed,
 								TotalExp = playerDb.TotalExp,
-								DamageRange = playerDb.DamageRange,
-								CriticalRatio = playerDb.CriticalRatio,
 								Critical = playerDb.Critical,
+								CriticalDamage = playerDb.CriticalDamage,
 						
 							}
 						};
@@ -185,18 +184,26 @@ namespace Server
 					// DB에 플레이어 만들어줘야 함
 					PlayerDb newPlayerDb = new PlayerDb()
 					{
+						AccountDbId = AccountDbId,
+
 						PlayerName = createPacket.Name,
+						ClassType = createPacket.ClassType,
+
 						Level = stat.Level,
+						TotalExp = 0,
+
 						Hp = stat.Hp,
 						MaxHp = stat.MaxHp,
+
 						Attack = stat.Attack,
-						Speed = stat.Speed,
-						TotalExp = 0,
-						AccountDbId = AccountDbId,
-						DamageRange = stat.DamageRange,
-						CriticalRatio = stat.CriticalRatio,
+						Defense = stat.Defense,
+
+						MoveSpeed = stat.MoveSpeed,
+						
 						Critical = stat.Critical,
-						ClassType = createPacket.ClassType,
+						CriticalDamage = stat.CriticalDamage,
+
+						DamageRange = stat.DamageRange,
 					};
 
 					db.Players.Add(newPlayerDb);
@@ -213,14 +220,20 @@ namespace Server
 						StatInfo = new StatInfo()
 						{
 							Level = stat.Level,
+							TotalExp = 0,
+
 							Hp = stat.Hp,
 							MaxHp = stat.MaxHp,
+
 							Attack = stat.Attack,
-							Speed = stat.Speed,
-							TotalExp = 0,
-                            DamageRange = stat.DamageRange,
-                            CriticalRatio = stat.CriticalRatio,
+							Defense = stat.Defense,
+
+							MoveSpeed = stat.MoveSpeed,
+
                             Critical = stat.Critical,
+                            CriticalDamage = stat.CriticalDamage,
+
+                            DamageRange = stat.DamageRange,
 						}
 					};
 

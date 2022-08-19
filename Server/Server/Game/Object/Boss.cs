@@ -55,7 +55,7 @@ namespace Server.Game
         {
             if (_nextMoveTick > Environment.TickCount64)
                 return;
-            int moveTick = (int)(1000 / Speed);
+            int moveTick = (int)(1000 / MoveSpeed);
             _nextMoveTick = Environment.TickCount64 + moveTick;
 
             // Patrol
