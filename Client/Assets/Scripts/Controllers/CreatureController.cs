@@ -50,7 +50,7 @@ public class CreatureController : BaseController
 		GameObjectType type = ObjectManager.GetObjectTypeById(Id);
 		if(type == GameObjectType.Boss)
         {
-			float adjustScale = 1f / transform.localScale.x * 3f;
+			float adjustScale = 1f / transform.localScale.x * 2f;
 			_damageTextEffector.transform.localScale = _damageTextEffector.transform.localScale * adjustScale;
         }
     }

@@ -2771,6 +2771,7 @@ MonoBehaviour:
   NormalSkillData:
     id: 0
     name: 
+    description: 
     cooldown: 0
     damage: 0
     skillIcon: 
@@ -2778,6 +2779,7 @@ MonoBehaviour:
   CrossSkillData:
     id: 0
     name: 
+    description: 
     cooldown: 0
     damage: 0
     skillIcon: 
@@ -2785,6 +2787,7 @@ MonoBehaviour:
   DiagnalSkillData:
     id: 0
     name: 
+    description: 
     cooldown: 0
     damage: 0
     skillIcon: 
@@ -2792,6 +2795,7 @@ MonoBehaviour:
   RectSkillData:
     id: 0
     name: 
+    description: 
     cooldown: 0
     damage: 0
     skillIcon: 
@@ -3297,7 +3301,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6103453587088450743}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -442, z: 0}
+  m_LocalPosition: {x: 0, y: -348, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

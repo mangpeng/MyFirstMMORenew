@@ -73,7 +73,7 @@ namespace Server.Game
 
             if (type == RoomType.Stage1)
             {
-                for (int i = 0; i < (int)(Map.RespawnList.Count() / 2f); i++)
+                for (int i = 0; i < (int)(Map.RespawnList.Count()); i++)
                 {
                     Monster monster = ObjectManager.Instance.Add<Monster>();
                     monster.Init(1);
@@ -82,7 +82,7 @@ namespace Server.Game
             }
             else if (type == RoomType.Stage2)
             {
-                for (int i = 0; i < (int)(Map.RespawnList.Count() / 2f); i++)
+                for (int i = 0; i < (int)(Map.RespawnList.Count()); i++)
                 {
                     Monster monster = ObjectManager.Instance.Add<Monster>();
                     monster.Init(2);

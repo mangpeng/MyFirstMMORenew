@@ -7,12 +7,12 @@
         "stat": {
 			"level": "1",
 			"totalExp": "0",
-			"maxHp": "200",
-			"attack": "20",
-			"defense": "10",
+			"maxHp": "5000",
+			"attack": "100",
+			"defense": "50",
 			"moveSpeed":  "10",
 			"critical": "30",
-			"criticalDamage": "25",	
+			"criticalDamage": "150",	
 			"damageRange": "10",
         },
         "rewards": [

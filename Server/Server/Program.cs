@@ -98,7 +98,7 @@ namespace Server
 		}
 
 		public static string Name { get; } = "유리";
-		public static int Port { get; } = 7777;
+		public static int Port { get; set; } = 7777;
 		public static string IpAddress { get; set; }
 
 		static void Main(string[] args)
@@ -119,10 +119,11 @@ namespace Server
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
 			IPHostEntry ipHost = Dns.GetHostEntry(host);
+			
 			IPAddress ipAddr = ipHost.AddressList[1];
+			Port = 5001;
+			//ipAddr = IPAddress.Parse("218.153.112.108");
 			IPEndPoint endPoint = new IPEndPoint(ipAddr, Port);
-
-			IpAddress = ipAddr.ToString();
 
 			_listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
 			Console.WriteLine("Listening...");

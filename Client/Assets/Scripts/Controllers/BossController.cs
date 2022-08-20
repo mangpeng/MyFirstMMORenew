@@ -161,6 +161,8 @@ public class BossController : CreatureController
     }
 
     Coroutine _coPlayAttack = null;
+    private List<GameObject> _tempObjs = new List<GameObject>();
+
     private void UseSkillNormal()
     {
         Debug.Log("UseSkillNormal");
@@ -319,7 +321,9 @@ public class BossController : CreatureController
                         () =>
                         {
                             GameObject particle = GameObject.Instantiate(_skillParticle);
+                            _tempObjs.Add(particle);
                             particle.transform.position = temp;
+                            _tempObjs.Remove(particle);
                             GameObject.Destroy(particle, 1f);
                         });
                 }
@@ -337,9 +341,11 @@ public class BossController : CreatureController
 
         SpriteRenderer warningSrr = SpriteRenderer.Instantiate(_warningSrr);
         warningSrr.transform.position = pos;
+        _tempObjs.Add(warningSrr.gameObject);
 
         StartCoroutine(CBlinck(warningSrr, blinkCount, blinkInterval, afterDelay, () =>
         {
+            _tempObjs.Remove(warningSrr.gameObject);
             GameObject.DestroyImmediate(warningSrr.gameObject);
             after?.Invoke();
         }));
@@ -379,5 +385,13 @@ public class BossController : CreatureController
         spriteRr.color = c;
 
         after?.Invoke();
+    }
+
+    private void OnDestroy()
+    {
+        foreach(var temp in _tempObjs)
+        {
+            GameObject.DestroyImmediate(temp.gameObject);
+        }
     }
 }

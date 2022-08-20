@@ -154,6 +154,8 @@ namespace Server.Game
 			diePacket.AttackerId = attacker.Id;
 			Room.BroadCastVision(CellPos, diePacket);
 
+
+			
 			GameRoom room = Room;
 			room.LeaveGame(Id);
 
@@ -161,7 +163,15 @@ namespace Server.Game
 			PosInfo.State = CreatureState.Idle;
 			PosInfo.MoveDir = MoveDir.Down;
 
-			room.EnterGame(this, randomPos: true);
+            if (ObjectManager.GetObjectTypeById(attacker.Id) == GameObjectType.Boss)
+            {
+				room = GameLogic.Instance.Find(2);
+				room.EnterGame(this, randomPos: true);
+			}
+			else
+            {
+				room.EnterGame(this, randomPos: true);
+            }
 		}
 
 		public virtual GameObject GetOwner()

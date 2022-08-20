@@ -250,10 +250,10 @@ public class MyPlayerController : PlayerController
         base.AddHpMpBar();
 
         {
-            GameObject go = Managers.Resource.Instantiate("UI/MpBar", transform);
-            go.transform.localPosition = new Vector3(0, -0.6f, 0);
-            go.name = "MpBar";
-            MpBar = go.GetComponent<HpMpBar>();
+            //GameObject go = Managers.Resource.Instantiate("UI/MpBar", transform);
+            //go.transform.localPosition = new Vector3(0, -0.6f, 0);
+            //go.name = "MpBar";
+            //MpBar = go.GetComponent<HpMpBar>();
         }
     }
 
